@@ -72,6 +72,14 @@ jobs:
         run: composer install
         working-directory: ./app/
 
+      - name: Update DB schema
+        run: bin/console doctrine:schema:update --force --no-interaction --env=test
+        working-directory: ./app/
+
+      - name: Update DB schema
+        run: bin/console doctrine:schema:update --force --no-interaction --env=test
+        working-directory: ./app/
+
       # todo: рассоментировать после добавления миграций
       #      - name: Migrate migrations
       #        run: bin/console doctrine:migrations:migrate --no-interaction --env=test

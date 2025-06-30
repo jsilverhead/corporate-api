@@ -13,7 +13,7 @@ return static function (ContainerConfigurator $container): void {
 
     $container->import('packages/*.php');
 
-    //    $container->import('domain/*.php');
+    $container->import('domain/*.php');
     $container->import('infrastructure/*.php');
     $container->import('infrastructure/*/*.php');
     $container->import('infrastructure/*/*/*.php');
@@ -49,4 +49,6 @@ return static function (ContainerConfigurator $container): void {
             param('kernel.project_dir')->__toString() . '/src/Infrastructure/Denormalizer/*.php',
         )
         ->public();
+
+    $services->load('App\\Tests\\Builder\\', param('kernel.project_dir')->__toString() . '/tests/Builder')->public();
 };

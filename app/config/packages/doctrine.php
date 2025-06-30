@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domain\Common\Enum\CustomTypes;
+use App\Infrastructure\Doctrine\Types\EmailType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -19,6 +21,8 @@ return static function (DoctrineConfig $doctrine, ContainerConfigurator $contain
         ->useSavepoints(true);
 
     $doctrine->orm()->autoGenerateProxyClasses(param('kernel.debug'));
+
+    $dbal->type(CustomTypes::EMAIL)->class(EmailType::class);
 
     $entityManager = $doctrine->orm()->entityManager($defaultConnectionName);
     $entityManager->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware')->autoMapping(true);

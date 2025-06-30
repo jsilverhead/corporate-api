@@ -1,0 +1,45 @@
+name: Check documentation
+
+on:
+  pull_request: ~
+
+jobs:
+  compile_openapi:
+    name: Compile OpenAPI (${{ matrix.applicationDomain }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # todo: set your applicationDomains here
+        applicationDomain: [example]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: app/.nvmrc
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-npm-production-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-production-
+
+      - name: Install npm dependencies
+        working-directory: ./app
+        run: npm ci --prefer-offline --production
+
+      - name: Create empty CHANGELOG.md
+        run: touch app/CHANGELOG.md
+
+      - name: Compile OpenAPI file
+        run: npx ts-node app/docs/compiler.ts ${{ matrix.applicationDomain }} 0.0.0 app/build/${{ matrix.applicationDomain }}/openapi.json

@@ -1,0 +1,93 @@
+version: "3.9"
+name: template
+
+services:
+  postgres:
+    container_name: ${COMPOSE_PROJECT_NAME}-postgres
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --lc-collate=ru_RU.UTF-8 --lc-ctype=ru_RU.UTF-8
+    ports:
+      - target: 5432
+        published: 5432
+
+  php-fpm:
+    container_name: ${COMPOSE_PROJECT_NAME}-php-fpm
+    user: "1000:1000"
+    build:
+      context: ./../
+      dockerfile: ./docker/php/fpm/Dockerfile
+    volumes:
+      - type: bind
+        source: ./../app/
+        target: /var/www/html/
+    env_file: ./../app/.env.test
+
+  php-cli:
+    container_name: ${COMPOSE_PROJECT_NAME}-php-cli
+    user: "1000:1000"
+    build:
+      context: ./../
+      dockerfile: ./docker/php/cli/Dockerfile
+    volumes:
+      - type: bind
+        source: ./../app/
+        target: /var/www/html/
+    env_file: ./../app/.env.test
+
+  composer:
+    container_name: ${COMPOSE_PROJECT_NAME}-composer
+    image: composer:2.6.6
+    command: [install, --ignore-platform-reqs]
+    volumes:
+      - type: bind
+        source: ./../app/
+        target: /app
+
+  composer-update:
+    container_name: ${COMPOSE_PROJECT_NAME}-composer-update
+    image: composer:2.6.6
+    command: [update, --ignore-platform-reqs]
+    volumes:
+      - type: bind
+        source: ./../app/
+        target: /app
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    build:
+      context: ./
+      dockerfile: nginx/Dockerfile
+    environment:
+      PHP_FPM_HOST: php-fpm
+    ports:
+      - target: 80
+        published: 8080
+
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: redis:6-alpine
+    command: [redis-server, --appendonly, "yes"]
+
+  minio:
+    container_name: ${COMPOSE_PROJECT_NAME}-minio
+    image: bitnami/minio:2021
+    environment:
+      MINIO_ROOT_USER: minio-root-user
+      MINIO_ROOT_PASSWORD: minio-root-password
+      MINIO_DEFAULT_BUCKETS: yma:public
+    ports:
+      - target: 9001
+        published: 9001
+
+  imgproxy:
+    container_name: ${COMPOSE_PROJECT_NAME}-imgproxy
+    image: darthsim/imgproxy:v2
+    environment:
+      IMGPROXY_KEY: c8efa12e7dc428aa908432e4f4581ef4fb4b7b76f53ded4e12729817d4407c3817a954e161ded55b9f27d7e7d0ed88cbf3a72fe17837b7605adf3f4a34b2e896
+      IMGPROXY_SALT: c69e63dec3fd4a7c20c09149ccbbbf677c4a960d362e8e21e9c33e15a9c9c68fe49ff6ea24d77b3d1c44a0ef2489f4fd1ebb42f7d7d595572ee6fb6c86919b82
+    ports:
+      - target: 8080
+        published: 8081

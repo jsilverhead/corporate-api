@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Doctrine: rollback to previous migration" type="PhpLocalRunConfigurationType" factoryName="PHP Console" folderName="Doctrine" path="$PROJECT_DIR$/app/bin/console" scriptParameters="doctrine:migration:migrate prev --no-interaction --env=test">
+    <method v="2" />
+  </configuration>
+</component>

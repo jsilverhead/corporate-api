@@ -1,0 +1,12 @@
+/.env.local
+/.env.local.php
+/.env.*.local
+/var/
+/vendor/
+/app/node_modules/
+.phpunit.cache
+.phpunit.result.cache
+/.php-cs-fixer.cache
+/.idea/
+/build/
+/app/build/

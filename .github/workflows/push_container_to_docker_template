@@ -1,0 +1,85 @@
+name: Docker
+
+on:
+  release:
+    types:
+      - published
+
+# todo: добавить в секретки
+# DOCKER_USERNAME
+# DOCKER_PASSWORD
+# заменить на YC_CONTAINER_REGISTRY_ID проекта
+env:
+  YC_CONTAINER_REGISTRY_ID: crpano8u0lcbma85qm9n
+
+jobs:
+  php_fpm:
+    name: PHP-FPM
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Compute API version
+        id: api-version
+        run: echo "::set-output name=version::$(echo $GIT_TAG | cut -f1,2 -d'.')"
+        env:
+          GIT_TAG: ${{ github.event.release.tag_name }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Login to registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-php-fpm
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: .
+          file: php-fpm-prod.dockerfile
+          push: true
+          tags: |
+            cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-php-fpm:latest
+            cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-php-fpm:${{ github.event.release.tag_name }}
+          build-args: |
+            APP_VERSION=${{ github.event.repository.name }}@${{ github.event.release.tag_name }}
+            API_VERSION=${{ steps.api-version.outputs.version }}
+          cache-from: type=gha,scope=php-fpm
+          cache-to: type=gha,scope=php-fpm
+          provenance: false
+
+  nginx:
+    name: NGINX
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Login to registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-nginx
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: .
+          file: nginx/Dockerfile
+          push: true
+          tags: |
+            cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-nginx:latest
+            cr.yandex/${{ env.YC_CONTAINER_REGISTRY_ID }}/api-nginx:${{ github.event.release.tag_name }}
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,scope=nginx
+          provenance: false

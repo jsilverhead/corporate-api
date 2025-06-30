@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Clear Symfony cache (test)" type="PhpLocalRunConfigurationType" factoryName="PHP Console" folderName="Symfony cache" path="$PROJECT_DIR$/app/bin/console" scriptParameters="cache:clear --no-interaction --env=test">
+    <method v="2" />
+  </configuration>
+</component>

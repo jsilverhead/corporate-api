@@ -1,0 +1,293 @@
+name: Release documentation
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  generate_changelog:
+    name: Generate CHANGELOG.md
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate CHANGELOG.md from releases
+        uses: actions/github-script@v6.3.3
+        with:
+          script: |
+            const releases = [];
+
+            let releasesPage = 1;
+
+            while (true) {
+              const releasesChunk = await github.rest.repos.listReleases({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+                page: releasesPage,
+              });
+
+              releasesPage++;
+
+              if (releasesChunk.data.length === 0) {
+                break;
+              }
+
+              releases.push(...releasesChunk.data);
+            }
+
+            const releaseNotes = [];
+
+            for (const release of releases) {
+              const [majorVersion, minorVersion, patchVersion] = release.tag_name.split('.');
+
+              if (patchVersion !== '0') {
+                continue;
+              }
+
+              let releaseNote = `# [${majorVersion}.${minorVersion}](${release.html_url})`;
+
+              if (release.published_at) {
+                const localizedPublicationDate = new Date(release.published_at).toLocaleString('ru-RU', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                });
+
+                releaseNote += ` (${localizedPublicationDate})`;
+              }
+
+              if (release.draft) {
+                releaseNote += ' (черновик)';
+              }
+
+              if (release.prerelease) {
+                releaseNote += ' (пре-релиз)';
+              }
+
+              releaseNote += '\n\n';
+
+              if (release.body !== '') {
+                releaseNote += release.body;
+              } else {
+                releaseNote += '_Описание отсутствует._';
+              }
+
+              releaseNotes.push(releaseNote);
+
+              console.info(`Added release notes for tag ${release.tag_name}`);
+            };
+
+            const fs = require('fs');
+            fs.writeFileSync('app/CHANGELOG.md', releaseNotes.join('\n\n'));
+
+      - name: Upload CHANGELOG.md as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: changelog
+          path: ./app/CHANGELOG.md
+          retention-days: 7
+
+  compile_openapi:
+    name: Compile OpenAPI (${{ matrix.applicationDomain }})
+    runs-on: ubuntu-latest
+    needs: [generate_changelog]
+
+    strategy:
+      matrix:
+        # todo: set your applicationDomains here
+        applicationDomain: [example]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: app/.nvmrc
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-npm-production-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-production-
+
+      - name: Install npm dependencies
+        working-directory: ./app
+        run: npm ci --prefer-offline --production
+
+      - name: Download CHANGELOG.md file
+        uses: actions/download-artifact@v3
+        with:
+          name: changelog
+          path: ./app/
+
+      - name: Compile OpenAPI file
+        run: npx ts-node app/docs/compiler.ts ${{ matrix.applicationDomain }} ${{ github.event.release.tag_name }} app/build/${{ matrix.applicationDomain }}/openapi.json
+
+      - name: Upload OpenAPI file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: openapi-${{ matrix.applicationDomain }}
+          path: app/build/${{ matrix.applicationDomain }}/openapi.json
+          retention-days: 7
+
+  publish_openapi:
+    name: Publish OpenAPI (${{ matrix.applicationDomain }})
+    runs-on: ubuntu-latest
+    needs: [compile_openapi]
+
+    strategy:
+      matrix:
+        # todo: set your applicationDomains here
+        applicationDomain: [example]
+
+    steps:
+      - name: Download OpenAPI file
+        uses: actions/download-artifact@v3
+        with:
+          name: openapi-${{ matrix.applicationDomain }}
+          path: app/build/${{ matrix.applicationDomain }}
+
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
+        env:
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Upload OpenAPI file to S3
+        run: >
+          aws
+          --region=$S3_REGION
+          --endpoint-url=$S3_ENDPOINT
+          s3api
+          put-object
+          --bucket $S3_BUCKET
+          --key ${{ matrix.applicationDomain }}/openapi/$(echo $RELEASE_VERSION | cut -f1,2 -d'.').json
+          --body app/build/${{ matrix.applicationDomain }}/openapi.json
+          --cache-control "public, max-age=600"
+          --content-type "application/json; charset=UTF-8"
+        env:
+          S3_REGION: ru-central1
+          S3_ENDPOINT: https://storage.yandexcloud.net
+          # todo: set your bucket for docs here
+          S3_BUCKET: TEMPLATE-docs
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+
+  compile_redoc:
+    name: Compile Redoc (${{ matrix.applicationDomain }})
+    runs-on: ubuntu-latest
+    needs: [compile_openapi]
+
+    strategy:
+      matrix:
+        # todo: set your applicationDomains here
+        applicationDomain: [ example ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: app/.nvmrc
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-npm-production-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-production-
+
+      - name: Install npm dependencies
+        working-directory: ./app
+        run: npm ci --prefer-offline --production
+
+      - name: Download OpenAPI file
+        uses: actions/download-artifact@v3
+        with:
+          name: openapi-${{ matrix.applicationDomain }}
+          path: app/build/${{ matrix.applicationDomain }}
+
+      - name: Build Redoc
+        # todo: Set your project name in flag "title"
+        run: >
+          npx @redocly/cli build-docs
+          app/build/${{ matrix.applicationDomain }}/openapi.json
+          --output app/build/${{ matrix.applicationDomain }}/redoc.html
+          --title "TEMPLATE API (${{ matrix.applicationDomain }})"
+          --templateOptions.nativeScrollbars
+          --templateOptions.noAutoAuth
+          --templateOptions.schemaExpansionLevel
+          --templateOptions.sortPropsAlphabetically
+          --templateOptions.sortEnumValuesAlphabetically
+          --templateOptions.sortOperationsAlphabetically
+          --templateOptions.sortTagsAlphabetically
+
+      - name: Upload Redoc file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: redoc-${{ matrix.applicationDomain }}
+          path: app/build/${{ matrix.applicationDomain }}/redoc.html
+          retention-days: 7
+
+  publish_redoc:
+    name: Publish Redoc (${{ matrix.applicationDomain }})
+    runs-on: ubuntu-latest
+    needs: [compile_redoc]
+
+    strategy:
+      matrix:
+        # todo: set your applicationDomains here
+        applicationDomain: [ example ]
+
+
+    steps:
+      - name: Download Redoc file
+        uses: actions/download-artifact@v3
+        with:
+          name: redoc-${{ matrix.applicationDomain }}
+          path: app/build/${{ matrix.applicationDomain }}
+          retention-days: 7
+
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
+        env:
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Upload Redoc file to S3
+        run: >
+          aws
+          --region=$S3_REGION
+          --endpoint-url=$S3_ENDPOINT
+          s3api
+          put-object
+          --bucket $S3_BUCKET
+          --key ${{ matrix.applicationDomain }}/redoc.html
+          --body app/build/${{ matrix.applicationDomain }}/redoc.html
+          --cache-control "public, max-age=600"
+          --content-type "text/html; charset=UTF-8"
+        env:
+          S3_REGION: ru-central1
+          S3_ENDPOINT: https://storage.yandexcloud.net
+          # todo: set your bucket for docs here
+          S3_BUCKET: TEMPLATE-docs
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}

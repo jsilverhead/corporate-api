@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<psalm
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://getpsalm.org/schema/config"
+  xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+  cacheDirectory="var/psalm"
+  errorLevel="1"
+  strictBinaryOperands="true"
+  disableSuppressAll="true"
+  ignoreInternalFunctionFalseReturn="false"
+  ignoreInternalFunctionNullReturn="false"
+  findUnusedVariablesAndParams="true"
+  findUnusedPsalmSuppress="true"
+  ensureArrayStringOffsetsExist="true"
+  ensureArrayIntOffsetsExist="true"
+  findUnusedCode="true"
+  findUnusedBaselineEntry="false"
+>
+  <projectFiles>
+    <directory name="src" />
+    <directory name="tests" />
+    <ignoreFiles>
+      <directory name="vendor" />
+    </ignoreFiles>
+  </projectFiles>
+
+  <issueHandlers>
+    <!-- Psalm thinks all our services are not used, so disable this issue -->
+    <UnusedClass errorLevel="suppress" />
+
+    <PossiblyUnusedMethod>
+      <errorLevel type="suppress">
+        <!-- Psalm thinks all our services are not used, so disable this issue for constructors -->
+        <referencedMethod name="*::__construct" />
+      </errorLevel>
+    </PossiblyUnusedMethod>
+
+<!--    <PossiblyUnusedReturnValue>-->
+<!--      <errorLevel type="suppress">-->
+<!--        &lt;!&ndash; Ignore issue in all builders because it's not necessary to read their return value &ndash;&gt;-->
+<!--        <directory name="tests/Builder/" />-->
+<!--      </errorLevel>-->
+<!--    </PossiblyUnusedReturnValue>-->
+  </issueHandlers>
+
+  <extraFiles>
+    <directory name="var/cache/test/Symfony/Config" />
+  </extraFiles>
+
+  <plugins>
+    <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
+      <containerXml>var/cache/test/App_KernelTestDebugContainer.xml</containerXml>
+    </pluginClass>
+    <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin" />
+    <pluginClass class="Psalm\PhpUnitPlugin\Plugin" />
+  </plugins>
+
+  <forbiddenFunctions>
+    <function name="isset" />
+    <function name="is_null" />
+    <function name="empty" />
+    <function name="filter_var" />
+  </forbiddenFunctions>
+</psalm>

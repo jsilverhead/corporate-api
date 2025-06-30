@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Compile OpenAPI" type="NodeJSConfigurationType" application-parameters="common 0.0.0 app/build/common/openapi.json" node-parameters="./app/node_modules/.bin/ts-node" path-to-js-file="app/docs/compiler.ts" working-dir="$PROJECT_DIR$">
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Fix ESLint" run_configuration_type="NodeJSConfigurationType" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Compile ReDoc" type="NodeJSConfigurationType" application-parameters="build-docs app/build/common/openapi.json --output app/build/common/redoc.html --title &quot;TEMPLATE&quot; --templateOptions.nativeScrollbars --templateOptions.noAutoAuth --templateOptions.sortPropsAlphabetically --templateOptions.sortEnumValuesAlphabetically --templateOptions.sortOperationsAlphabetically --templateOptions.sortTagsAlphabetically --templateOptions.schemaExpansionLevel" node-parameters="app/node_modules/.bin/redocly" working-dir="$PROJECT_DIR$">
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Compile OpenAPI" run_configuration_type="NodeJSConfigurationType" />
+    </method>
+  </configuration>
+</component>

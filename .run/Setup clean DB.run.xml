@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Setup clean DB" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/app/bin/console" scriptParameters="doctrine:schema:update --allow-no-migration --no-interaction --env=test">
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Clear Symfony cache (test)" run_configuration_type="PhpLocalRunConfigurationType" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Doctrine: drop database" run_configuration_type="PhpLocalRunConfigurationType" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Doctrine: create database" run_configuration_type="PhpLocalRunConfigurationType" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: composer
+    reviewers: [spiks/php-backend-engineers]
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    reviewers: [spiks/php-backend-engineers]
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
+  - package-ecosystem: github-actions
+    reviewers: [spiks/php-backend-engineers]
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    reviewers: [spiks/php-backend-engineers]
+    directory: /
+    schedule:
+      interval: monthly

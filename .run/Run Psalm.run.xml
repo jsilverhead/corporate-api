@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Psalm" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/app/vendor/bin/psalm" scriptParameters="--output-format=phpstorm">
+    <CommandLine workingDirectory="$PROJECT_DIR$/app" />
+    <method v="2" />
+  </configuration>
+</component>

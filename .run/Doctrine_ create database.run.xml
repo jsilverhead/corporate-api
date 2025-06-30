@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Doctrine: create database" type="PhpLocalRunConfigurationType" factoryName="PHP Console" folderName="Doctrine" path="$PROJECT_DIR$/app/bin/console" scriptParameters="doctrine:database:create --no-interaction --env=test">
+    <method v="2" />
+  </configuration>
+</component>

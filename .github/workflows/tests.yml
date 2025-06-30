@@ -1,0 +1,83 @@
+name: Tests
+
+on: pull_request
+
+env:
+  php-version: "8.3"
+  php-extensions: pdo_pgsql, igbinary, uuid, redis, uopz, intl, opcache
+
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14-alpine3.15
+        ports:
+          - 5432:5432
+        env:
+          # todo: rename template
+          POSTGRES_DB: template
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_INITDB_ARGS: --encoding=UTF8 --lc-collate=ru_RU.UTF-8 --lc-ctype=ru_RU.UTF-8
+
+      redis:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/template?charset=utf8
+      REDIS_HOST: localhost
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare cache for PHP extensions
+        id: php-extensions-cache
+        uses: shivammathur/cache-extensions@1.7.1
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.php-extensions }}
+          key: php-extensions
+
+      - name: Cache PHP extensions
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.php-extensions-cache.outputs.dir }}
+          key: ${{ steps.php-extensions-cache.outputs.key }}
+          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.24.0
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.php-extensions }}
+          tools: composer
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+        working-directory: ./app/
+
+      # todo: рассоментировать после добавления миграций
+      #      - name: Migrate migrations
+      #        run: bin/console doctrine:migrations:migrate --no-interaction --env=test
+      #        working-directory: ./app/
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --configuration ./tests/phpunit.xml
+        working-directory: ./app/

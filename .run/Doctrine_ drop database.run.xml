@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Doctrine: drop database" type="PhpLocalRunConfigurationType" factoryName="PHP Console" folderName="Doctrine" path="$PROJECT_DIR$/app/bin/console" scriptParameters="doctrine:database:drop --force --if-exists --no-interaction --env=test">
+    <method v="2" />
+  </configuration>
+</component>

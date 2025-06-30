@@ -95,8 +95,7 @@ jobs:
 
     strategy:
       matrix:
-        # todo: set your applicationDomains here
-        applicationDomain: [example]
+        applicationDomain: [common]
 
     steps:
       - name: Checkout repository
@@ -146,8 +145,7 @@ jobs:
 
     strategy:
       matrix:
-        # todo: set your applicationDomains here
-        applicationDomain: [example]
+        applicationDomain: [common]
 
     steps:
       - name: Download OpenAPI file
@@ -179,8 +177,7 @@ jobs:
         env:
           S3_REGION: ru-central1
           S3_ENDPOINT: https://storage.yandexcloud.net
-          # todo: set your bucket for docs here
-          S3_BUCKET: TEMPLATE-docs
+          S3_BUCKET: spiks-docs
           RELEASE_VERSION: ${{ github.event.release.tag_name }}
 
   compile_redoc:
@@ -225,12 +222,11 @@ jobs:
           path: app/build/${{ matrix.applicationDomain }}
 
       - name: Build Redoc
-        # todo: Set your project name in flag "title"
         run: >
           npx @redocly/cli build-docs
           app/build/${{ matrix.applicationDomain }}/openapi.json
           --output app/build/${{ matrix.applicationDomain }}/redoc.html
-          --title "TEMPLATE API (${{ matrix.applicationDomain }})"
+          --title "SPIKS API (${{ matrix.applicationDomain }})"
           --templateOptions.nativeScrollbars
           --templateOptions.noAutoAuth
           --templateOptions.schemaExpansionLevel
@@ -253,8 +249,7 @@ jobs:
 
     strategy:
       matrix:
-        # todo: set your applicationDomains here
-        applicationDomain: [ example ]
+        applicationDomain: [ common ]
 
 
     steps:
@@ -288,6 +283,5 @@ jobs:
         env:
           S3_REGION: ru-central1
           S3_ENDPOINT: https://storage.yandexcloud.net
-          # todo: set your bucket for docs here
-          S3_BUCKET: TEMPLATE-docs
+          S3_BUCKET: spiks-docs
           RELEASE_VERSION: ${{ github.event.release.tag_name }}

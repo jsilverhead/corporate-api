@@ -10,8 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        # todo: set your applicationDomains here
-        applicationDomain: [example]
+        applicationDomain: [common]
 
     steps:
       - name: Checkout repository

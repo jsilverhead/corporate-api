@@ -1,5 +1,5 @@
 version: "3.9"
-name: template
+name: spiks-website
 
 services:
   postgres:
@@ -77,7 +77,7 @@ services:
     environment:
       MINIO_ROOT_USER: minio-root-user
       MINIO_ROOT_PASSWORD: minio-root-password
-      MINIO_DEFAULT_BUCKETS: yma:public
+      MINIO_DEFAULT_BUCKETS: spiks:public
     ports:
       - target: 9001
         published: 9001

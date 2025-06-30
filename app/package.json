@@ -1,5 +1,5 @@
 {
-  "name": "@template/api",
+  "name": "@spiks/api",
   "private": true,
   "engines": {
     "node": ">=16"

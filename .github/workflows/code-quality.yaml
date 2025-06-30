@@ -15,20 +15,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Prepare cache for PHP extensions
-        id: php-extensions-cache
-        uses: shivammathur/cache-extensions@1.7.1
-        with:
-          php-version: ${{ env.php-version }}
-          extensions: ${{ env.php-extensions }}
-          key: php-extensions
-
-      - name: Cache PHP extensions
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.php-extensions-cache.outputs.dir }}
-          key: ${{ steps.php-extensions-cache.outputs.key }}
-          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
+#      - name: Prepare cache for PHP extensions
+#        id: php-extensions-cache
+#        uses: shivammathur/cache-extensions@1.7.1
+#        with:
+#          php-version: ${{ env.php-version }}
+#          extensions: ${{ env.php-extensions }}
+#          key: php-extensions
+#
+#      - name: Cache PHP extensions
+#        uses: actions/cache@v4
+#        with:
+#          path: ${{ steps.php-extensions-cache.outputs.dir }}
+#          key: ${{ steps.php-extensions-cache.outputs.key }}
+#          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@2.24.0

@@ -8,11 +8,14 @@ use App\Domain\Common\ValueObject\Email;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\Service\CreateUserService;
 use App\Domain\User\User;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserBuilder
 {
     private ?Email $email = null;
+
+    private bool $isDeleted = false;
 
     private RolesEnum $role = RolesEnum::USER;
 
@@ -20,6 +23,13 @@ class UserBuilder
         private CreateUserService $createUserService,
         private EntityManagerInterface $entityManager,
     ) {
+    }
+
+    public function asDeleted(): self
+    {
+        $this->isDeleted = true;
+
+        return $this;
     }
 
     public function asSuperUser(): self
@@ -40,6 +50,10 @@ class UserBuilder
             password: $password,
             role: $this->role,
         );
+
+        if ($this->isDeleted) {
+            $user->deletedAt = new DateTimeImmutable();
+        }
 
         $this->entityManager->flush();
 

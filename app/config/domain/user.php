@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Domain\User\Service\CreateUserService;
+use App\Domain\User\Service\DeleteUserService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -30,4 +31,5 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
     );
 
     $services->set(CreateUserService::class)->public();
+    $services->set(DeleteUserService::class)->public();
 };

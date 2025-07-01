@@ -31,7 +31,7 @@ readonly class AccessTokenEncoder
         $refreshTokenExpiresAt = $now->modify(sprintf('+%s seconds', $this->jwtAuthSettings->refreshTokenTimeOfLife));
 
         $accessTokenPayload = [
-            'iss' => 'SPIKS API',
+            'iss' => 'Corporate API',
             'iat' => $now->getTimestamp(),
             'exp' => $accessTokenExpiresAt->getTimestamp(),
             'userId' => $userId->toRfc4122(),
@@ -39,7 +39,7 @@ readonly class AccessTokenEncoder
         ];
 
         $refreshTokenPayload = [
-            'iss' => 'SPIKS API',
+            'iss' => 'Corporate API',
             'iat' => $now->getTimestamp(),
             'exp' => $refreshTokenExpiresAt->getTimestamp(),
             'userId' => $userId->toRfc4122(),

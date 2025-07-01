@@ -42,11 +42,11 @@ class UserBuilder
     public function build(): User
     {
         $name = 'Олег Олегович';
-        $password = 'Spiks123';
+        $password = 'Password123';
 
         $user = $this->createUserService->create(
             name: $name,
-            email: $this->email ?? Email::tryCreateFromString(uniqid(more_entropy: true) . '@spiks.ru'),
+            email: $this->email ?? Email::tryCreateFromString(uniqid(more_entropy: true) . '@company.ru'),
             password: $password,
             role: $this->role,
         );

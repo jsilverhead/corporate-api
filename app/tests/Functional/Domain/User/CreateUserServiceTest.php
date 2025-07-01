@@ -20,7 +20,7 @@ final class CreateUserServiceTest extends BaseWebTestCase
 {
     public function testEmailAlreadyExistsFail(): void
     {
-        $email = Email::tryCreateFromString('obramovich@spiks.ru');
+        $email = Email::tryCreateFromString('olego@company.ru');
         $this->getService(UserBuilder::class)
             ->withEmail($email)
             ->build();
@@ -29,7 +29,7 @@ final class CreateUserServiceTest extends BaseWebTestCase
         $this->getService(CreateUserService::class)->create(
             name: 'Олегов Олег',
             email: $email,
-            password: 'Spiks123',
+            password: 'Password123',
             role: RolesEnum::USER,
         );
     }
@@ -37,8 +37,8 @@ final class CreateUserServiceTest extends BaseWebTestCase
     public function testSuccess(): void
     {
         $name = 'Олегов Олег';
-        $email = Email::tryCreateFromString('obramovich@spiks.ru');
-        $password = 'Spiks123';
+        $email = Email::tryCreateFromString('olego@company.ru');
+        $password = 'Password123';
         $role = RolesEnum::USER;
 
         $user = $this->getService(CreateUserService::class)->create(

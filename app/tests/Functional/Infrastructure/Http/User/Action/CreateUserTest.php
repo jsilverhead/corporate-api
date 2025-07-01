@@ -22,14 +22,14 @@ final class CreateUserTest extends BaseWebTestCase
             ->asSuperUser()
             ->build();
 
-        $email = Email::tryCreateFromString('olego@spiks.ru');
+        $email = Email::tryCreateFromString('olego@company.ru');
 
         $this->httpRequest(method: Request::METHOD_POST, url: '/createUser')
             ->withAuthentication($superUser)
             ->withBody([
                 'name' => 'Олегов Олег',
                 'email' => $email->email,
-                'password' => 'Spiks123',
+                'password' => 'Password123',
                 'role' => 'user',
             ])
             ->execute();

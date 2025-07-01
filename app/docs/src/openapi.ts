@@ -35,13 +35,13 @@ export const openapi = async (
       url: string;
     };
   } = {
-    title: `SPIKS API (${applicationDomain})`,
+    title: `Corporate API (${applicationDomain})`,
     version: apiVersion,
     description: description,
     'x-logo': {
       url: '',
       backgroundColor: 'transparent',
-      altText: 'Логотип SPIKS',
+      altText: 'Логотип Corporate',
     },
   };
 

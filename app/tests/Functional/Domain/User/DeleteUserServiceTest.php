@@ -21,7 +21,7 @@ final class DeleteUserServiceTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $email = Email::tryCreateFromString('olego@spiks.ru');
+        $email = Email::tryCreateFromString('olego@company.ru');
 
         $user = $this->getService(UserBuilder::class)
             ->withEmail($email)

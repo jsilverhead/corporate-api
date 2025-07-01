@@ -24,7 +24,7 @@ final class CreateAccessTokenServiceTest extends BaseWebTestCase
     {
         $user = $this->getService(UserBuilder::class)->build();
 
-        $secret = 'spiksSecret';
+        $secret = 'corporateSecret';
         $algorithm = 'HS256';
         $accessTimeOfLife = 3600;
         $refreshTimeOfLife = 3600;

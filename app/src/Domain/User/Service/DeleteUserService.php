@@ -18,6 +18,6 @@ class DeleteUserService
         }
 
         $user->deletedAt = new DateTimeImmutable();
-        $user->email = Email::tryCreateFromString(uniqid(prefix: 'deleted_', more_entropy: true) . '@spiks.ru');
+        $user->email = Email::tryCreateFromString(uniqid(prefix: 'deleted_', more_entropy: true) . '@company.ru');
     }
 }

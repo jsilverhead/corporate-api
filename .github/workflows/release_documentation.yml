@@ -177,7 +177,7 @@ jobs:
         env:
           S3_REGION: ru-central1
           S3_ENDPOINT: https://storage.yandexcloud.net
-          S3_BUCKET: spiks-docs
+          S3_BUCKET: corporate-docs
           RELEASE_VERSION: ${{ github.event.release.tag_name }}
 
   compile_redoc:
@@ -226,7 +226,7 @@ jobs:
           npx @redocly/cli build-docs
           app/build/${{ matrix.applicationDomain }}/openapi.json
           --output app/build/${{ matrix.applicationDomain }}/redoc.html
-          --title "SPIKS API (${{ matrix.applicationDomain }})"
+          --title "corporate API (${{ matrix.applicationDomain }})"
           --templateOptions.nativeScrollbars
           --templateOptions.noAutoAuth
           --templateOptions.schemaExpansionLevel
@@ -283,5 +283,5 @@ jobs:
         env:
           S3_REGION: ru-central1
           S3_ENDPOINT: https://storage.yandexcloud.net
-          S3_BUCKET: spiks-docs
+          S3_BUCKET: corporate-docs
           RELEASE_VERSION: ${{ github.event.release.tag_name }}

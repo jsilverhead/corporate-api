@@ -17,7 +17,7 @@ export const Email = ref.schema(
   'Email',
   stringSchema({
     description: 'Email пользователя',
-    examples: ['olego@spiks.ru'],
+    examples: ['olego@company.ru'],
     minLength: 1,
     maxLength: 255,
   }),
@@ -27,7 +27,7 @@ export const Password = ref.schema(
   'Password',
   stringSchema({
     description: 'Пароль',
-    examples: ['Spiks123'],
+    examples: ['Password123'],
     minLength: 8,
     maxLength: 255,
   }),

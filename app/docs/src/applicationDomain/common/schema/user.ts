@@ -68,3 +68,13 @@ export const CreateUserResponseSchema = ref.schema(
     },
   }),
 );
+
+export const DeleteUserRequestSchema = ref.schema(
+  'DeleteUserRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления пользователя',
+    properties: {
+      id: UserId,
+    },
+  }),
+);

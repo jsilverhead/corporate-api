@@ -1,7 +1,8 @@
 import { commonOperation } from '../path';
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
-import { CreateUserRequestSchema, CreateUserResponseSchema } from '../schema/user';
-import { UserWithThisEmailAlreadyExistsApiProblem } from '../apiProblem/user';
+import { CreateUserRequestSchema, CreateUserResponseSchema, DeleteUserRequestSchema } from '../schema/user';
+import { UserAlreadyDeletedApiProblem, UserWithThisEmailAlreadyExistsApiProblem } from '../apiProblem/user';
+import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
 export const UserTag: Tag = {
   name: 'Пользователи',
@@ -16,4 +17,13 @@ commonOperation.post({
   requestSchema: CreateUserRequestSchema,
   responseSchema: CreateUserResponseSchema,
   errorSchemas: [UserWithThisEmailAlreadyExistsApiProblem],
+});
+
+commonOperation.post({
+  title: 'Удаление пользователя',
+  tag: UserTag,
+  isImplemented: true,
+  operationId: '/deleteUser',
+  requestSchema: DeleteUserRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, UserAlreadyDeletedApiProblem],
 });

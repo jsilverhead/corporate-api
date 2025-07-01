@@ -8,3 +8,11 @@ export const UserWithThisEmailAlreadyExistsApiProblem = ref.schema(
     type: 'user_with_this_email_already_exists',
   }),
 );
+
+export const UserAlreadyDeletedApiProblem = ref.schema(
+  'UserAlreadyDeletedApiProblem',
+  apiProblem({
+    description: 'Пользователь уже удалён',
+    type: 'user_already_deleted',
+  }),
+);

@@ -19,46 +19,32 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $createdAt;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     public ?DateTimeImmutable $deletedAt;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: CustomTypes::EMAIL, length: 255, unique: true)]
     public Email $email;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
     public Uuid $id;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::STRING, length: 255)]
     public string $name;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::STRING, length: 255)]
     public ?string $password;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::STRING, enumType: RolesEnum::class)]
     public RolesEnum $role;
 

@@ -39,7 +39,7 @@ export const UserRole = ref.schema(
     description: 'Роль пользователя',
     enumsWithDescriptions: {
       user: 'Пользователь',
-      superUser: 'Суперпользователь',
+      superuser: 'Суперпользователь',
     },
   }),
 );

@@ -11,10 +11,6 @@ use DateTimeImmutable;
 
 class DeleteUserService
 {
-    public function __construct()
-    {
-    }
-
     public function delete(User $user): void
     {
         if (null !== $user->deletedAt) {

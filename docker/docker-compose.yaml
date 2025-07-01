@@ -6,7 +6,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: postgres:14-alpine
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: spiks
       POSTGRES_PASSWORD: postgres
       POSTGRES_INITDB_ARGS: --encoding=UTF8 --lc-collate=ru_RU.UTF-8 --lc-ctype=ru_RU.UTF-8
     ports:

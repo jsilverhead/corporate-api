@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Tests\Builder\AccessTokenBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use SlopeIt\ClockMock\ClockMock;
@@ -93,7 +94,7 @@ abstract class BaseWebTestCase extends WebTestCase
             $this->kernelBrowser,
             $method,
             $url,
-            //            $this->getService(AccessTokenBuilder::class), //todo fix
+            $this->getService(AccessTokenBuilder::class),
             $this->getService(EntityManagerInterface::class),
         );
     }

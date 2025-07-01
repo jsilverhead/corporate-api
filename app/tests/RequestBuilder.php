@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-// use App\Tests\Builder\AccessTokenBuilder;
-// use App\Domain\User\User;
+use App\Domain\User\User;
+use App\Tests\Builder\AccessTokenBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,7 @@ final class RequestBuilder
         private readonly KernelBrowser $client,
         private readonly string $method,
         private readonly string $url,
-        //        private readonly AccessTokenBuilder $accessTokenBuilder,
+        private readonly AccessTokenBuilder $accessTokenBuilder,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
@@ -56,33 +56,27 @@ final class RequestBuilder
         return $this->client->getResponse();
     }
 
-    /**
-     * @psalm-param list<mixed> $data
-     *
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function withArguments(array $data): self
+    public function withAuthentication(User $user): self
     {
-        $this->content['arguments'] = $data;
+        $this->server['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->accessTokenBuilder->build($user)->accessToken;
 
         return $this;
     }
 
-    //    public function withAuthentication(User $user): self
-    //    {
-    //        $this->content['accessToken'] = $this->accessTokenBuilder->build($user)->accessToken;
-    //
-    //        return $this;
-    //    }
-
-    /**
-     * @psalm-param list<mixed> $data
-     *
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function withContent(array $data): self
+    public function withBody(array $data): self
     {
         $this->content = $data;
+        $this->server['HTTP_CONTENT-TYPE'] = 'application/json';
+
+        return $this;
+    }
+
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function withQuery(array $query): self
+    {
+        $this->query = http_build_query($query);
 
         return $this;
     }

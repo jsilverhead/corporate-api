@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "4edb62765159d1dd7e09908df9ec016a",
+  "content-hash": "c086dede8f6b69e8dfd40dbd782af3da",
   "packages": [
     {
       "name": "async-aws/core",
@@ -2926,16 +2926,16 @@
     },
     {
       "name": "spiks/user-input-processor",
-      "version": "0.10.0",
+      "version": "0.10.1",
       "source": {
         "type": "git",
         "url": "https://github.com/spiks/user-input-processor.git",
-        "reference": "71d8ca0eb79cae72513d7cb3fb9298da63164202"
+        "reference": "f81f52dc3242d2e69b8edfdea0e4d17e3b959cc0"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/spiks/user-input-processor/zipball/71d8ca0eb79cae72513d7cb3fb9298da63164202",
-        "reference": "71d8ca0eb79cae72513d7cb3fb9298da63164202",
+        "url": "https://api.github.com/repos/spiks/user-input-processor/zipball/f81f52dc3242d2e69b8edfdea0e4d17e3b959cc0",
+        "reference": "f81f52dc3242d2e69b8edfdea0e4d17e3b959cc0",
         "shasum": ""
       },
       "require": {
@@ -2983,7 +2983,7 @@
         "issues": "https://github.com/spiks/user-input-processor/issues",
         "source": "https://github.com/spiks/user-input-processor"
       },
-      "time": "2024-04-18T15:14:49+00:00"
+      "time": "2024-05-06T12:05:28+00:00"
     },
     {
       "name": "symfony/amazon-sqs-messenger",

@@ -14,15 +14,21 @@ class UserBuilder
 {
     private ?Email $email = null;
 
+    private RolesEnum $role = RolesEnum::USER;
+
     public function __construct(
         private CreateUserService $createUserService,
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    /**
-     * @psalm-suppress PossiblyUnusedReturnValue
-     */
+    public function asSuperUser(): self
+    {
+        $this->role = RolesEnum::SUPERUSER;
+
+        return $this;
+    }
+
     public function build(): User
     {
         $name = 'Олег Олегович';
@@ -32,7 +38,7 @@ class UserBuilder
             name: $name,
             email: $this->email ?? Email::tryCreateFromString(uniqid(more_entropy: true) . '@spiks.ru'),
             password: $password,
-            role: RolesEnum::USER,
+            role: $this->role,
         );
 
         $this->entityManager->flush();

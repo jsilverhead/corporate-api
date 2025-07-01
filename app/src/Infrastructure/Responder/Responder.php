@@ -137,8 +137,6 @@ readonly class Responder
     /**
      * @psalm-param non-empty-array $data
      *
-     * @psalm-suppress PossiblyUnusedMethod
-     *
      * @throws JsonException
      */
     public function success(?array $data = null): Response

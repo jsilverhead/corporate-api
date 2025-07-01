@@ -21,6 +21,7 @@ readonly class CreateUserService
 
     /**
      * @psalm-param non-empty-string $name
+     * @psalm-param non-empty-string $password
      */
     public function create(string $name, Email $email, string $password, RolesEnum $role): User
     {

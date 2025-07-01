@@ -3,7 +3,7 @@ import { commonOperation } from '../path';
 import { FileUploadUrlRequestSchema, FileUploadUrlResponseSchema } from '../schema/file';
 
 export const FileTag: Tag = {
-  name: 'File',
+  name: 'Файлы',
   description: 'Файлы.',
 };
 

@@ -4,12 +4,12 @@ import {
   CreateUserRequestSchema,
   CreateUserResponseSchema,
   DeleteUserRequestSchema,
+  ListUsersParameters,
   ListUsersResponseItemsSchema,
   UpdateUserRequestSchema,
 } from '../schema/user';
 import { UserAlreadyDeletedApiProblem, UserWithThisEmailAlreadyExistsApiProblem } from '../apiProblem/user';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
-import { PaginationParameters } from '../../../schema/pagination';
 
 export const UserTag: Tag = {
   name: 'Пользователи',
@@ -40,7 +40,7 @@ commonOperation.get({
   tag: UserTag,
   isImplemented: true,
   operationId: '/listUsers',
-  parameters: [...PaginationParameters],
+  parameters: ListUsersParameters,
   responseSchema: ListUsersResponseItemsSchema,
 });
 

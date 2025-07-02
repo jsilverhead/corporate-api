@@ -17,6 +17,9 @@ class UserBuilder
 
     private bool $isDeleted = false;
 
+    /** @psalm-var non-empty-string|null */
+    private ?string $name = null;
+
     private RolesEnum $role = RolesEnum::USER;
 
     public function __construct(
@@ -41,11 +44,10 @@ class UserBuilder
 
     public function build(): User
     {
-        $name = 'Олег Олегович';
         $password = 'Password123';
 
         $user = $this->createUserService->create(
-            name: $name,
+            name: $this->name ?? 'Олег Олегович',
             email: $this->email ?? Email::tryCreateFromString(uniqid(more_entropy: true) . '@company.ru'),
             password: $password,
             role: $this->role,
@@ -63,6 +65,16 @@ class UserBuilder
     public function withEmail(Email $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @psalm-param non-empty-string $name
+     */
+    public function withName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

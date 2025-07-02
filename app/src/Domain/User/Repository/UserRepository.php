@@ -66,15 +66,27 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @psalm-param list<string>|null $searchWords
+     *
      * @psalm-return Paginator<User>
      */
-    public function listUsers(int $count, int $offset): Paginator
+    public function listUsers(int $count, int $offset, ?array $searchWords): Paginator
     {
         $users = $this->createQueryBuilder('u')
-            ->where('u.deletedAt IS NULL')
             ->orderBy('u.createdAt', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($count);
+
+        if (null !== $searchWords) {
+            foreach ($searchWords as $index => $searchWord) {
+                $paramName = "word_{$index}";
+                $users
+                    ->orWhere('LOWER(u.name) LIKE :' . $paramName)
+                    ->setParameter($paramName, '%' . mb_strtolower($searchWord) . '%', Types::STRING);
+            }
+        }
+
+        $users->andWhere('u.deletedAt IS NULL');
 
         /**
          * @psalm-var Paginator<User> $paginator

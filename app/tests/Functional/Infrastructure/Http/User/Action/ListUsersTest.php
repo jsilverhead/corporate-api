@@ -21,12 +21,12 @@ final class ListUsersTest extends BaseWebTestCase
     public function testSuccess(): void
     {
         $userBuilder = $this->getService(UserBuilder::class);
-        $userBuilder->build();
-        $userBuilder->build();
+        $userBuilder->withName('Цейхович Олег')->build();
+        $userBuilder->withName('Никитин Олег')->build();
 
-        $superuser = $userBuilder->asSuperUser()->build();
+        $superuser = $userBuilder->asSuperUser()->withName('Нуркова Оксана')->build();
 
-        $userBuilder->asDeleted()->build();
+        $userBuilder->asDeleted()->withName('Олегов Семён')->build();
 
         $response = $this->httpRequest(method: Request::METHOD_GET, url: '/listUsers')
             ->withAuthentication($superuser)
@@ -35,10 +35,13 @@ final class ListUsersTest extends BaseWebTestCase
                     'count' => 10,
                     'offset' => 0,
                 ],
+                'filter' => [
+                    'search' => 'олег',
+                ],
             ])
             ->execute();
 
         $this->assertResponseStatusCodeSame(200);
-        $this->assertCountOfItemsInResponse(response: $response, expectedCount: 3);
+        $this->assertCountOfItemsInResponse(response: $response, expectedCount: 2);
     }
 }

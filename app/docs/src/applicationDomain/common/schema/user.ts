@@ -97,3 +97,15 @@ export const ListUsersResponseItemsSchema = collectionWithItemsAmount(
   'ListUsersResponseItemsSchema',
   ListUsersItemSchema,
 );
+
+export const UpdateUserRequestSchema = ref.schema(
+  'UpdateUserRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления пользователя',
+    properties: {
+      userId: UserId,
+      name: UserName,
+      role: UserRole,
+    },
+  }),
+);

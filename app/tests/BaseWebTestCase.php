@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
@@ -21,6 +22,21 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 abstract class BaseWebTestCase extends WebTestCase
 {
     private KernelBrowser $kernelBrowser;
+
+    protected static function assertCountOfItemsInResponse(Response $response, int $expectedCount): void
+    {
+        $items = self::getFieldFromHttpResponse($response, 'items');
+
+        if (null === $items) {
+            throw new RuntimeException('Field items int response is not an array');
+        }
+
+        if (!\is_array($items)) {
+            throw new RuntimeException('Field items int response is not an array');
+        }
+
+        self::assertCount(expectedCount: $expectedCount, haystack: $items);
+    }
 
     /**
      * @psalm-suppress PossiblyUnusedMethod
@@ -57,6 +73,23 @@ abstract class BaseWebTestCase extends WebTestCase
         $handledStamp = $handledEnvelope->last(HandledStamp::class);
 
         self::assertNotNull($handledStamp, 'Сообщение не обработано.');
+    }
+
+    protected static function getFieldFromHttpResponse(Response $response, string $fieldName): mixed
+    {
+        if (false === $response->getContent()) {
+            throw new RuntimeException('Response body is empty');
+        }
+        $content = (string) $response->getContent();
+
+        /** @psalm-var array $responseArray */
+        $responseArray = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
+
+        if (!\array_key_exists($fieldName, $responseArray)) {
+            throw new RuntimeException('Response body does not contain field ' . $fieldName . '.');
+        }
+
+        return $responseArray[$fieldName] ?? null;
     }
 
     /**

@@ -34,9 +34,6 @@ final class RequestBuilder
     ) {
     }
 
-    /**
-     * @psalm-suppress PossiblyUnusedReturnValue
-     */
     public function execute(): Response
     {
         $this->entityManager->clear();
@@ -71,9 +68,6 @@ final class RequestBuilder
         return $this;
     }
 
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
     public function withQuery(array $query): self
     {
         $this->query = http_build_query($query);

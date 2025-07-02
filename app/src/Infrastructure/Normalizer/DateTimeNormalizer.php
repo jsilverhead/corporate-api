@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Normalizer;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 
 class DateTimeNormalizer
 {
-    public function normalize(DateTimeImmutable $dateTime): string
+    public function normalize(?DateTimeInterface $dateTime): ?string
     {
-        return $dateTime->format('c');
+        return $dateTime?->format(DateTimeInterface::RFC3339);
     }
 }

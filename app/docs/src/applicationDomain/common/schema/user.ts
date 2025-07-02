@@ -3,6 +3,7 @@ import { objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { enumeration } from '../../../utils/enum';
 import { Uuid } from '../../../schema/common';
 import { collectionWithItemsAmount } from '../../../schema/collection';
+import { PaginationParameters } from '../../../schema/pagination';
 
 export const UserName = ref.schema(
   'UserName',
@@ -109,3 +110,14 @@ export const UpdateUserRequestSchema = ref.schema(
     },
   }),
 );
+
+const ListUsersSearchParam = ref.parameter('ListUsersSearchParam', {
+  in: 'query',
+  name: 'filter[search]',
+  schema: stringSchema({
+    description: 'Поисковые слова',
+    examples: ['олег'],
+  }),
+});
+
+export const ListUsersParameters = [...PaginationParameters, ListUsersSearchParam];

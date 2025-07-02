@@ -32,9 +32,13 @@ readonly class ListUsers
      */
     public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] User $user, Payload $payload): Response
     {
-        $pagination = $this->listUsersDenormalizer->denormalize($payload);
+        $dto = $this->listUsersDenormalizer->denormalize($payload);
 
-        $users = $this->userRepository->listUsers(count: $pagination->count, offset: $pagination->offset);
+        $users = $this->userRepository->listUsers(
+            count: $dto->pagination->count,
+            offset: $dto->pagination->offset,
+            searchWords: $dto->searchWords,
+        );
 
         $normalizedData = $this->listUsersNormalizer->normalize($users);
 

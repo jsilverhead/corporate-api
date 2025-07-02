@@ -2,6 +2,7 @@ import { ref } from '../../../utils/ref';
 import { objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { enumeration } from '../../../utils/enum';
 import { Uuid } from '../../../schema/common';
+import { collectionWithItemsAmount } from '../../../schema/collection';
 
 export const UserName = ref.schema(
   'UserName',
@@ -77,4 +78,22 @@ export const DeleteUserRequestSchema = ref.schema(
       id: UserId,
     },
   }),
+);
+
+const ListUsersItemSchema = ref.schema(
+  'ListUsersItemSchema',
+  objectSchema({
+    description: 'Данные пользователя',
+    properties: {
+      id: UserId,
+      name: UserName,
+      email: Email,
+      role: UserRole,
+    },
+  }),
+);
+
+export const ListUsersResponseItemsSchema = collectionWithItemsAmount(
+  'ListUsersResponseItemsSchema',
+  ListUsersItemSchema,
 );

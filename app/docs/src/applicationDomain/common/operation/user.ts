@@ -1,8 +1,14 @@
 import { commonOperation } from '../path';
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
-import { CreateUserRequestSchema, CreateUserResponseSchema, DeleteUserRequestSchema } from '../schema/user';
+import {
+  CreateUserRequestSchema,
+  CreateUserResponseSchema,
+  DeleteUserRequestSchema,
+  ListUsersResponseItemsSchema,
+} from '../schema/user';
 import { UserAlreadyDeletedApiProblem, UserWithThisEmailAlreadyExistsApiProblem } from '../apiProblem/user';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
+import { PaginationParameters } from '../../../schema/pagination';
 
 export const UserTag: Tag = {
   name: 'Пользователи',
@@ -26,4 +32,13 @@ commonOperation.post({
   operationId: '/deleteUser',
   requestSchema: DeleteUserRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem, UserAlreadyDeletedApiProblem],
+});
+
+commonOperation.get({
+  title: 'Список пользователей',
+  tag: UserTag,
+  isImplemented: true,
+  operationId: '/listUsers',
+  parameters: [...PaginationParameters],
+  responseSchema: ListUsersResponseItemsSchema,
 });

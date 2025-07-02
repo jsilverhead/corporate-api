@@ -9,6 +9,7 @@ use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\Exception\UserWithThisEmailAlreadyExistsException;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\User;
+use DateTimeImmutable;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 readonly class CreateUserService
@@ -23,15 +24,20 @@ readonly class CreateUserService
      * @psalm-param non-empty-string $name
      * @psalm-param non-empty-string $password
      */
-    public function create(string $name, Email $email, string $password, RolesEnum $role): User
-    {
+    public function create(
+        string $name,
+        Email $email,
+        string $password,
+        RolesEnum $role,
+        ?DateTimeImmutable $birthDate,
+    ): User {
         $isUserWithEmailExists = $this->userRepository->isUserWithEmailExists($email);
 
         if ($isUserWithEmailExists) {
             throw new UserWithThisEmailAlreadyExistsException();
         }
 
-        $user = new User(name: $name, email: $email, role: $role);
+        $user = new User(name: $name, email: $email, role: $role, birthDate: $birthDate);
 
         /**
          * @psalm-var non-empty-string $hashedPassword

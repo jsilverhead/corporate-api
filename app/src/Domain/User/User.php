@@ -19,6 +19,9 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    public ?DateTimeImmutable $birthDate;
+
     /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $createdAt;
@@ -51,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @psalm-param non-empty-string $name
      */
-    public function __construct(string $name, Email $email, RolesEnum $role)
+    public function __construct(string $name, Email $email, RolesEnum $role, ?DateTimeImmutable $birthDate = null)
     {
         $this->id = Uuid::v4();
         $this->createdAt = new DateTimeImmutable();
@@ -59,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->name = $name;
         $this->email = $email;
         $this->role = $role;
+        $this->birthDate = $birthDate;
 
         $this->password = null;
         $this->deletedAt = null;

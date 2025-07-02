@@ -13,6 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserBuilder
 {
+    private ?DateTimeImmutable $birthDate = null;
+
     private ?Email $email = null;
 
     private bool $isDeleted = false;
@@ -51,6 +53,7 @@ class UserBuilder
             email: $this->email ?? Email::tryCreateFromString(uniqid(more_entropy: true) . '@company.ru'),
             password: $password,
             role: $this->role,
+            birthDate: $this->birthDate,
         );
 
         if ($this->isDeleted) {
@@ -60,6 +63,13 @@ class UserBuilder
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    public function withBirthDate(DateTimeImmutable $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
     }
 
     public function withEmail(Email $email): self

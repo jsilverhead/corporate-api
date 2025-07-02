@@ -11,6 +11,8 @@ use App\Infrastructure\Denormalizer\NameDenormalizer;
 use App\Infrastructure\Denormalizer\PasswordDenormalizer;
 use App\Infrastructure\Http\Common\Dto\User\CreateUserDto;
 use App\Infrastructure\Payload\Payload;
+use DateTimeImmutable;
+use Spiks\UserInputProcessor\Denormalizer\DateTimeDenormalizer;
 use Spiks\UserInputProcessor\Denormalizer\EnumerationDenormalizer;
 use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;
 use Spiks\UserInputProcessor\ObjectField;
@@ -24,6 +26,7 @@ readonly class CreateUserDenormalizer
         private PasswordDenormalizer $passwordDenormalizer,
         private NameDenormalizer $nameDenormalizer,
         private EnumerationDenormalizer $enumerationDenormalizer,
+        private DateTimeDenormalizer $dateTimeDenormalizer,
     ) {
     }
 
@@ -34,7 +37,8 @@ readonly class CreateUserDenormalizer
          *     name: non-empty-string,
          *     email: Email,
          *     password: non-empty-string,
-         *     role: RolesEnum
+         *     role: RolesEnum,
+         *     birthDate?: DateTimeImmutable
          * } $denormalizedData
          */
         $denormalizedData = $this->objectDenormalizer->denormalize(
@@ -66,6 +70,13 @@ readonly class CreateUserDenormalizer
                         enumClassName: RolesEnum::class,
                     ),
                 ),
+                'birthDate' => new ObjectField(
+                    fn(mixed $data, Pointer $pointer): DateTimeImmutable => $this->dateTimeDenormalizer->denormalize(
+                        data: $data,
+                        pointer: $pointer,
+                    ),
+                    isNullable: true,
+                ),
             ],
         );
 
@@ -74,6 +85,7 @@ readonly class CreateUserDenormalizer
             email: $denormalizedData['email'],
             password: $denormalizedData['password'],
             role: $denormalizedData['role'],
+            birthDate: $denormalizedData['birthDate'] ?? null,
         );
     }
 }

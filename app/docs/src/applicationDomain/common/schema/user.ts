@@ -1,9 +1,10 @@
 import { ref } from '../../../utils/ref';
 import { objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { enumeration } from '../../../utils/enum';
-import { Uuid } from '../../../schema/common';
+import { Date, Uuid } from '../../../schema/common';
 import { collectionWithItemsAmount } from '../../../schema/collection';
 import { PaginationParameters } from '../../../schema/pagination';
+import { nullable } from '../../../utils/nullable';
 
 export const UserName = ref.schema(
   'UserName',
@@ -47,6 +48,8 @@ export const UserRole = ref.schema(
 );
 
 export const UserId = { ...Uuid, description: 'Идентификатор пользователя' };
+
+export const UserBirthDate = { ...Date, description: 'День рождения пользователя' };
 
 export const CreateUserRequestSchema = ref.schema(
   'CreateUserRequestSchema',
@@ -121,3 +124,24 @@ const ListUsersSearchParam = ref.parameter('ListUsersSearchParam', {
 });
 
 export const ListUsersParameters = [...PaginationParameters, ListUsersSearchParam];
+
+export const GetUserIdParameter = ref.parameter('GetUserIdParameter', {
+  in: 'query',
+  name: 'id',
+  schema: UserId,
+  required: true,
+});
+
+export const GetUserResponseSchema = ref.schema(
+  'GetUserResponseSchema',
+  objectSchema({
+    description: 'Данные пользователя',
+    properties: {
+      id: UserId,
+      name: UserName,
+      email: Email,
+      role: UserRole,
+      birthDate: nullable(UserBirthDate),
+    },
+  }),
+);

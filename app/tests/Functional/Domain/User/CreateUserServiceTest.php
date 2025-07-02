@@ -10,6 +10,7 @@ use App\Domain\User\Exception\UserWithThisEmailAlreadyExistsException;
 use App\Domain\User\Service\CreateUserService;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\UserBuilder;
+use DateTimeImmutable;
 
 /**
  * @internal
@@ -31,6 +32,7 @@ final class CreateUserServiceTest extends BaseWebTestCase
             email: $email,
             password: 'Password123',
             role: RolesEnum::USER,
+            birthDate: null,
         );
     }
 
@@ -39,6 +41,7 @@ final class CreateUserServiceTest extends BaseWebTestCase
         $name = 'Олегов Олег';
         $email = Email::tryCreateFromString('olego@company.ru');
         $password = 'Password123';
+        $birthDate = new DateTimeImmutable('2000-01-01');
         $role = RolesEnum::USER;
 
         $user = $this->getService(CreateUserService::class)->create(
@@ -46,10 +49,12 @@ final class CreateUserServiceTest extends BaseWebTestCase
             email: $email,
             password: $password,
             role: $role,
+            birthDate: $birthDate,
         );
 
         self::assertSame(expected: $name, actual: $user->name);
-        self::assertSame($email, $user->email);
-        self::assertSame($role, $user->role);
+        self::assertSame(expected: $email, actual: $user->email);
+        self::assertSame(expected: $role, actual: $user->role);
+        self::assertSame(expected: $birthDate, actual: $user->birthDate);
     }
 }

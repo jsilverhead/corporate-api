@@ -39,6 +39,7 @@ readonly class CreateUser
             email: $dto->email,
             password: $dto->password,
             role: $dto->role,
+            birthDate: $dto->birthDate,
         );
 
         $this->entityManager->flush();

@@ -4,6 +4,8 @@ import {
   CreateUserRequestSchema,
   CreateUserResponseSchema,
   DeleteUserRequestSchema,
+  GetUserIdParameter,
+  GetUserResponseSchema,
   ListUsersParameters,
   ListUsersResponseItemsSchema,
   UpdateUserRequestSchema,
@@ -50,5 +52,15 @@ commonOperation.post({
   isImplemented: true,
   operationId: '/updateUser',
   requestSchema: UpdateUserRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получить пользователя',
+  tag: UserTag,
+  isImplemented: true,
+  operationId: '/getUser',
+  parameters: [GetUserIdParameter],
+  responseSchema: GetUserResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem],
 });

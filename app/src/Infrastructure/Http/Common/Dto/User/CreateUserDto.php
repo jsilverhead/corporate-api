@@ -6,6 +6,7 @@ namespace App\Infrastructure\Http\Common\Dto\User;
 
 use App\Domain\Common\ValueObject\Email;
 use App\Domain\User\Enum\RolesEnum;
+use DateTimeImmutable;
 
 readonly class CreateUserDto
 {
@@ -18,6 +19,7 @@ readonly class CreateUserDto
         public Email $email,
         public string $password,
         public RolesEnum $role,
+        public ?DateTimeImmutable $birthDate,
     ) {
     }
 }

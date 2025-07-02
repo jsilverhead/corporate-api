@@ -23,6 +23,15 @@ export const DateTime = ref.schema(
   }),
 );
 
+export const Date = ref.schema(
+  'Date',
+  stringSchema({
+    format: 'date',
+    description: 'Дата',
+    examples: ['2001-03-19'],
+  }),
+);
+
 export const Url = ref.schema(
   'Url',
   stringSchema({

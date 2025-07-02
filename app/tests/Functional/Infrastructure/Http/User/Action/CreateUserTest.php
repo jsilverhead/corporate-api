@@ -31,6 +31,7 @@ final class CreateUserTest extends BaseWebTestCase
                 'email' => $email->email,
                 'password' => 'Password123',
                 'role' => 'user',
+                'birthDate' => null,
             ])
             ->execute();
 

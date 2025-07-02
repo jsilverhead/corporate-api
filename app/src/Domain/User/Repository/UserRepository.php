@@ -9,6 +9,7 @@ use App\Domain\Common\ValueObject\Email;
 use App\Domain\User\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -62,5 +63,24 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('email', $email->email, Types::STRING)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @psalm-return Paginator<User>
+     */
+    public function listUsers(int $count, int $offset): Paginator
+    {
+        $users = $this->createQueryBuilder('u')
+            ->where('u.deletedAt IS NULL')
+            ->orderBy('u.createdAt', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($count);
+
+        /**
+         * @psalm-var Paginator<User> $paginator
+         */
+        $paginator = new Paginator($users->getQuery());
+
+        return $paginator;
     }
 }

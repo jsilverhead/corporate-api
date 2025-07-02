@@ -29,6 +29,24 @@ class UserRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($user);
     }
 
+    public function getByEmailOrFail(Email $email): User
+    {
+        /**
+         * @psalm-var User|null $user
+         */
+        $user = $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email->email, Types::STRING)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $user) {
+            throw new EntityNotFoundException();
+        }
+
+        return $user;
+    }
+
     public function getById(Uuid $id): ?User
     {
         /**

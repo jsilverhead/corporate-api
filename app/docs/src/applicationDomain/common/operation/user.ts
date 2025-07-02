@@ -5,6 +5,7 @@ import {
   CreateUserResponseSchema,
   DeleteUserRequestSchema,
   ListUsersResponseItemsSchema,
+  UpdateUserRequestSchema,
 } from '../schema/user';
 import { UserAlreadyDeletedApiProblem, UserWithThisEmailAlreadyExistsApiProblem } from '../apiProblem/user';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
@@ -41,4 +42,13 @@ commonOperation.get({
   operationId: '/listUsers',
   parameters: [...PaginationParameters],
   responseSchema: ListUsersResponseItemsSchema,
+});
+
+commonOperation.post({
+  title: 'Обновить пользователя',
+  tag: UserTag,
+  isImplemented: true,
+  operationId: '/updateUser',
+  requestSchema: UpdateUserRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

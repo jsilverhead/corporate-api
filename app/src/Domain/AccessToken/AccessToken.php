@@ -14,7 +14,11 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity]
 class AccessToken
 {
-    /** @psalm-suppress PossiblyUnusedProperty */
+    /**
+     * @psalm-var non-empty-string $accessToken
+     *
+     * @psalm-suppress PossiblyUnusedProperty
+     */
     #[ORM\Column(type: Types::TEXT)]
     public string $accessToken;
 
@@ -35,7 +39,11 @@ class AccessToken
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $refreshExpiresAt;
 
-    /** @psalm-suppress PossiblyUnusedProperty */
+    /**
+     * @psalm-var non-empty-string $refreshToken
+     *
+     * @psalm-suppress PossiblyUnusedProperty
+     */
     #[ORM\Column(type: Types::TEXT)]
     public string $refreshToken;
 
@@ -44,6 +52,10 @@ class AccessToken
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     public User $user;
 
+    /**
+     * @psalm-param non-empty-string $accessToken
+     * @psalm-param non-empty-string $refreshToken
+     */
     public function __construct(
         User $user,
         string $accessToken,

@@ -24,6 +24,20 @@ class AccessTokenRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($accessToken);
     }
 
+    public function getByRefreshToken(string $refreshToken): ?AccessToken
+    {
+        /**
+         * @psalm-var AccessToken|null $accessToken
+         */
+        $accessToken = $this->createQueryBuilder('at')
+            ->where('at.refreshToken = :refreshToken')
+            ->setParameter('refreshToken', $refreshToken, Types::TEXT)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $accessToken;
+    }
+
     public function getWithUserByAccessToken(string $token): ?AccessToken
     {
         /**

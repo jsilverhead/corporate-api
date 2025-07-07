@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Domain\AccessToken\JwtAuthSettings;
 use App\Domain\AccessToken\Service\AccessTokenEncoder;
 use App\Domain\AccessToken\Service\CreateAccessTokenService;
+use App\Domain\AccessToken\Service\RefreshAccessTokenService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -34,6 +35,7 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
 
     $services->set(AccessTokenEncoder::class)->public();
     $services->set(CreateAccessTokenService::class)->public();
+    $services->set(RefreshAccessTokenService::class)->public();
 
     $services
         ->set(JwtAuthSettings::class)

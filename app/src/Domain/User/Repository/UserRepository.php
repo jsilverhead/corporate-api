@@ -6,6 +6,7 @@ namespace App\Domain\User\Repository;
 
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Common\ValueObject\Email;
+use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
@@ -29,7 +30,7 @@ class UserRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($user);
     }
 
-    public function getByEmailOrFail(Email $email): User
+    public function getByEmail(Email $email): ?User
     {
         /**
          * @psalm-var User|null $user
@@ -39,6 +40,13 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('email', $email->email, Types::STRING)
             ->getQuery()
             ->getOneOrNullResult();
+
+        return $user;
+    }
+
+    public function getByEmailOrFail(Email $email): User
+    {
+        $user = $this->getByEmail($email);
 
         if (null === $user) {
             throw new EntityNotFoundException();
@@ -71,6 +79,17 @@ class UserRepository extends ServiceEntityRepository
         }
 
         return $user;
+    }
+
+    public function isSuperUserExistInSystem(): bool
+    {
+        return (bool) $this->createQueryBuilder('u')
+            ->select('1')
+            ->where('u.role = :role')
+            ->setParameter('role', RolesEnum::SUPERUSER->value, Types::STRING)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function isUserWithEmailExists(Email $email): bool

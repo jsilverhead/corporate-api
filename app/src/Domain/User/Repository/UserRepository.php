@@ -84,6 +84,7 @@ class UserRepository extends ServiceEntityRepository
     public function isSuperUserExistInSystem(): bool
     {
         return (bool) $this->createQueryBuilder('u')
+            ->select('1')
             ->where('u.role = :role')
             ->setParameter('role', RolesEnum::SUPERUSER->value, Types::STRING)
             ->setMaxResults(1)

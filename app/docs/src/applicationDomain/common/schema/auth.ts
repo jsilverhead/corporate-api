@@ -52,3 +52,26 @@ export const IssueTokenByEmailAndPasswordResponseSchema = ref.schema(
     },
   }),
 );
+
+export const RefreshAccessTokenRequestSchema = ref.schema(
+  'RefreshAccessTokenRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления токена',
+    properties: {
+      refreshToken: RefreshToken,
+    },
+  }),
+);
+
+export const RefreshAccessTokenResponseSchema = ref.schema(
+  'RefreshAccessTokenResponseSchema',
+  objectSchema({
+    description: 'Данные обновлённого токена',
+    properties: {
+      accessToken: AccessToken,
+      refreshToken: RefreshToken,
+      accessTokenExpiresAt: TokenExpiresAt,
+      refreshTokenExpiresAt: TokenExpiresAt,
+    },
+  }),
+);

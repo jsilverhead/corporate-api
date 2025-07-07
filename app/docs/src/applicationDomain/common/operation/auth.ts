@@ -1,8 +1,18 @@
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { commonOperation } from '../path';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
-import { PasswordIsInvalidApiProblem } from '../apiProblem/auth';
-import { IssueTokenByEmailAndPasswordRequestSchema, IssueTokenByEmailAndPasswordResponseSchema } from '../schema/auth';
+import {
+  ExpiredJwtTokenApiProblem,
+  JwtTokenIsInvalidApiProblem,
+  PasswordIsInvalidApiProblem,
+  UnknownTokenApiProblem,
+} from '../apiProblem/auth';
+import {
+  IssueTokenByEmailAndPasswordRequestSchema,
+  IssueTokenByEmailAndPasswordResponseSchema,
+  RefreshAccessTokenRequestSchema,
+  RefreshAccessTokenResponseSchema,
+} from '../schema/auth';
 
 export const AuthTag: Tag = {
   name: 'Аутентификация',
@@ -10,11 +20,21 @@ export const AuthTag: Tag = {
 };
 
 commonOperation.post({
-  title: 'Получить accessToken по email и паролю',
+  title: 'Получить AccessToken по email и паролю',
   tag: AuthTag,
   isImplemented: true,
-  operationId: '/issueTokenByEmailAndPassword',
+  operationId: 'issueTokenByEmailAndPassword',
   requestSchema: IssueTokenByEmailAndPasswordRequestSchema,
   responseSchema: IssueTokenByEmailAndPasswordResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem, PasswordIsInvalidApiProblem],
+});
+
+commonOperation.post({
+  title: 'Обновить AccessToken',
+  tag: AuthTag,
+  isImplemented: true,
+  operationId: 'refreshToken',
+  requestSchema: RefreshAccessTokenRequestSchema,
+  responseSchema: RefreshAccessTokenResponseSchema,
+  errorSchemas: [UnknownTokenApiProblem, ExpiredJwtTokenApiProblem, JwtTokenIsInvalidApiProblem],
 });

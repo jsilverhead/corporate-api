@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\AccessToken\Service;
 
 use App\Domain\AccessToken\AccessToken;
-use App\Domain\AccessToken\Exception\ExpiredAccessTokenException;
+use App\Domain\AccessToken\Exception\ExpiredJwtTokenException;
 use App\Domain\AccessToken\Exception\JwtTokenIsInvalidException;
 use App\Domain\AccessToken\Exception\UnknownTokenException;
 use App\Domain\AccessToken\JwtAuthSettings;
@@ -45,7 +45,7 @@ readonly class RefreshAccessTokenService
                 ),
             );
         } catch (ExpiredException) {
-            throw new ExpiredAccessTokenException();
+            throw new ExpiredJwtTokenException();
         } catch (SignatureInvalidException | UnexpectedValueException) {
             throw new JwtTokenIsInvalidException();
         }

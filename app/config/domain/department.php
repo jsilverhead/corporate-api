@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Domain\Department\Service\CreateDepartmentService;
+use App\Domain\Department\Service\UpdateDepartmentService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -30,4 +31,5 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
     );
 
     $services->set(CreateDepartmentService::class)->public();
+    $services->set(UpdateDepartmentService::class)->public();
 };

@@ -1,5 +1,5 @@
 import { ref } from '../../../utils/ref';
-import { stringSchema } from '../../../utils/schemaFactory';
+import { objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { Uuid } from '../../../schema/common';
 
 export const DepartmentName = ref.schema(
@@ -13,3 +13,23 @@ export const DepartmentName = ref.schema(
 );
 
 export const DepartmentId = { ...Uuid, description: 'ID отдела' };
+
+export const CreateDepartmentRequestSchema = ref.schema(
+  'CreateDepartmentRequestSchema',
+  objectSchema({
+    description: 'Данные для создания отдела',
+    properties: {
+      name: DepartmentName,
+    },
+  }),
+);
+
+export const CreateDepartmentResponseSchema = ref.schema(
+  'CreateDepartmentResponseSchema',
+  objectSchema({
+    description: 'Данные созданного отдела',
+    properties: {
+      id: DepartmentId,
+    },
+  }),
+);

@@ -40,7 +40,7 @@ commonOperation.get({
   tag: DepartmentTag,
   title: 'Полуение списка отделов',
   isImplemented: true,
-  operationId: 'listDepartment',
+  operationId: 'listDepartments',
   parameters: ListDepartmentsParams,
   responseSchema: ListDepartmentResponseSchema,
 });

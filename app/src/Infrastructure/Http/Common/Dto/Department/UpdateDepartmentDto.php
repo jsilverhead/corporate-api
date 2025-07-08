@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Infrastructure\Http\Common\Dto\Department;
+
+use Symfony\Component\Uid\Uuid;
+
+class UpdateDepartmentDto
+{
+    /**
+     * @psalm-param non-empty-string $name
+     */
+    public function __construct(public Uuid $id, public string $name)
+    {
+    }
+}

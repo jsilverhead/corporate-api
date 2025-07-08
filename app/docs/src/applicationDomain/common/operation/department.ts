@@ -5,6 +5,8 @@ import {
   CreateDepartmentResponseSchema,
   GetDepartmentIdParam,
   GetDepartmentResponseSchema,
+  ListDepartmentResponseSchema,
+  ListDepartmentsParams,
 } from '../schema/department';
 import { DepartmentWithThisNameAlreadyExistsApiProblem } from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
@@ -32,4 +34,13 @@ commonOperation.get({
   parameters: [GetDepartmentIdParam],
   responseSchema: GetDepartmentResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.get({
+  tag: DepartmentTag,
+  title: 'Полуение списка отделов',
+  isImplemented: true,
+  operationId: 'listDepartment',
+  parameters: ListDepartmentsParams,
+  responseSchema: ListDepartmentResponseSchema,
 });

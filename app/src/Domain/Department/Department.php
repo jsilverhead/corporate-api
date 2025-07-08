@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Department;
 
 use App\Domain\User\User;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -15,6 +16,10 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity]
 class Department
 {
+    /** @psalm-suppress PossiblyUnusedProperty */
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    public ?DateTimeImmutable $deletedAt;
+
     /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\OneToMany(mappedBy: 'department', targetEntity: User::class)]
     public Collection $employees;
@@ -38,6 +43,7 @@ class Department
         $this->id = Uuid::v4();
         $this->employees = new ArrayCollection();
         $this->supervisors = new ArrayCollection();
+        $this->deletedAt = null;
 
         $this->name = $name;
     }

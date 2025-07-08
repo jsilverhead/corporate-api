@@ -21,7 +21,7 @@ class DepartmentBuilder
 
     public function build(): Department
     {
-        $department = $this->createDepartmentService->create($this->name ?? 'Департамент раздора');
+        $department = $this->createDepartmentService->create($this->name ?? uniqid('Департамент_', true));
 
         $this->entityManager->flush();
 

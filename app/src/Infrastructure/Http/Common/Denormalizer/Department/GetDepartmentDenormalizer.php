@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http\Common\Denormalizer\CreateDepartmentDenormalizer;
+namespace App\Infrastructure\Http\Common\Denormalizer\Department;
 
 use App\Infrastructure\Denormalizer\UuidDenormalizer;
 use App\Infrastructure\Payload\Payload;

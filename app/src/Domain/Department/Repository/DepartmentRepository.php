@@ -8,6 +8,7 @@ use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Department\Department;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -60,5 +61,37 @@ class DepartmentRepository extends ServiceEntityRepository
             ->setParameter('name', $name, Types::STRING)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @psalm-param list<string> $searchWords
+     *
+     * @psalm-return Paginator<Department>
+     */
+    public function listDepartments(?array $searchWords, int $count, int $offset): Paginator
+    {
+        $departments = $this->createQueryBuilder('d')
+            ->orderBy('d.name', 'DESC')
+            ->setMaxResults($count)
+            ->setFirstResult($offset);
+
+        if (null !== $searchWords) {
+            foreach ($searchWords as $index => $word) {
+                $paramName = "param_{$index}";
+
+                $departments
+                    ->orWhere('LOWER(d.name) LIKE :' . $paramName)
+                    ->setParameter($paramName, '%' . mb_strtolower($word) . '%', Types::STRING);
+            }
+        }
+
+        $departments->andWhere('d.deletedAt IS NULL');
+
+        /**
+         * @psalm-var Paginator<Department> $paginator
+         */
+        $paginator = new Paginator($departments->getQuery());
+
+        return $paginator;
     }
 }

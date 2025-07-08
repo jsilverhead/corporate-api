@@ -8,22 +8,22 @@ use App\Domain\Department\Repository\DepartmentRepository;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\User;
 use App\Infrastructure\Attribute\AllowedUserRole;
-use App\Infrastructure\Http\Common\Denormalizer\Department\GetDepartmentDenormalizer;
-use App\Infrastructure\Http\Common\Normalizer\Department\GetDepartmentNormalizer;
+use App\Infrastructure\Http\Common\Denormalizer\Department\ListDepartmentsDenormalizer;
+use App\Infrastructure\Http\Common\Normalizer\Department\ListDepartmentsNormalizer;
 use App\Infrastructure\Payload\Payload;
 use App\Infrastructure\Responder\Responder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/getDepartment', methods: [Request::METHOD_GET])]
-readonly class GetDepartment
+#[Route(path: '/listDepartments', methods: [Request::METHOD_GET])]
+readonly class ListDepartments
 {
     public function __construct(
         private Responder $responder,
-        private GetDepartmentDenormalizer $getDepartmentDenormalizer,
         private DepartmentRepository $departmentRepository,
-        private GetDepartmentNormalizer $getDepartmentNormalizer,
+        private ListDepartmentsDenormalizer $listDepartmentsDenormalizer,
+        private ListDepartmentsNormalizer $listDepartmentsNormalizer,
     ) {
     }
 
@@ -34,11 +34,15 @@ readonly class GetDepartment
         #[AllowedUserRole([RolesEnum::SUPERUSER, RolesEnum::USER])] User $user,
         Payload $payload,
     ): Response {
-        $id = $this->getDepartmentDenormalizer->denormalize($payload);
+        $dto = $this->listDepartmentsDenormalizer->denormalize($payload);
 
-        $department = $this->departmentRepository->getByIdOrFail($id);
+        $departments = $this->departmentRepository->listDepartments(
+            searchWords: $dto->searchWords,
+            count: $dto->pagination->count,
+            offset: $dto->pagination->offset,
+        );
 
-        $normalizedData = $this->getDepartmentNormalizer->normalize($department);
+        $normalizedData = $this->listDepartmentsNormalizer->normalize($departments);
 
         return $this->responder->success($normalizedData);
     }

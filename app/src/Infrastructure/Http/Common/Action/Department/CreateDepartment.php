@@ -8,7 +8,7 @@ use App\Domain\Department\Service\CreateDepartmentService;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\User;
 use App\Infrastructure\Attribute\AllowedUserRole;
-use App\Infrastructure\Http\Common\Denormalizer\CreateDepartmentDenormalizer\CreateDepartmentDenormalizer;
+use App\Infrastructure\Http\Common\Denormalizer\Department\CreateDepartmentDenormalizer;
 use App\Infrastructure\Http\Common\Normalizer\Department\CreateDepartmentNormalizer;
 use App\Infrastructure\Payload\Payload;
 use App\Infrastructure\Responder\Responder;

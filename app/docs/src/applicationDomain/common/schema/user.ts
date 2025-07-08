@@ -5,6 +5,7 @@ import { Date, Uuid } from '../../../schema/common';
 import { collectionWithItemsAmount } from '../../../schema/collection';
 import { PaginationParameters } from '../../../schema/pagination';
 import { nullable } from '../../../utils/nullable';
+import { DepartmentId, DepartmentName } from './department';
 
 export const UserName = ref.schema(
   'UserName',
@@ -60,6 +61,9 @@ export const CreateUserRequestSchema = ref.schema(
       email: Email,
       password: Password,
       role: UserRole,
+      birthDate: nullable(UserBirthDate),
+      departmentId: nullable(DepartmentId),
+      supervisingId: nullable(DepartmentId),
     },
   }),
 );
@@ -93,6 +97,7 @@ const ListUsersItemSchema = ref.schema(
       name: UserName,
       email: Email,
       role: UserRole,
+      department: DepartmentName,
     },
   }),
 );
@@ -132,6 +137,28 @@ export const GetUserIdParameter = ref.parameter('GetUserIdParameter', {
   required: true,
 });
 
+export const UserDepartment = ref.schema(
+  'UserDepartment',
+  objectSchema({
+    description: 'Информация об отделе',
+    properties: {
+      id: DepartmentId,
+      name: DepartmentName,
+    },
+  }),
+);
+
+export const UserSupervisor = ref.schema(
+  'UserSupervisor',
+  objectSchema({
+    description: 'Информация об управляемом отделе',
+    properties: {
+      id: DepartmentId,
+      name: DepartmentName,
+    },
+  }),
+);
+
 export const GetUserResponseSchema = ref.schema(
   'GetUserResponseSchema',
   objectSchema({
@@ -142,6 +169,8 @@ export const GetUserResponseSchema = ref.schema(
       email: Email,
       role: UserRole,
       birthDate: nullable(UserBirthDate),
+      department: nullable(UserDepartment),
+      supervising: nullable(UserSupervisor),
     },
   }),
 );

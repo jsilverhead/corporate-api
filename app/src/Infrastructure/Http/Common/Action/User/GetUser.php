@@ -34,7 +34,7 @@ class GetUser
     {
         $id = $this->getUserDenormalizer->denormalize($payload);
 
-        $receivedUser = $this->userRepository->getByIdOrFail($id);
+        $receivedUser = $this->userRepository->getByIdWithDepartmentOrFail($id);
 
         $normalizedData = $this->getUserNormalizer->normalize($receivedUser);
 

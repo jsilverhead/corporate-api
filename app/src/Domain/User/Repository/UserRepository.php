@@ -81,6 +81,26 @@ class UserRepository extends ServiceEntityRepository
         return $user;
     }
 
+    public function getByIdWithDepartmentOrFail(Uuid $id): User
+    {
+        /**
+         * @psalm-var User|null $user
+         */
+        $user = $this->createQueryBuilder('u')
+            ->select('u', 'd')
+            ->leftJoin('u.department', 'd')
+            ->where('u.id = :id')
+            ->setParameter('id', $id, UuidType::NAME)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $user) {
+            throw new EntityNotFoundException();
+        }
+
+        return $user;
+    }
+
     public function isSuperUserExistInSystem(): bool
     {
         return (bool) $this->createQueryBuilder('u')
@@ -110,6 +130,8 @@ class UserRepository extends ServiceEntityRepository
     public function listUsers(int $count, int $offset, ?array $searchWords): Paginator
     {
         $users = $this->createQueryBuilder('u')
+            ->select('u', 'd')
+            ->leftJoin('u.department', 'd')
             ->orderBy('u.createdAt', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($count);

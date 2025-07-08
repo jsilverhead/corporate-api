@@ -9,6 +9,7 @@ use App\Domain\User\Enum\RolesEnum;
 use App\Infrastructure\Denormalizer\EmailDenormalizer;
 use App\Infrastructure\Denormalizer\NameDenormalizer;
 use App\Infrastructure\Denormalizer\PasswordDenormalizer;
+use App\Infrastructure\Denormalizer\UuidDenormalizer;
 use App\Infrastructure\Http\Common\Dto\User\CreateUserDto;
 use App\Infrastructure\Payload\Payload;
 use DateTimeImmutable;
@@ -17,6 +18,7 @@ use Spiks\UserInputProcessor\Denormalizer\EnumerationDenormalizer;
 use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;
 use Spiks\UserInputProcessor\ObjectField;
 use Spiks\UserInputProcessor\Pointer;
+use Symfony\Component\Uid\Uuid;
 
 readonly class CreateUserDenormalizer
 {
@@ -27,6 +29,7 @@ readonly class CreateUserDenormalizer
         private NameDenormalizer $nameDenormalizer,
         private EnumerationDenormalizer $enumerationDenormalizer,
         private DateTimeDenormalizer $dateTimeDenormalizer,
+        private UuidDenormalizer $uuidDenormalizer,
     ) {
     }
 
@@ -38,7 +41,9 @@ readonly class CreateUserDenormalizer
          *     email: Email,
          *     password: non-empty-string,
          *     role: RolesEnum,
-         *     birthDate?: DateTimeImmutable
+         *     birthDate?: DateTimeImmutable,
+         *     departmentId?: Uuid,
+         *     supervisingId?: Uuid,
          * } $denormalizedData
          */
         $denormalizedData = $this->objectDenormalizer->denormalize(
@@ -77,6 +82,20 @@ readonly class CreateUserDenormalizer
                     ),
                     isNullable: true,
                 ),
+                'departmentId' => new ObjectField(
+                    fn(mixed $data, Pointer $pointer): Uuid => $this->uuidDenormalizer->denormalize(
+                        data: $data,
+                        pointer: $pointer,
+                    ),
+                    isNullable: true,
+                ),
+                'supervisingId' => new ObjectField(
+                    fn(mixed $data, Pointer $pointer): Uuid => $this->uuidDenormalizer->denormalize(
+                        data: $data,
+                        pointer: $pointer,
+                    ),
+                    isNullable: true,
+                ),
             ],
         );
 
@@ -86,6 +105,8 @@ readonly class CreateUserDenormalizer
             password: $denormalizedData['password'],
             role: $denormalizedData['role'],
             birthDate: $denormalizedData['birthDate'] ?? null,
+            departmentId: $denormalizedData['departmentId'] ?? null,
+            supervisingId: $denormalizedData['supervisingId'] ?? null,
         );
     }
 }

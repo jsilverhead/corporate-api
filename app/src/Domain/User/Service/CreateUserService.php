@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\User\Service;
 
 use App\Domain\Common\ValueObject\Email;
+use App\Domain\Department\Department;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\Exception\UserWithThisEmailAlreadyExistsException;
 use App\Domain\User\Repository\UserRepository;
@@ -30,6 +31,8 @@ readonly class CreateUserService
         string $password,
         RolesEnum $role,
         ?DateTimeImmutable $birthDate,
+        ?Department $department = null,
+        ?Department $supervising = null,
     ): User {
         $isUserWithEmailExists = $this->userRepository->isUserWithEmailExists($email);
 
@@ -37,7 +40,14 @@ readonly class CreateUserService
             throw new UserWithThisEmailAlreadyExistsException();
         }
 
-        $user = new User(name: $name, email: $email, role: $role, birthDate: $birthDate);
+        $user = new User(
+            name: $name,
+            email: $email,
+            role: $role,
+            birthDate: $birthDate,
+            department: $department,
+            supervising: $supervising,
+        );
 
         /**
          * @psalm-var non-empty-string $hashedPassword

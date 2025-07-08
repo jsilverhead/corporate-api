@@ -14,6 +14,24 @@ export const DepartmentName = ref.schema(
 
 export const DepartmentId = { ...Uuid, description: 'ID отдела' };
 
+export const GetDepartmentIdParam = ref.parameter('GetDepartmentIdParam', {
+  in: 'query',
+  name: 'id',
+  required: true,
+  schema: DepartmentId,
+});
+
+export const GetDepartmentResponseSchema = ref.schema(
+  'GetDepartmentResponseSchema',
+  objectSchema({
+    description: 'Данные отдела',
+    properties: {
+      id: DepartmentId,
+      name: DepartmentName,
+    },
+  }),
+);
+
 export const CreateDepartmentRequestSchema = ref.schema(
   'CreateDepartmentRequestSchema',
   objectSchema({

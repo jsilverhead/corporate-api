@@ -19,9 +19,6 @@ class DepartmentBuilder
     ) {
     }
 
-    /**
-     * @psalm-suppress PossiblyUnusedReturnValue
-     */
     public function build(): Department
     {
         $department = $this->createDepartmentService->create($this->name ?? 'Департамент раздора');

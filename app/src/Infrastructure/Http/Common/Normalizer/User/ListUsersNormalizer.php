@@ -27,6 +27,7 @@ class ListUsersNormalizer
                     'name' => $user->name,
                     'email' => $user->email->email,
                     'role' => $user->role->value,
+                    'department' => $user->department?->name,
                 ],
                 (array) $paginator->getIterator(),
             ),

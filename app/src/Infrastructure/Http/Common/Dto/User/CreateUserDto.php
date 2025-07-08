@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http\Common\Dto\User;
 use App\Domain\Common\ValueObject\Email;
 use App\Domain\User\Enum\RolesEnum;
 use DateTimeImmutable;
+use Symfony\Component\Uid\Uuid;
 
 readonly class CreateUserDto
 {
@@ -20,6 +21,8 @@ readonly class CreateUserDto
         public string $password,
         public RolesEnum $role,
         public ?DateTimeImmutable $birthDate,
+        public ?Uuid $departmentId,
+        public ?Uuid $supervisingId,
     ) {
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Common\Action\User;
 
+use App\Domain\Department\Repository\DepartmentRepository;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\Service\CreateUserService;
 use App\Domain\User\User;
@@ -26,6 +27,7 @@ readonly class CreateUser
         private CreateUserDenormalizer $createUserDenormalizer,
         private EntityManagerInterface $entityManager,
         private CreateUserNormalizer $createUserNormalizer,
+        private DepartmentRepository $departmentRepository,
     ) {
     }
 
@@ -34,12 +36,26 @@ readonly class CreateUser
         // TODO: Добавить MessageBusInterface + генерацию письма
         $dto = $this->createUserDenormalizer->denormalize($payload);
 
+        $department = null;
+
+        if (null !== $dto->departmentId) {
+            $department = $this->departmentRepository->getByIdOrFail($dto->departmentId);
+        }
+
+        $supervising = null;
+
+        if (null !== $dto->supervisingId) {
+            $supervising = $this->departmentRepository->getByIdOrFail($dto->supervisingId);
+        }
+
         $this->createUserService->create(
             name: $dto->name,
             email: $dto->email,
             password: $dto->password,
             role: $dto->role,
             birthDate: $dto->birthDate,
+            department: $department,
+            supervising: $supervising,
         );
 
         $this->entityManager->flush();

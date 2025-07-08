@@ -11,12 +11,14 @@ use App\Domain\User\Service\CreateUserService;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\UserBuilder;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @coversNothing
  */
+#[CoversClass(CreateUserService::class)]
 final class CreateUserServiceTest extends BaseWebTestCase
 {
     public function testEmailAlreadyExistsFail(): void

@@ -20,7 +20,7 @@ export const UserAlreadySupervisingThisDepartmentApiProblem = ref.schema(
 export const UserDoNotSupervisingThisDepartmentException = ref.schema(
   'UserDoNotSupervisingThisDepartmentException',
   apiProblem({
-    description: 'Пользователь не курирует данные отдел',
+    description: 'Пользователь не курирует данный отдел',
     type: 'user_do_not_supervising_this_department',
   }),
 );

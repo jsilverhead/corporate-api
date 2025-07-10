@@ -8,3 +8,11 @@ export const DepartmentWithThisNameAlreadyExistsApiProblem = ref.schema(
     type: 'department_with_this_name_already_exists',
   }),
 );
+
+export const UserAlreadySupervisingThisDepartmentApiProblem = ref.schema(
+  'UserAlreadySupervisingThisDepartmentApiProblem',
+  apiProblem({
+    description: 'Пользователь уже курирует данный отдел',
+    type: 'user_already_supervising_this_department',
+  }),
+);

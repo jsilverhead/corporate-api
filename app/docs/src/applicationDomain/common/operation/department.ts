@@ -1,6 +1,7 @@
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { commonOperation } from '../path';
 import {
+  AddEmployeeRequestSchema,
   AddSupervisorRequestSchema,
   CreateDepartmentRequestSchema,
   CreateDepartmentResponseSchema,
@@ -12,8 +13,9 @@ import {
 } from '../schema/department';
 import {
   DepartmentWithThisNameAlreadyExistsApiProblem,
+  UserAlreadyInTheDepartmentApiProblem,
   UserAlreadySupervisingThisDepartmentApiProblem,
-  UserDoNotSupervisingThisDepartmentException,
+  UserDoNotSupervisingThisDepartmentApiProblem,
 } from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
@@ -66,5 +68,14 @@ commonOperation.post({
   isImplemented: true,
   operationId: 'removeSupervisor',
   requestSchema: RemoveSupervisorRequestSchema,
-  errorSchemas: [EntityNotFoundApiProblem, UserDoNotSupervisingThisDepartmentException],
+  errorSchemas: [EntityNotFoundApiProblem, UserDoNotSupervisingThisDepartmentApiProblem],
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Добавление сотрудника',
+  isImplemented: true,
+  operationId: 'addEmployee',
+  requestSchema: AddEmployeeRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, UserAlreadyInTheDepartmentApiProblem],
 });

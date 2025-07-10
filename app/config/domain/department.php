@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Domain\Department\Service\AddSupervisorService;
 use App\Domain\Department\Service\CreateDepartmentService;
+use App\Domain\Department\Service\RemoveSupervisorService;
 use App\Domain\Department\Service\UpdateDepartmentService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
@@ -31,7 +32,8 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         param('kernel.project_dir')->__toString() . '/src/Domain/Department/Repository',
     );
 
-    $services->set(CreateDepartmentService::class)->public();
-    $services->set(UpdateDepartmentService::class)->public();
-    $services->set(AddSupervisorService::class)->public();
+    //    $services->set(CreateDepartmentService::class)->public();
+    //    $services->set(UpdateDepartmentService::class)->public();
+    //    $services->set(AddSupervisorService::class)->public();
+    //    $services->set(RemoveSupervisorService::class)->public();
 };

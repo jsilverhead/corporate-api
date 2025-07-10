@@ -99,3 +99,14 @@ export const AddSupervisorRequestSchema = ref.schema(
     },
   }),
 );
+
+export const RemoveSupervisorRequestSchema = ref.schema(
+  'RemoveSupervisorRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления куратора',
+    properties: {
+      departmentId: DepartmentId,
+      userId: Uuid,
+    },
+  }),
+);

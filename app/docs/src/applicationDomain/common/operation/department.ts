@@ -8,10 +8,12 @@ import {
   GetDepartmentResponseSchema,
   ListDepartmentResponseSchema,
   ListDepartmentsParams,
+  RemoveSupervisorRequestSchema,
 } from '../schema/department';
 import {
   DepartmentWithThisNameAlreadyExistsApiProblem,
   UserAlreadySupervisingThisDepartmentApiProblem,
+  UserDoNotSupervisingThisDepartmentException,
 } from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
@@ -56,4 +58,13 @@ commonOperation.post({
   operationId: 'addSupervisor',
   requestSchema: AddSupervisorRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem, UserAlreadySupervisingThisDepartmentApiProblem],
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Удаление куратора',
+  isImplemented: true,
+  operationId: 'removeSupervisor',
+  requestSchema: RemoveSupervisorRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, UserDoNotSupervisingThisDepartmentException],
 });

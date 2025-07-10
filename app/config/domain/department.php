@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domain\Department\Service\AddEmployeeService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 

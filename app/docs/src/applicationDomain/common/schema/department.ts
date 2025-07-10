@@ -110,3 +110,14 @@ export const RemoveSupervisorRequestSchema = ref.schema(
     },
   }),
 );
+
+export const AddEmployeeRequestSchema = ref.schema(
+  'AddEmployeeRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления сотрудника',
+    properties: {
+      departmentId: DepartmentId,
+      userId: Uuid,
+    },
+  }),
+);

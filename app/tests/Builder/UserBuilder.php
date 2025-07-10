@@ -16,6 +16,8 @@ class UserBuilder
 {
     private ?DateTimeImmutable $birthDate = null;
 
+    private ?Department $department = null;
+
     private ?Email $email = null;
 
     private bool $isDeleted = false;
@@ -69,6 +71,11 @@ class UserBuilder
             $this->supervising->supervisors->add($user);
         }
 
+        if (null !== $this->department) {
+            $user->department = $this->department;
+            $this->department->employees->add($user);
+        }
+
         $this->entityManager->flush();
 
         return $user;
@@ -77,6 +84,13 @@ class UserBuilder
     public function withBirthDate(DateTimeImmutable $birthDate): self
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    public function withDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

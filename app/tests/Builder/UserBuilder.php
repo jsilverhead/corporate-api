@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Builder;
 
 use App\Domain\Common\ValueObject\Email;
+use App\Domain\Department\Department;
 use App\Domain\User\Enum\RolesEnum;
 use App\Domain\User\Service\CreateUserService;
 use App\Domain\User\User;
@@ -26,6 +27,8 @@ class UserBuilder
     private ?string $password = null;
 
     private RolesEnum $role = RolesEnum::USER;
+
+    private ?Department $supervising = null;
 
     public function __construct(
         private CreateUserService $createUserService,
@@ -59,6 +62,11 @@ class UserBuilder
 
         if ($this->isDeleted) {
             $user->deletedAt = new DateTimeImmutable();
+        }
+
+        if (null !== $this->supervising) {
+            $user->supervising = $this->supervising;
+            $this->supervising->supervisors->add($user);
         }
 
         $this->entityManager->flush();
@@ -96,6 +104,13 @@ class UserBuilder
     public function withPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function withSupervising(Department $department): self
+    {
+        $this->supervising = $department;
 
         return $this;
     }

@@ -88,3 +88,14 @@ export const ListDepartmentResponseSchema = collectionWithItemsAmount(
   'ListDepartmentResponseSchema',
   ListDepartmentsItem,
 );
+
+export const AddSupervisorRequestSchema = ref.schema(
+  'AddSupervisorRequestSchema',
+  objectSchema({
+    description: 'Данные для добавления куратора',
+    properties: {
+      departmentId: DepartmentId,
+      userId: Uuid,
+    },
+  }),
+);

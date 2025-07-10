@@ -1,6 +1,7 @@
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { commonOperation } from '../path';
 import {
+  AddSupervisorRequestSchema,
   CreateDepartmentRequestSchema,
   CreateDepartmentResponseSchema,
   GetDepartmentIdParam,
@@ -8,7 +9,10 @@ import {
   ListDepartmentResponseSchema,
   ListDepartmentsParams,
 } from '../schema/department';
-import { DepartmentWithThisNameAlreadyExistsApiProblem } from '../apiProblem/department';
+import {
+  DepartmentWithThisNameAlreadyExistsApiProblem,
+  UserAlreadySupervisingThisDepartmentApiProblem,
+} from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
 export const DepartmentTag: Tag = {
@@ -43,4 +47,13 @@ commonOperation.get({
   operationId: 'listDepartments',
   parameters: ListDepartmentsParams,
   responseSchema: ListDepartmentResponseSchema,
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Добавление куратора',
+  isImplemented: true,
+  operationId: 'addSupervisor',
+  requestSchema: AddSupervisorRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, UserAlreadySupervisingThisDepartmentApiProblem],
 });

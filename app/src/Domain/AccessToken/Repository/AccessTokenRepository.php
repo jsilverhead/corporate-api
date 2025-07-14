@@ -44,8 +44,8 @@ class AccessTokenRepository extends ServiceEntityRepository
          * @psalm-var AccessToken|null $accessToken
          */
         $accessToken = $this->createQueryBuilder('at')
-            ->addSelect('u')
-            ->join('at.user', 'u')
+            ->addSelect('em')
+            ->join('at.employee', 'em')
             ->where('at.accessToken = :token')
             ->setParameter('token', $token, Types::TEXT)
             ->getQuery()

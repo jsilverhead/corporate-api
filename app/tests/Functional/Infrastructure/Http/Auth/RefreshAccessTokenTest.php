@@ -7,7 +7,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Auth;
 use App\Infrastructure\Http\Common\Action\Auth\RefreshAccessToken;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\AccessTokenBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ final class RefreshAccessTokenTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $user = $this->getService(EmployeeBuilder::class)->build();
         $accessToken = $this->getService(AccessTokenBuilder::class)->build($user);
 
         $this->httpRequest(method: Request::METHOD_POST, url: '/refreshToken')

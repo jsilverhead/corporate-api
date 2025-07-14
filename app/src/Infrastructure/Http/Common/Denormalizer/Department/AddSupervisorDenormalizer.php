@@ -24,7 +24,7 @@ class AddSupervisorDenormalizer
     {
         /**
          * @psalm-var array{
-         *     userId: Uuid,
+         *     employeeId: Uuid,
          *     departmentId: Uuid
          * } $denormalizedData
          */
@@ -32,7 +32,7 @@ class AddSupervisorDenormalizer
             data: $payload->arguments,
             pointer: Pointer::empty(),
             fieldDenormalizers: [
-                'userId' => new ObjectField(
+                'employeeId' => new ObjectField(
                     fn(mixed $data, Pointer $pointer): Uuid => $this->uuidDenormalizer->denormalize(
                         data: $data,
                         pointer: $pointer,
@@ -49,7 +49,7 @@ class AddSupervisorDenormalizer
 
         return new AddSupervisorDto(
             departmentId: $denormalizedData['departmentId'],
-            userId: $denormalizedData['userId'],
+            employeeId: $denormalizedData['employeeId'],
         );
     }
 }

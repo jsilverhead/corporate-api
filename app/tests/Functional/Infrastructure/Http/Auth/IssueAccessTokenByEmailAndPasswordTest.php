@@ -6,7 +6,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Auth;
 
 use App\Infrastructure\Http\Common\Action\Auth\IssueAccessTokenByEmailAndPassword;
 use App\Tests\BaseWebTestCase;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ final class IssueAccessTokenByEmailAndPasswordTest extends BaseWebTestCase
     public function testSuccess(): void
     {
         $password = 'Password12345';
-        $user = $this->getService(UserBuilder::class)
+        $user = $this->getService(EmployeeBuilder::class)
             ->withPassword($password)
             ->build();
 

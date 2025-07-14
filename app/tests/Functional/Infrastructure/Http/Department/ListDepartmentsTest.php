@@ -7,7 +7,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Department;
 use App\Infrastructure\Http\Common\Action\Department\ListDepartments;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\DepartmentBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,14 +21,14 @@ final class ListDepartmentsTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $employee = $this->getService(EmployeeBuilder::class)->build();
         $departmentBuilder = $this->getService(DepartmentBuilder::class);
         $departmentBuilder->build();
         $departmentBuilder->build();
         $departmentBuilder->withName('АХО')->build();
 
         $response = $this->httpRequest(method: Request::METHOD_GET, url: '/listDepartments')
-            ->withAuthentication($user)
+            ->withAuthentication($employee)
             ->withQuery([
                 'pagination' => [
                     'count' => 10,

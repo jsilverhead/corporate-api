@@ -7,7 +7,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Department;
 use App\Infrastructure\Http\Common\Action\Department\GetDepartment;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\DepartmentBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,11 +21,11 @@ final class GetDepartmentTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $employee = $this->getService(EmployeeBuilder::class)->build();
         $department = $this->getService(DepartmentBuilder::class)->build();
 
         $this->httpRequest(method: Request::METHOD_GET, url: '/getDepartment')
-            ->withAuthentication($user)
+            ->withAuthentication($employee)
             ->withQuery([
                 'id' => $department->id->toRfc4122(),
             ])

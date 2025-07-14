@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\AccessToken;
 
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +31,11 @@ class AccessToken
     public DateTimeImmutable $createdAt;
 
     /** @psalm-suppress PossiblyUnusedProperty */
+    #[ORM\ManyToOne(targetEntity: Employee::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    public Employee $employee;
+
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
     public Uuid $id;
@@ -47,17 +52,12 @@ class AccessToken
     #[ORM\Column(type: Types::TEXT)]
     public string $refreshToken;
 
-    /** @psalm-suppress PossiblyUnusedProperty */
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    public User $user;
-
     /**
      * @psalm-param non-empty-string $accessToken
      * @psalm-param non-empty-string $refreshToken
      */
     public function __construct(
-        User $user,
+        Employee $employee,
         string $accessToken,
         string $refreshToken,
         DateTimeImmutable $accessTokenExpiresAt,
@@ -66,7 +66,7 @@ class AccessToken
         $this->id = Uuid::v4();
         $this->createdAt = new DateTimeImmutable();
 
-        $this->user = $user;
+        $this->employee = $employee;
         $this->accessToken = $accessToken;
         $this->refreshToken = $refreshToken;
         $this->accessTokenExpiresAt = $accessTokenExpiresAt;

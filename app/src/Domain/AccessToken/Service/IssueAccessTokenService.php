@@ -6,7 +6,7 @@ namespace App\Domain\AccessToken\Service;
 
 use App\Domain\AccessToken\AccessToken;
 use App\Domain\AccessToken\Exception\PasswordIsInvalidException;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class IssueAccessTokenService
@@ -20,14 +20,14 @@ class IssueAccessTokenService
     /**
      * @psalm-param non-empty-string $password
      */
-    public function issue(User $user, string $password): AccessToken
+    public function issue(Employee $employee, string $password): AccessToken
     {
-        $isPasswordValid = $this->passwordHasher->isPasswordValid($user, $password);
+        $isPasswordValid = $this->passwordHasher->isPasswordValid($employee, $password);
 
         if (!$isPasswordValid) {
             throw new PasswordIsInvalidException();
         }
 
-        return $this->createAccessTokenService->create($user);
+        return $this->createAccessTokenService->create($employee);
     }
 }

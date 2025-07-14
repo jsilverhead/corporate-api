@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Attribute;
 
-use App\Domain\User\Enum\RolesEnum;
+use App\Domain\Employee\Enum\RolesEnum;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PARAMETER | Attribute::IS_REPEATABLE)]

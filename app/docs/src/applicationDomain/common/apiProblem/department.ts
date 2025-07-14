@@ -9,26 +9,34 @@ export const DepartmentWithThisNameAlreadyExistsApiProblem = ref.schema(
   }),
 );
 
-export const UserAlreadySupervisingThisDepartmentApiProblem = ref.schema(
-  'UserAlreadySupervisingThisDepartmentApiProblem',
+export const EmployeeAlreadySupervisingThisDepartmentApiProblem = ref.schema(
+  'EmployeeAlreadySupervisingThisDepartmentApiProblem',
   apiProblem({
-    description: 'Пользователь уже курирует данный отдел',
-    type: 'user_already_supervising_this_department',
+    description: 'Сотрудник уже курирует данный отдел',
+    type: 'employee_already_supervising_this_department',
   }),
 );
 
-export const UserDoNotSupervisingThisDepartmentApiProblem = ref.schema(
-  'UserDoNotSupervisingThisDepartmentApiProblem',
+export const EmployeeDoNotSupervisingThisDepartmentApiProblem = ref.schema(
+  'EmployeeDoNotSupervisingThisDepartmentApiProblem',
   apiProblem({
-    description: 'Пользователь не курирует данный отдел',
-    type: 'user_do_not_supervising_this_department',
+    description: 'Сотрудник не курирует данный отдел',
+    type: 'employee_do_not_supervise_this_department',
   }),
 );
 
-export const UserAlreadyInTheDepartmentApiProblem = ref.schema(
-  'UserAlreadyInTheDepartmentApiProblem',
+export const EmployeeAlreadyInTheDepartmentApiProblem = ref.schema(
+  'EmployeeAlreadyInTheDepartmentApiProblem',
   apiProblem({
-    description: 'Пользователь не курирует данный отдел',
-    type: 'user_do_not_supervising_this_department',
+    description: 'Сотрудник уже принадлежит данному отделу',
+    type: 'employee_already_in_the_department',
+  }),
+);
+
+export const EmployeeIsNotInTheDepartmentApiProblem = ref.schema(
+  'EmployeeIsNotInTheDepartmentApiProblem',
+  apiProblem({
+    description: 'Сотрудник не принадлежит данному отделу',
+    type: 'employee_is_not_in_the_department',
   }),
 );

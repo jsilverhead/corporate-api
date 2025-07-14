@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Common\Action\Auth;
 
 use App\Domain\AccessToken\Service\IssueAccessTokenService;
-use App\Domain\User\Repository\UserRepository;
+use App\Domain\Employee\Repository\EmployeeRepository;
 use App\Infrastructure\Http\Common\Denormalizer\Auth\IssueAccessTokenByEmailAndPasswordDenormalizer;
 use App\Infrastructure\Http\Common\Normalizer\Auth\IssueAccessTokenByEmailAndPasswordNormalizer;
 use App\Infrastructure\Payload\Payload;
@@ -19,7 +19,7 @@ readonly class IssueAccessTokenByEmailAndPassword
 {
     public function __construct(
         private Responder $responder,
-        private UserRepository $userRepository,
+        private EmployeeRepository $employeeRepository,
         private IssueAccessTokenService $issueAccessTokenService,
         private IssueAccessTokenByEmailAndPasswordDenormalizer $issueAccessTokenByEmailAndPasswordDenormalizer,
         private IssueAccessTokenByEmailAndPasswordNormalizer $issueAccessTokenByEmailAndPasswordNormalizer,
@@ -30,9 +30,8 @@ readonly class IssueAccessTokenByEmailAndPassword
     {
         $dto = $this->issueAccessTokenByEmailAndPasswordDenormalizer->denormalize($payload);
 
-        $user = $this->userRepository->getByEmailOrFail($dto->email);
-
-        $accessToken = $this->issueAccessTokenService->issue(user: $user, password: $dto->password);
+        $employee = $this->employeeRepository->getByEmailOrFail($dto->email);
+        $accessToken = $this->issueAccessTokenService->issue(employee: $employee, password: $dto->password);
 
         $normalizedData = $this->issueAccessTokenByEmailAndPasswordNormalizer->normalize($accessToken);
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use App\Tests\Builder\AccessTokenBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -53,7 +53,7 @@ final class RequestBuilder
         return $this->client->getResponse();
     }
 
-    public function withAuthentication(User $user): self
+    public function withAuthentication(Employee $user): self
     {
         $this->server['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->accessTokenBuilder->build($user)->accessToken;
 

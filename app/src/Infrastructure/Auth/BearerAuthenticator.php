@@ -80,8 +80,8 @@ class BearerAuthenticator extends AbstractAuthenticator
 
         return new SelfValidatingPassport(
             new UserBadge(
-                userIdentifier: $token->user->id->toRfc4122(),
-                userLoader: static fn(): UserInterface => $token->user,
+                userIdentifier: $token->employee->id->toRfc4122(),
+                userLoader: static fn(): UserInterface => $token->employee,
             ),
         );
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Common\Action\Department;
 
 use App\Domain\Department\Repository\DepartmentRepository;
-use App\Domain\User\Enum\RolesEnum;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
+use App\Domain\Employee\Enum\RolesEnum;
 use App\Infrastructure\Attribute\AllowedUserRole;
 use App\Infrastructure\Http\Common\Denormalizer\Department\GetDepartmentDenormalizer;
 use App\Infrastructure\Http\Common\Normalizer\Department\GetDepartmentNormalizer;
@@ -31,7 +31,7 @@ readonly class GetDepartment
      * @psalm-suppress PossiblyUnusedParam
      */
     public function __invoke(
-        #[AllowedUserRole([RolesEnum::SUPERUSER, RolesEnum::USER])] User $user,
+        #[AllowedUserRole([RolesEnum::SUPERUSER, RolesEnum::USER])] Employee $user,
         Payload $payload,
     ): Response {
         $id = $this->getDepartmentDenormalizer->denormalize($payload);

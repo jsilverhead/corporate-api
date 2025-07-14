@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use App\Infrastructure\Auth\BearerAuthenticator;
-use App\Infrastructure\Auth\UserResolver;
+use App\Infrastructure\Auth\EmployeeResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\SecurityConfig;
 
@@ -15,12 +15,12 @@ return static function (ContainerConfigurator $container, SecurityConfig $securi
     $services->set(BearerAuthenticator::class);
 
     $services
-        ->set(UserResolver::class)
+        ->set(EmployeeResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 1])
         ->autowire();
 
     $security
-        ->passwordHasher(User::class)
+        ->passwordHasher(Employee::class)
         ->algorithm('bcrypt')
         ->cost(10);
 

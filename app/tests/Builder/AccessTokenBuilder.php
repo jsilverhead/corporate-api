@@ -6,7 +6,7 @@ namespace App\Tests\Builder;
 
 use App\Domain\AccessToken\AccessToken;
 use App\Domain\AccessToken\Service\CreateAccessTokenService;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class AccessTokenBuilder
@@ -17,9 +17,9 @@ readonly class AccessTokenBuilder
     ) {
     }
 
-    public function build(User $user): AccessToken
+    public function build(Employee $employee): AccessToken
     {
-        $accessToken = $this->createAccessTokenService->create(user: $user);
+        $accessToken = $this->createAccessTokenService->create(employee: $employee);
 
         $this->entityManager->flush();
 

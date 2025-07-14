@@ -6,7 +6,7 @@ namespace App\Domain\AccessToken\Service;
 
 use App\Domain\AccessToken\AccessToken;
 use App\Domain\AccessToken\Repository\AccessTokenRepository;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 
 readonly class CreateAccessTokenService
 {
@@ -16,12 +16,12 @@ readonly class CreateAccessTokenService
     ) {
     }
 
-    public function create(User $user): AccessToken
+    public function create(Employee $employee): AccessToken
     {
-        $tokenPair = $this->accessTokenEncoder->encode($user->id);
+        $tokenPair = $this->accessTokenEncoder->encode($employee->id);
 
         $accessToken = new AccessToken(
-            user: $user,
+            employee: $employee,
             accessToken: $tokenPair->accessToken,
             refreshToken: $tokenPair->refreshToken,
             accessTokenExpiresAt: $tokenPair->accessTokenExpiresAt,

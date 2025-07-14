@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Domain\Department;
 
-use App\Domain\Department\Exception\UserAlreadyInTheDepartmentException;
+use App\Domain\Department\Exception\EmployeeAlreadyInTheDepartmentException;
 use App\Domain\Department\Service\AddEmployeeService;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\DepartmentBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -22,22 +22,22 @@ final class AddEmployeeServiceTest extends BaseWebTestCase
     public function testSuccess(): void
     {
         $department = $this->getService(DepartmentBuilder::class)->build();
-        $user = $this->getService(UserBuilder::class)->build();
+        $employee = $this->getService(EmployeeBuilder::class)->build();
 
-        $this->getService(AddEmployeeService::class)->add(employee: $user, department: $department);
+        $this->getService(AddEmployeeService::class)->add(employee: $employee, department: $department);
 
-        self::assertTrue($user->department?->id->equals($department->id));
-        self::assertTrue($department->employees->contains($user));
+        self::assertTrue($employee->department?->id->equals($department->id));
+        self::assertTrue($department->employees->contains($employee));
     }
 
     public function testUserAlreadyInDepartmentFail(): void
     {
         $department = $this->getService(DepartmentBuilder::class)->build();
-        $user = $this->getService(UserBuilder::class)
+        $employee = $this->getService(EmployeeBuilder::class)
             ->withDepartment($department)
             ->build();
 
-        $this->expectException(UserAlreadyInTheDepartmentException::class);
-        $this->getService(AddEmployeeService::class)->add(employee: $user, department: $department);
+        $this->expectException(EmployeeAlreadyInTheDepartmentException::class);
+        $this->getService(AddEmployeeService::class)->add(employee: $employee, department: $department);
     }
 }

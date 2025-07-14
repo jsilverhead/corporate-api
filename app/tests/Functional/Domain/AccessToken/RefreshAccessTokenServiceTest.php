@@ -9,7 +9,7 @@ use App\Domain\AccessToken\JwtAuthSettings;
 use App\Domain\AccessToken\Service\RefreshAccessTokenService;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\AccessTokenBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,7 +26,7 @@ final class RefreshAccessTokenServiceTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $user = $this->getService(EmployeeBuilder::class)->build();
         $now = new DateTimeImmutable();
 
         ClockMock::freeze($now->modify('-1 day'));

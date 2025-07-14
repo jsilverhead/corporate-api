@@ -19,12 +19,12 @@ class IssueAccessTokenByEmailAndPasswordNormalizer
     public function normalize(AccessToken $accessToken): array
     {
         return [
-            'userId' => $accessToken->user->id->toRfc4122(),
+            'employeeId' => $accessToken->employee->id->toRfc4122(),
             'accessToken' => $accessToken->accessToken,
             'refreshToken' => $accessToken->refreshToken,
             'accessTokenExpiresAt' => $this->dateTimeNormalizer->normalize($accessToken->accessTokenExpiresAt),
             'refreshTokenExpiresAt' => $this->dateTimeNormalizer->normalize($accessToken->accessTokenExpiresAt),
-            'role' => $accessToken->user->role->value,
+            'role' => $accessToken->employee->role->value,
         ];
     }
 }

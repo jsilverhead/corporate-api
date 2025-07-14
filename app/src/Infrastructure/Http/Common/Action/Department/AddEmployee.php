@@ -6,9 +6,9 @@ namespace App\Infrastructure\Http\Common\Action\Department;
 
 use App\Domain\Department\Repository\DepartmentRepository;
 use App\Domain\Department\Service\AddEmployeeService;
-use App\Domain\User\Enum\RolesEnum;
-use App\Domain\User\Repository\UserRepository;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
+use App\Domain\Employee\Enum\RolesEnum;
+use App\Domain\Employee\Repository\EmployeeRepository;
 use App\Infrastructure\Attribute\AllowedUserRole;
 use App\Infrastructure\Http\Common\Denormalizer\Department\AddEmployeeDenormalizer;
 use App\Infrastructure\Payload\Payload;
@@ -27,20 +27,20 @@ readonly class AddEmployee
         private AddEmployeeService $addEmployeeService,
         private EntityManagerInterface $entityManager,
         private DepartmentRepository $departmentRepository,
-        private UserRepository $userRepository,
+        private EmployeeRepository $employeeRepository,
     ) {
     }
 
     /**
      * @psalm-suppress PossiblyUnusedParam
      */
-    public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] User $user, Payload $payload): Response
+    public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] Employee $user, Payload $payload): Response
     {
         $dto = $this->addEmployeeDenormalizer->denormalize($payload);
-        $user = $this->userRepository->getByIdOrFail($dto->userId);
+        $employee = $this->employeeRepository->getByIdOrFail($dto->employeeId);
         $department = $this->departmentRepository->getByIdOrFail($dto->departmentId);
 
-        $this->addEmployeeService->add(employee: $user, department: $department);
+        $this->addEmployeeService->add(employee: $employee, department: $department);
 
         $this->entityManager->flush();
 

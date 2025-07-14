@@ -7,7 +7,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Department;
 use App\Infrastructure\Http\Common\Action\Department\UpdateDepartment;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\DepartmentBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ final class UpdateDepartmentTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $superuser = $this->getService(UserBuilder::class)
+        $superuser = $this->getService(EmployeeBuilder::class)
             ->asSuperUser()
             ->build();
         $department = $this->getService(DepartmentBuilder::class)->build();

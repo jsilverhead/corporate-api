@@ -6,10 +6,10 @@ namespace App\Infrastructure\Console\Superuser;
 
 use App\Domain\Common\Exception\EmailIsInvalidException;
 use App\Domain\Common\ValueObject\Email;
-use App\Domain\User\Enum\RolesEnum;
-use App\Domain\User\Exception\UserWithThisEmailAlreadyExistsException;
-use App\Domain\User\Repository\UserRepository;
-use App\Domain\User\Service\CreateUserService;
+use App\Domain\Employee\Enum\RolesEnum;
+use App\Domain\Employee\Exception\EmployeeWithThisEmailAlreadyExistsException;
+use App\Domain\Employee\Repository\EmployeeRepository;
+use App\Domain\Employee\Service\CreateEmployeeService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateSuperUserCommand extends Command
 {
     public function __construct(
-        private CreateUserService $createUserService,
+        private CreateEmployeeService $createUserService,
         private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository,
+        private EmployeeRepository $employeeRepository,
     ) {
         parent::__construct();
     }
@@ -37,7 +37,7 @@ class CreateSuperUserCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $isSuperUserExistInSystem = $this->userRepository->isSuperUserExistInSystem();
+        $isSuperUserExistInSystem = $this->employeeRepository->isSuperuserExistInSystem();
 
         if ($isSuperUserExistInSystem) {
             $output->writeln('Superuser already exists in system.');
@@ -70,7 +70,7 @@ class CreateSuperUserCommand extends Command
                 role: RolesEnum::SUPERUSER,
                 birthDate: new DateTimeImmutable(),
             );
-        } catch (UserWithThisEmailAlreadyExistsException) {
+        } catch (EmployeeWithThisEmailAlreadyExistsException) {
             $output->writeln('<error>Email already exists</error>');
 
             return Command::FAILURE;

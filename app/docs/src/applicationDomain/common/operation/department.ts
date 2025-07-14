@@ -9,13 +9,15 @@ import {
   GetDepartmentResponseSchema,
   ListDepartmentResponseSchema,
   ListDepartmentsParams,
+  RemoveEmployeeRequestSchema,
   RemoveSupervisorRequestSchema,
 } from '../schema/department';
 import {
   DepartmentWithThisNameAlreadyExistsApiProblem,
-  UserAlreadyInTheDepartmentApiProblem,
-  UserAlreadySupervisingThisDepartmentApiProblem,
-  UserDoNotSupervisingThisDepartmentApiProblem,
+  EmployeeAlreadyInTheDepartmentApiProblem,
+  EmployeeIsNotInTheDepartmentApiProblem,
+  EmployeeAlreadySupervisingThisDepartmentApiProblem,
+  EmployeeDoNotSupervisingThisDepartmentApiProblem,
 } from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
@@ -59,7 +61,7 @@ commonOperation.post({
   isImplemented: true,
   operationId: 'addSupervisor',
   requestSchema: AddSupervisorRequestSchema,
-  errorSchemas: [EntityNotFoundApiProblem, UserAlreadySupervisingThisDepartmentApiProblem],
+  errorSchemas: [EntityNotFoundApiProblem, EmployeeAlreadySupervisingThisDepartmentApiProblem],
 });
 
 commonOperation.post({
@@ -68,7 +70,7 @@ commonOperation.post({
   isImplemented: true,
   operationId: 'removeSupervisor',
   requestSchema: RemoveSupervisorRequestSchema,
-  errorSchemas: [EntityNotFoundApiProblem, UserDoNotSupervisingThisDepartmentApiProblem],
+  errorSchemas: [EntityNotFoundApiProblem, EmployeeDoNotSupervisingThisDepartmentApiProblem],
 });
 
 commonOperation.post({
@@ -77,5 +79,14 @@ commonOperation.post({
   isImplemented: true,
   operationId: 'addEmployee',
   requestSchema: AddEmployeeRequestSchema,
-  errorSchemas: [EntityNotFoundApiProblem, UserAlreadyInTheDepartmentApiProblem],
+  errorSchemas: [EntityNotFoundApiProblem, EmployeeAlreadyInTheDepartmentApiProblem],
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Удаление сотрудника',
+  isImplemented: true,
+  operationId: 'removeEmployee',
+  requestSchema: RemoveEmployeeRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, EmployeeIsNotInTheDepartmentApiProblem],
 });

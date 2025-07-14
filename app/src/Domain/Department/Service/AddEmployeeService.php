@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Domain\Department\Service;
 
 use App\Domain\Department\Department;
-use App\Domain\Department\Exception\UserAlreadyInTheDepartmentException;
-use App\Domain\User\User;
+use App\Domain\Department\Exception\EmployeeAlreadyInTheDepartmentException;
+use App\Domain\Employee\Employee;
 
 class AddEmployeeService
 {
-    public function add(User $employee, Department $department): void
+    public function add(Employee $employee, Department $department): void
     {
         if ($employee->department?->id->equals($department->id)) {
-            throw new UserAlreadyInTheDepartmentException();
+            throw new EmployeeAlreadyInTheDepartmentException();
         }
 
         $department->employees->add($employee);

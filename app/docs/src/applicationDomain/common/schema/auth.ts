@@ -1,7 +1,7 @@
 import { ref } from '../../../utils/ref';
 import { objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { DateTime } from '../../../schema/common';
-import { Email, Password, UserId, UserRole } from './user';
+import { Email, Password, EmployeeId, EmployeeRole } from './employee';
 
 export const AccessToken = ref.schema(
   'AccessToken',
@@ -43,12 +43,12 @@ export const IssueTokenByEmailAndPasswordResponseSchema = ref.schema(
   objectSchema({
     description: 'Пара токенов и время их жизни',
     properties: {
-      userId: UserId,
+      employeeId: EmployeeId,
       accessToken: AccessToken,
       refreshToken: RefreshToken,
       accessTokenExpiresAt: TokenExpiresAt,
       refreshTokenExpiresAt: TokenExpiresAt,
-      role: UserRole,
+      role: EmployeeRole,
     },
   }),
 );

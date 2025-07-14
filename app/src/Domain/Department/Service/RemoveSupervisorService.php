@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Domain\Department\Service;
 
 use App\Domain\Department\Department;
-use App\Domain\Department\Exception\UserDoNotSupervisingThisDepartmentException;
-use App\Domain\User\User;
+use App\Domain\Department\Exception\EmployeeDoNotSuperviseThisDepartmentException;
+use App\Domain\Employee\Employee;
 
 class RemoveSupervisorService
 {
-    public function remove(Department $department, User $supervisor): void
+    public function remove(Department $department, Employee $supervisor): void
     {
         if (!$supervisor->supervising?->id->equals($department->id)) {
-            throw new UserDoNotSupervisingThisDepartmentException();
+            throw new EmployeeDoNotSuperviseThisDepartmentException();
         }
 
         $department->supervisors->removeElement($supervisor);

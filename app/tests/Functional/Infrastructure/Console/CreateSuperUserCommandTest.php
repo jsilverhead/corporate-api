@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Infrastructure\Console;
 
 use App\Domain\Common\ValueObject\Email;
-use App\Domain\User\Enum\RolesEnum;
-use App\Domain\User\Repository\UserRepository;
+use App\Domain\Employee\Enum\RolesEnum;
+use App\Domain\Employee\Repository\EmployeeRepository;
 use App\Infrastructure\Console\Superuser\CreateSuperUserCommand;
 use App\Tests\BaseWebTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -41,7 +41,7 @@ final class CreateSuperUserCommandTest extends BaseWebTestCase
         $commandTester->assertCommandIsSuccessful();
 
         $userEmail = Email::tryCreateFromString($email);
-        $user = $this->getService(UserRepository::class)->getByEmail($userEmail);
+        $user = $this->getService(EmployeeRepository::class)->getByEmail($userEmail);
 
         self::assertNotNull($user);
         self::assertTrue(RolesEnum::SUPERUSER === $user->role);

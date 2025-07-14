@@ -6,7 +6,7 @@ namespace App\Tests\Functional\Infrastructure\Http\Department;
 
 use App\Infrastructure\Http\Common\Action\Department\CreateDepartment;
 use App\Tests\BaseWebTestCase;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +20,7 @@ final class CreateDepartmentTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $superuser = $this->getService(UserBuilder::class)
+        $superuser = $this->getService(EmployeeBuilder::class)
             ->asSuperUser()
             ->build();
 

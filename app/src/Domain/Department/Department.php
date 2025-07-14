@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Department;
 
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +21,7 @@ class Department
     public ?DateTimeImmutable $deletedAt;
 
     /** @psalm-suppress PossiblyUnusedProperty */
-    #[ORM\OneToMany(mappedBy: 'department', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'department', targetEntity: Employee::class)]
     public Collection $employees;
 
     #[ORM\Id]
@@ -32,7 +32,7 @@ class Department
     public string $name;
 
     /** @psalm-suppress PossiblyUnusedProperty */
-    #[ORM\OneToMany(mappedBy: 'supervising', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'supervising', targetEntity: Employee::class)]
     public Collection $supervisors;
 
     /**

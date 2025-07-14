@@ -8,7 +8,7 @@ use Symfony\Component\Uid\Uuid;
 
 class AddSupervisorDto
 {
-    public function __construct(public Uuid $departmentId, public Uuid $userId)
+    public function __construct(public Uuid $departmentId, public Uuid $employeeId)
     {
     }
 }

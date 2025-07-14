@@ -8,7 +8,7 @@ use Symfony\Component\Uid\Uuid;
 
 class RemoveSupervisorDto
 {
-    public function __construct(public Uuid $userId, public Uuid $departmentId)
+    public function __construct(public Uuid $employee, public Uuid $departmentId)
     {
     }
 }

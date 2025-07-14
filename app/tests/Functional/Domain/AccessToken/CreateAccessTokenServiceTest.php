@@ -9,7 +9,7 @@ use App\Domain\AccessToken\Repository\AccessTokenRepository;
 use App\Domain\AccessToken\Service\AccessTokenEncoder;
 use App\Domain\AccessToken\Service\CreateAccessTokenService;
 use App\Tests\BaseWebTestCase;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -22,7 +22,7 @@ final class CreateAccessTokenServiceTest extends BaseWebTestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $employee = $this->getService(EmployeeBuilder::class)->build();
 
         $secret = 'corporateSecret';
         $algorithm = 'HS256';
@@ -43,7 +43,7 @@ final class CreateAccessTokenServiceTest extends BaseWebTestCase
             accessTokenRepository: $this->getService(AccessTokenRepository::class),
         );
 
-        $accessToken = $service->create($user);
+        $accessToken = $service->create($employee);
 
         $decodedAccessToken = JWT::decode(
             jwt: $accessToken->accessToken,
@@ -52,6 +52,6 @@ final class CreateAccessTokenServiceTest extends BaseWebTestCase
 
         $userId = $decodedAccessToken->userId;
 
-        self::assertSame(expected: $user->id->toRfc4122(), actual: $userId);
+        self::assertSame(expected: $employee->id->toRfc4122(), actual: $userId);
     }
 }

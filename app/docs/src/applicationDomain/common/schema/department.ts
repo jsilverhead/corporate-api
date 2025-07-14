@@ -95,7 +95,7 @@ export const AddSupervisorRequestSchema = ref.schema(
     description: 'Данные для добавления куратора',
     properties: {
       departmentId: DepartmentId,
-      userId: Uuid,
+      employeeId: Uuid,
     },
   }),
 );
@@ -106,7 +106,7 @@ export const RemoveSupervisorRequestSchema = ref.schema(
     description: 'Данные для удаления куратора',
     properties: {
       departmentId: DepartmentId,
-      userId: Uuid,
+      employeeId: Uuid,
     },
   }),
 );
@@ -114,10 +114,21 @@ export const RemoveSupervisorRequestSchema = ref.schema(
 export const AddEmployeeRequestSchema = ref.schema(
   'AddEmployeeRequestSchema',
   objectSchema({
+    description: 'Данные для добавления сотрудника',
+    properties: {
+      departmentId: DepartmentId,
+      employeeId: Uuid,
+    },
+  }),
+);
+
+export const RemoveEmployeeRequestSchema = ref.schema(
+  'RemoveEmployeeRequestSchema',
+  objectSchema({
     description: 'Данные для удаления сотрудника',
     properties: {
       departmentId: DepartmentId,
-      userId: Uuid,
+      employeeId: Uuid,
     },
   }),
 );

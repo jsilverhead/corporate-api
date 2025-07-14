@@ -8,13 +8,13 @@ use App\Domain\AccessToken\Exception\ExpiredAccessTokenException;
 use App\Domain\AccessToken\Exception\UnknownTokenException;
 use App\Domain\AccessToken\JwtAuthSettings;
 use App\Domain\Common\Exception\Jwt\JwtTokenIsInvalidException;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
 use App\Infrastructure\Auth\BearerAuthenticator;
 use App\Infrastructure\Auth\Exception\AuthorizationHeaderMissingException;
 use App\Infrastructure\Payload\Exception\InvalidAuthorizationHeaderException;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\AccessTokenBuilder;
-use App\Tests\Builder\UserBuilder;
+use App\Tests\Builder\EmployeeBuilder;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -57,7 +57,7 @@ final class BearerAuthenticatorTest extends BaseWebTestCase
 
     public function testExpiredAccessTokenFail(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $user = $this->getService(EmployeeBuilder::class)->build();
 
         ClockMock::freeze(new DateTimeImmutable('-1 month'));
         $accessToken = $this->getService(AccessTokenBuilder::class)->build($user);
@@ -91,14 +91,14 @@ final class BearerAuthenticatorTest extends BaseWebTestCase
 
     public function testSuccess(): void
     {
-        $user = $this->getService(UserBuilder::class)->build();
+        $user = $this->getService(EmployeeBuilder::class)->build();
         $accessToken = $this->getService(AccessTokenBuilder::class)->build($user);
 
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $accessToken->accessToken]);
 
         $passport = $this->getService(BearerAuthenticator::class)->authenticate($request);
 
-        self::assertInstanceOf(expected: User::class, actual: $passport->getUser());
+        self::assertInstanceOf(expected: Employee::class, actual: $passport->getUser());
         self::assertSame(expected: $user->id->toRfc4122(), actual: $passport->getUser()->getUserIdentifier());
     }
 

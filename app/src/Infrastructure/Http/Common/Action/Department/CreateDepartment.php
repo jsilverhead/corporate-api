@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Common\Action\Department;
 
 use App\Domain\Department\Service\CreateDepartmentService;
-use App\Domain\User\Enum\RolesEnum;
-use App\Domain\User\User;
+use App\Domain\Employee\Employee;
+use App\Domain\Employee\Enum\RolesEnum;
 use App\Infrastructure\Attribute\AllowedUserRole;
 use App\Infrastructure\Http\Common\Denormalizer\Department\CreateDepartmentDenormalizer;
 use App\Infrastructure\Http\Common\Normalizer\Department\CreateDepartmentNormalizer;
@@ -32,7 +32,7 @@ readonly class CreateDepartment
     /**
      * @psalm-suppress PossiblyUnusedParam
      */
-    public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] User $user, Payload $payload): Response
+    public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] Employee $user, Payload $payload): Response
     {
         $name = $this->createDepartmentDenormalizer->denormalize($payload);
 

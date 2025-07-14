@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Common\Denormalizer\Department;
 
 use App\Infrastructure\Denormalizer\UuidDenormalizer;
-use App\Infrastructure\Http\Common\Dto\Department\AddSupervisorDto;
+use App\Infrastructure\Http\Common\Dto\Department\AddEmployeeDto;
 use App\Infrastructure\Payload\Payload;
 use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;
 use Spiks\UserInputProcessor\ObjectField;
@@ -20,11 +20,11 @@ class AddEmployeeDenormalizer
     ) {
     }
 
-    public function denormalize(Payload $payload): AddSupervisorDto
+    public function denormalize(Payload $payload): AddEmployeeDto
     {
         /**
          * @psalm-var array{
-         *     userId: Uuid,
+         *     employeeId: Uuid,
          *     departmentId: Uuid
          * } $denormalizedData
          */
@@ -32,7 +32,7 @@ class AddEmployeeDenormalizer
             data: $payload->arguments,
             pointer: Pointer::empty(),
             fieldDenormalizers: [
-                'userId' => new ObjectField(
+                'employeeId' => new ObjectField(
                     fn(mixed $data, Pointer $pointer): Uuid => $this->uuidDenormalizer->denormalize(
                         data: $data,
                         pointer: $pointer,
@@ -47,9 +47,9 @@ class AddEmployeeDenormalizer
             ],
         );
 
-        return new AddSupervisorDto(
+        return new AddEmployeeDto(
             departmentId: $denormalizedData['departmentId'],
-            userId: $denormalizedData['userId'],
+            employeeId: $denormalizedData['employeeId'],
         );
     }
 }

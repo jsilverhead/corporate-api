@@ -11,6 +11,7 @@ import {
   ListDepartmentsParams,
   RemoveEmployeeRequestSchema,
   RemoveSupervisorRequestSchema,
+  UpdateDepartmentRequestSchema,
 } from '../schema/department';
 import {
   DepartmentWithThisNameAlreadyExistsApiProblem,
@@ -44,6 +45,15 @@ commonOperation.get({
   parameters: [GetDepartmentIdParam],
   responseSchema: GetDepartmentResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Обновление отдела',
+  isImplemented: true,
+  operationId: 'updateDepartment',
+  requestSchema: UpdateDepartmentRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, DepartmentWithThisNameAlreadyExistsApiProblem],
 });
 
 commonOperation.get({

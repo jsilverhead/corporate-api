@@ -132,3 +132,14 @@ export const RemoveEmployeeRequestSchema = ref.schema(
     },
   }),
 );
+
+export const UpdateDepartmentRequestSchema = ref.schema(
+  'UpdateDepartmentRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления отдела',
+    properties: {
+      id: DepartmentId,
+      name: DepartmentName,
+    },
+  }),
+);

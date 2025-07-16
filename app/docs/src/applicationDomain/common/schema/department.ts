@@ -143,3 +143,13 @@ export const UpdateDepartmentRequestSchema = ref.schema(
     },
   }),
 );
+
+export const DeleteDepartmentRequestSchema = ref.schema(
+  'DeleteDepartmentRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления отдела',
+    properties: {
+      id: DepartmentId,
+    },
+  }),
+);

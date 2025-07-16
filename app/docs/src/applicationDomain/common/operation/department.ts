@@ -5,6 +5,7 @@ import {
   AddSupervisorRequestSchema,
   CreateDepartmentRequestSchema,
   CreateDepartmentResponseSchema,
+  DeleteDepartmentRequestSchema,
   GetDepartmentIdParam,
   GetDepartmentResponseSchema,
   ListDepartmentResponseSchema,
@@ -19,6 +20,7 @@ import {
   EmployeeIsNotInTheDepartmentApiProblem,
   EmployeeAlreadySupervisingThisDepartmentApiProblem,
   EmployeeDoNotSupervisingThisDepartmentApiProblem,
+  DepartmentAlreadyDeletedApiProblem,
 } from '../apiProblem/department';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 
@@ -54,6 +56,15 @@ commonOperation.post({
   operationId: 'updateDepartment',
   requestSchema: UpdateDepartmentRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem, DepartmentWithThisNameAlreadyExistsApiProblem],
+});
+
+commonOperation.post({
+  tag: DepartmentTag,
+  title: 'Удаление отдела',
+  isImplemented: true,
+  operationId: 'deleteDepartment',
+  requestSchema: DeleteDepartmentRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, DepartmentAlreadyDeletedApiProblem],
 });
 
 commonOperation.get({

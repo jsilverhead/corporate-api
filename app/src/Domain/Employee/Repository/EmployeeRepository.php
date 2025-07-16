@@ -6,6 +6,7 @@ namespace App\Domain\Employee\Repository;
 
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Common\ValueObject\Email;
+use App\Domain\Department\Department;
 use App\Domain\Employee\Employee;
 use App\Domain\Employee\Enum\RolesEnum;
 use Doctrine\DBAL\Types\Types;
@@ -28,6 +29,27 @@ class EmployeeRepository extends ServiceEntityRepository
     public function add(Employee $employee): void
     {
         $this->getEntityManager()->persist($employee);
+    }
+
+    public function eraseDepartmentAndSupervising(Department $department): void
+    {
+        $this->createQueryBuilder('e')
+            ->update()
+            ->set('e.department', ':null')
+            ->setParameter('null', null)
+            ->where('e.department = :id')
+            ->setParameter('id', $department->id, UuidType::NAME)
+            ->getQuery()
+            ->execute();
+
+        $this->createQueryBuilder('e')
+            ->update()
+            ->set('e.supervising', ':null')
+            ->setParameter('null', null)
+            ->where('e.supervising = :id')
+            ->setParameter('id', $department->id, UuidType::NAME)
+            ->getQuery()
+            ->execute();
     }
 
     public function getByEmail(Email $email): ?Employee

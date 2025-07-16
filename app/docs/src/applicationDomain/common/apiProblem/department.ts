@@ -40,3 +40,11 @@ export const EmployeeIsNotInTheDepartmentApiProblem = ref.schema(
     type: 'employee_is_not_in_the_department',
   }),
 );
+
+export const DepartmentAlreadyDeletedApiProblem = ref.schema(
+  'DepartmentAlreadyDeletedApiProblem',
+  apiProblem({
+    description: 'Отдел уже удалён',
+    type: 'department_already_deleted',
+  }),
+);

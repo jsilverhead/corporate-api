@@ -8,6 +8,7 @@ use App\Domain\Common\Enum\CustomTypes;
 use App\Domain\Common\ValueObject\Email;
 use App\Domain\Department\Department;
 use App\Domain\Employee\Enum\RolesEnum;
+use App\Domain\Survey\Survey;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,6 +61,10 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     public ?Department $supervising;
 
+    #[ORM\OneToOne(inversedBy: 'employee', targetEntity: Survey::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    public ?Survey $survey;
+
     /**
      * @psalm-param non-empty-string $name
      */
@@ -81,6 +86,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->department = $department;
         $this->supervising = $supervising;
 
+        $this->survey = null;
         $this->password = null;
         $this->deletedAt = null;
     }

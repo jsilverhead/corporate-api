@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Common\Denormalizer\Survey;
 
+use App\Infrastructure\Denormalizer\QuestionsDenormalizer;
 use App\Infrastructure\Payload\Payload;
-use Spiks\UserInputProcessor\Denormalizer\ArrayDenormalizer;
 use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;
-use Spiks\UserInputProcessor\Denormalizer\StringDenormalizer;
 use Spiks\UserInputProcessor\ObjectField;
 use Spiks\UserInputProcessor\Pointer;
 
@@ -15,8 +14,7 @@ class CreateSurveyTemplateDenormalizer
 {
     public function __construct(
         private ObjectDenormalizer $objectDenormalizer,
-        private ArrayDenormalizer $arrayDenormalizer,
-        private StringDenormalizer $stringDenormalizer,
+        private QuestionsDenormalizer $questionsDenormalizer,
     ) {
     }
 
@@ -35,20 +33,9 @@ class CreateSurveyTemplateDenormalizer
             pointer: Pointer::empty(),
             fieldDenormalizers: [
                 'questions' => new ObjectField(
-                    fn(mixed $data, Pointer $pointer): array => $this->arrayDenormalizer->denormalize(
+                    fn(mixed $data, Pointer $pointer): array => $this->questionsDenormalizer->denormalize(
                         data: $data,
                         pointer: $pointer,
-                        denormalizer: fn(
-                            mixed $data,
-                            Pointer $pointer,
-                        ): string => $this->stringDenormalizer->denormalize(
-                            data: $data,
-                            pointer: $pointer,
-                            minLength: 1,
-                            maxLength: 255,
-                        ),
-                        minItems: 1,
-                        maxItems: 30,
                     ),
                 ),
             ],

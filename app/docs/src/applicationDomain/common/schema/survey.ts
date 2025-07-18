@@ -1,8 +1,11 @@
 import { ref } from '../../../utils/ref';
 import { arraySchema, objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { Uuid } from '../../../schema/common';
+import { EmployeeId } from './employee';
 
 export const SurveyTemplateId = { ...Uuid, description: 'ID шаблона анкеты' };
+
+export const SurveyId = { ...Uuid, description: 'ID анкеты' };
 
 const CreateSurveyTemplateQuestion = ref.schema(
   'CreateSurveyTemplateQuestion',
@@ -35,11 +38,32 @@ export const CreateSurveyTemplateRequestSchema = ref.schema(
 );
 
 export const CreateSurveyTemplateResponseSchema = ref.schema(
-  '',
+  'CreateSurveyTemplateResponseSchema',
   objectSchema({
     description: 'Данные созданного шаблона анкеты',
     properties: {
       id: SurveyTemplateId,
+    },
+  }),
+);
+
+export const CreateSurveyRequestSchema = ref.schema(
+  'CreateSurveyRequestSchema',
+  objectSchema({
+    description: 'Данные для создания анкеты',
+    properties: {
+      employeeId: EmployeeId,
+      templateId: SurveyTemplateId,
+    },
+  }),
+);
+
+export const CreateSurveyResponseSchema = ref.schema(
+  'CreateSurveyResponseSchema',
+  objectSchema({
+    description: 'Данные созданной анкеты',
+    properties: {
+      id: SurveyId,
     },
   }),
 );

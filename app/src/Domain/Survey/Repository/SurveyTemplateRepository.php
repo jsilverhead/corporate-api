@@ -7,6 +7,7 @@ namespace App\Domain\Survey\Repository;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Survey\SurveyTemplate;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -49,5 +50,25 @@ class SurveyTemplateRepository extends ServiceEntityRepository
         }
 
         return $template;
+    }
+
+    /**
+     * @psalm-return Paginator<SurveyTemplate>
+     */
+    public function listSurveyTemplates(int $count, int $offset): Paginator
+    {
+        $templates = $this->createQueryBuilder('t')
+            ->orderBy('t.createdAt', 'DESC')
+            ->where('t.deletedAt IS NULL')
+            ->setFirstResult($offset)
+            ->setMaxResults($count)
+            ->getQuery();
+
+        /**
+         * @psalm-var Paginator<SurveyTemplate> $paginator
+         */
+        $paginator = new Paginator($templates);
+
+        return $paginator;
     }
 }

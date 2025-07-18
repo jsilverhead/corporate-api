@@ -29,6 +29,7 @@ final class CreateSurveyTemplateTest extends BaseWebTestCase
         $this->httpRequest(method: Request::METHOD_POST, url: '/createSurveyTemplate')
             ->withAuthentication($superuser)
             ->withBody([
+                'name' => 'Стандартный',
                 'questions' => $questions,
             ])
             ->execute();

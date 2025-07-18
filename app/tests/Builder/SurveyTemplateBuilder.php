@@ -10,6 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SurveyTemplateBuilder
 {
+    /** @psalm-var non-empty-string|null $name */
+    private ?string $name = null;
+
     /** @psalm-var list<non-empty-string> $questions */
     private array $questions = [];
 
@@ -25,7 +28,10 @@ class SurveyTemplateBuilder
             $this->questions[] = 'Какие ваши самые значимые достижения на предыдущем месте работы?';
         }
 
-        $surveyTemplate = $this->createSurveyTemplateService->create($this->questions);
+        $surveyTemplate = $this->createSurveyTemplateService->create(
+            questions: $this->questions,
+            name: $this->name ?? 'Для руководителей',
+        );
 
         $this->entityManager->flush();
 

@@ -17,10 +17,11 @@ readonly class CreateSurveyTemplateService
 
     /**
      * @psalm-param list<non-empty-string> $questions
+     * @psalm-param non-empty-string $name
      */
-    public function create(array $questions): SurveyTemplate
+    public function create(array $questions, string $name): SurveyTemplate
     {
-        $surveyTemplate = new SurveyTemplate();
+        $surveyTemplate = new SurveyTemplate($name);
 
         foreach ($questions as $question) {
             $templateQuestion = $this->createQuestionService->create(question: $question);

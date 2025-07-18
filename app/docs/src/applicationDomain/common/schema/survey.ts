@@ -2,10 +2,21 @@ import { ref } from '../../../utils/ref';
 import { arraySchema, objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { Uuid } from '../../../schema/common';
 import { EmployeeId } from './employee';
+import { collectionWithItemsAmount } from '../../../schema/collection';
 
 export const SurveyTemplateId = { ...Uuid, description: 'ID шаблона анкеты' };
 
 export const SurveyId = { ...Uuid, description: 'ID анкеты' };
+
+export const SurveyTemplateName = ref.schema(
+  'SurveyTemplateName',
+  stringSchema({
+    description: 'Название шаблона анкеты',
+    examples: ['Новая 1'],
+    minLength: 1,
+    maxLength: 255,
+  }),
+);
 
 const CreateSurveyTemplateQuestion = ref.schema(
   'CreateSurveyTemplateQuestion',
@@ -32,6 +43,7 @@ export const CreateSurveyTemplateRequestSchema = ref.schema(
   objectSchema({
     description: 'Вопросы для создания шаблона',
     properties: {
+      name: SurveyTemplateName,
       questions: CreateSurveyTemplateQuestionsArray,
     },
   }),
@@ -66,4 +78,19 @@ export const CreateSurveyResponseSchema = ref.schema(
       id: SurveyId,
     },
   }),
+);
+const ListSurveyTemplatesResponseItemSchema = ref.schema(
+  'ListSurveyTemplatesResponseItemSchema',
+  objectSchema({
+    description: 'Данные о шаблоне',
+    properties: {
+      id: SurveyTemplateId,
+      name: SurveyTemplateName,
+    },
+  }),
+);
+
+export const ListSurveyTemplatesResponseSchema = collectionWithItemsAmount(
+  'ListSurveyTemplatesResponseSchema',
+  ListSurveyTemplatesResponseItemSchema,
 );

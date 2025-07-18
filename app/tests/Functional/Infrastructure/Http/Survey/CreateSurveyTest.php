@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Infrastructure\Http\Survey;
 
-use App\Infrastructure\Http\Common\Action\Survey\CreateSurveyTemplate;
+use App\Infrastructure\Http\Common\Action\Survey\CreateSurvey;
 use App\Tests\BaseWebTestCase;
 use App\Tests\Builder\EmployeeBuilder;
 use App\Tests\Builder\SurveyTemplateBuilder;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @coversNothing
  */
-#[CoversClass(CreateSurveyTemplate::class)]
+#[CoversClass(CreateSurvey::class)]
 final class CreateSurveyTest extends BaseWebTestCase
 {
     public function testSuccess(): void

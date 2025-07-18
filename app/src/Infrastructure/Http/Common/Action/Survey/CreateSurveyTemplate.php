@@ -34,9 +34,9 @@ readonly class CreateSurveyTemplate
      */
     public function __invoke(#[AllowedUserRole([RolesEnum::SUPERUSER])] Employee $superuser, Payload $payload): Response
     {
-        $questions = $this->createSurveyTemplateDenormalizer->denormalize($payload);
+        $dto = $this->createSurveyTemplateDenormalizer->denormalize($payload);
 
-        $template = $this->createSurveyTemplateService->create($questions);
+        $template = $this->createSurveyTemplateService->create(questions: $dto->questions, name: $dto->name);
 
         $this->entityManager->flush();
 

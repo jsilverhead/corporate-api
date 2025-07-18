@@ -5,9 +5,11 @@ import {
   CreateSurveyResponseSchema,
   CreateSurveyTemplateRequestSchema,
   CreateSurveyTemplateResponseSchema,
+  ListSurveyTemplatesResponseSchema,
 } from '../schema/survey';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 import { EmployeeAlreadyHasASurveyApiProblem } from '../apiProblem/survey';
+import { PaginationParameters } from '../../../schema/pagination';
 
 export const SurveyTag: Tag = {
   name: 'Анкеты',
@@ -31,4 +33,13 @@ commonOperation.post({
   requestSchema: CreateSurveyRequestSchema,
   responseSchema: CreateSurveyResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem, EmployeeAlreadyHasASurveyApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получение списка шаблонов анкет',
+  tag: SurveyTag,
+  isImplemented: true,
+  operationId: 'listSurveyTemplates',
+  parameters: [...PaginationParameters],
+  responseSchema: ListSurveyTemplatesResponseSchema,
 });

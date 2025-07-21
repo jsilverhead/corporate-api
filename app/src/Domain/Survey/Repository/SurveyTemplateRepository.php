@@ -41,9 +41,31 @@ class SurveyTemplateRepository extends ServiceEntityRepository
         return $template;
     }
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function getByIdOrFail(Uuid $id): SurveyTemplate
     {
         $template = $this->getById($id);
+
+        if (null === $template) {
+            throw new EntityNotFoundException();
+        }
+
+        return $template;
+    }
+
+    public function getByIdWithoutDeletedOrFail(Uuid $id): SurveyTemplate
+    {
+        /**
+         * @psalm-var SurveyTemplate|null $template
+         */
+        $template = $this->createQueryBuilder('t')
+            ->where('t.id = :id')
+            ->setParameter('id', $id, UuidType::NAME)
+            ->andWhere('t.deletedAt IS NULL')
+            ->getQuery()
+            ->getOneOrNullResult();
 
         if (null === $template) {
             throw new EntityNotFoundException();

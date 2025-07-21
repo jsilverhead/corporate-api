@@ -28,9 +28,5 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         param('kernel.project_dir')->__toString() . '/src/Domain/Survey/Repository',
     );
 
-    $services->set(App\Domain\Survey\Service\CreateSurveyAnswerService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateSurveyService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateQuestionService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateSurveyTemplateService::class)->public();
     $services->set(App\Domain\Survey\Service\ApplySurveyService::class)->public();
 };

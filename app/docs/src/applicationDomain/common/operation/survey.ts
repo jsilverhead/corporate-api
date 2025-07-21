@@ -5,6 +5,7 @@ import {
   CreateSurveyResponseSchema,
   CreateSurveyTemplateRequestSchema,
   CreateSurveyTemplateResponseSchema,
+  DeleteSurveyTemplateRequestSchema,
   ListSurveyTemplatesResponseSchema,
 } from '../schema/survey';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
@@ -42,4 +43,13 @@ commonOperation.get({
   operationId: 'listSurveyTemplates',
   parameters: [...PaginationParameters],
   responseSchema: ListSurveyTemplatesResponseSchema,
+});
+
+commonOperation.post({
+  title: 'Удаление шаблона анкеты',
+  tag: SurveyTag,
+  isImplemented: true,
+  operationId: 'deleteSurveyTemplate',
+  requestSchema: DeleteSurveyTemplateRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

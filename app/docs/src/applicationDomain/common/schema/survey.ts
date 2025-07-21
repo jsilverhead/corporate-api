@@ -94,3 +94,13 @@ export const ListSurveyTemplatesResponseSchema = collectionWithItemsAmount(
   'ListSurveyTemplatesResponseSchema',
   ListSurveyTemplatesResponseItemSchema,
 );
+
+export const DeleteSurveyTemplateRequestSchema = ref.schema(
+  'DeleteSurveyTemplateRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления шаблона анкеты',
+    properties: {
+      id: SurveyTemplateId,
+    },
+  }),
+);

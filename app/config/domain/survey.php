@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domain\Survey\Service\DeleteSurveyTemplateService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -33,4 +34,5 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
     $services->set(App\Domain\Survey\Service\CreateQuestionService::class)->public();
     $services->set(App\Domain\Survey\Service\CreateSurveyTemplateService::class)->public();
     $services->set(App\Domain\Survey\Service\ApplySurveyService::class)->public();
+    $services->set(DeleteSurveyTemplateService::class)->public();
 };

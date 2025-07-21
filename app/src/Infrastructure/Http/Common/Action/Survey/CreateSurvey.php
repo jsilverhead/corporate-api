@@ -40,7 +40,7 @@ readonly class CreateSurvey
     {
         $dto = $this->createSurveyDenormalizer->denormalize($payload);
         $employee = $this->employeeRepository->getByIdOrFail($dto->employeeId);
-        $template = $this->surveyTemplateRepository->getByIdOrFail($dto->templateId);
+        $template = $this->surveyTemplateRepository->getByIdWithoutDeletedOrFail($dto->templateId);
 
         $survey = $this->createSurveyService->create(employee: $employee, template: $template);
 

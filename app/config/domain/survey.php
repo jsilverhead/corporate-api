@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Domain\Survey\Service\DeleteSurveyTemplateService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -29,10 +28,5 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         param('kernel.project_dir')->__toString() . '/src/Domain/Survey/Repository',
     );
 
-    $services->set(App\Domain\Survey\Service\CreateSurveyAnswerService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateSurveyService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateQuestionService::class)->public();
-    $services->set(App\Domain\Survey\Service\CreateSurveyTemplateService::class)->public();
     $services->set(App\Domain\Survey\Service\ApplySurveyService::class)->public();
-    $services->set(DeleteSurveyTemplateService::class)->public();
 };

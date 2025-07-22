@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Department\Repository;
 
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Department\Department;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -47,7 +48,7 @@ class DepartmentRepository extends ServiceEntityRepository
         $department = $this->getById($id);
 
         if (null === $department) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::DEPARTMENT);
         }
 
         return $department;

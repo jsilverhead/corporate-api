@@ -1,6 +1,7 @@
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { commonOperation } from '../path';
 import {
+  ApplySurveyRequestSchema,
   CreateSurveyRequestSchema,
   CreateSurveyResponseSchema,
   CreateSurveyTemplateRequestSchema,
@@ -8,7 +9,7 @@ import {
   DeleteSurveyTemplateRequestSchema,
   ListSurveyTemplatesResponseSchema,
 } from '../schema/survey';
-import { EntityNotFoundApiProblem } from '../apiProblem/common';
+import { EntitiesNotFoundByIdsApiProblem, EntityNotFoundApiProblem } from '../apiProblem/common';
 import { EmployeeAlreadyHasASurveyApiProblem } from '../apiProblem/survey';
 import { PaginationParameters } from '../../../schema/pagination';
 
@@ -52,4 +53,13 @@ commonOperation.post({
   operationId: 'deleteSurveyTemplate',
   requestSchema: DeleteSurveyTemplateRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.post({
+  title: 'Завершить анкету',
+  tag: SurveyTag,
+  isImplemented: true,
+  operationId: 'applySurvey',
+  requestSchema: ApplySurveyRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, EntitiesNotFoundByIdsApiProblem],
 });

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Survey\Service;
 
-use App\Domain\Survey\Dto\AnswerDataDto;
+use App\Domain\Survey\Dto\QuestionWithAnswerDto;
 use App\Domain\Survey\Exception\AnswersCountIsNotEqualQuestionsCountException;
-use App\Domain\Survey\Exception\SurveyIsAlreadyCompletedException;
 use App\Domain\Survey\Survey;
 
 readonly class ApplySurveyService
@@ -16,19 +15,15 @@ readonly class ApplySurveyService
     }
 
     /**
-     * @psalm-param list<AnswerDataDto> $answerData
+     * @psalm-param list<QuestionWithAnswerDto> $questionsWithAnswer
      */
-    public function apply(Survey $survey, array $answerData): void
+    public function apply(Survey $survey, array $questionsWithAnswer): void
     {
-        if ($survey->isCompleted) {
-            throw new SurveyIsAlreadyCompletedException();
-        }
-
-        if (\count($answerData) !== $survey->template->questions->count()) {
+        if (\count($questionsWithAnswer) !== $survey->template->questions->count()) {
             throw new AnswersCountIsNotEqualQuestionsCountException();
         }
 
-        foreach ($answerData as $data) {
+        foreach ($questionsWithAnswer as $data) {
             $this->createSurveyAnswerService->create(survey: $survey, question: $data->question, answer: $data->answer);
         }
 

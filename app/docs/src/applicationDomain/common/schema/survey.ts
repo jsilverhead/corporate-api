@@ -104,3 +104,48 @@ export const DeleteSurveyTemplateRequestSchema = ref.schema(
     },
   }),
 );
+
+export const QuestionsId = { ...Uuid, description: 'ID вопроса' };
+
+const QuestionAnswer = ref.schema(
+  'QuestionAnswer',
+  stringSchema({
+    description: 'Текст ответа',
+    examples: ['Какой-то ответ'],
+    minLength: 1,
+    maxLength: 255,
+  }),
+);
+
+const ApplySurveyAnswerData = ref.schema(
+  'ApplySurveyAnswerData',
+  objectSchema({
+    description: 'ID вопроса с текстом ответа',
+    properties: {
+      questionId: QuestionsId,
+      answer: QuestionAnswer,
+    },
+  }),
+);
+
+const ApplySurveyAnswers = ref.schema(
+  'ApplySurveyAnswers',
+  arraySchema({
+    description: 'Массив ответов на вопросы',
+    items: ApplySurveyAnswerData,
+    uniqueItems: true,
+    minItems: 1,
+    maxItems: 30,
+  }),
+);
+
+export const ApplySurveyRequestSchema = ref.schema(
+  'ApplySurveyRequestSchema',
+  objectSchema({
+    description: 'Данные для завершения анкеты',
+    properties: {
+      surveyId: SurveyId,
+      answers: ApplySurveyAnswers,
+    },
+  }),
+);

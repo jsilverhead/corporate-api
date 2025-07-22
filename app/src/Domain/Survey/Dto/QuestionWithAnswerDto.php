@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Survey\Dto;
 
-use Symfony\Component\Uid\Uuid;
+use App\Domain\Survey\Question;
 
-class AnswerDataDto
+class QuestionWithAnswerDto
 {
     /**
      * @psalm-param non-empty-string $answer
      */
-    public function __construct(public Uuid $questionId, public string $answer)
+    public function __construct(public Question $question, public string $answer)
     {
     }
 }

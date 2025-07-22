@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Survey\Repository;
 
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Survey\SurveyTemplate;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -49,7 +50,7 @@ class SurveyTemplateRepository extends ServiceEntityRepository
         $template = $this->getById($id);
 
         if (null === $template) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::SURVEY_TEMPLATE);
         }
 
         return $template;
@@ -68,7 +69,7 @@ class SurveyTemplateRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
 
         if (null === $template) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::SURVEY_TEMPLATE);
         }
 
         return $template;

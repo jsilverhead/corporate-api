@@ -8,3 +8,11 @@ export const EntityNotFoundApiProblem = ref.schema(
     type: 'entity_not_found',
   }),
 );
+
+export const EntitiesNotFoundByIdsApiProblem = ref.schema(
+  'EntitiesNotFoundByIdsApiProblem',
+  apiProblem({
+    description: 'Сущности не найдены',
+    type: 'entities_not_found_by_ids',
+  }),
+);

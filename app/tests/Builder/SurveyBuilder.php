@@ -22,6 +22,13 @@ class SurveyBuilder
     ) {
     }
 
+    public function asCompleted(): self
+    {
+        $this->completedSurvey = true;
+
+        return $this;
+    }
+
     public function build(?Employee $employee = null, ?SurveyTemplate $surveyTemplate = null): Survey
     {
         if (null === $surveyTemplate) {

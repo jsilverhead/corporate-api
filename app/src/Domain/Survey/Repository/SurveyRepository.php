@@ -8,7 +8,9 @@ use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
 use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Employee\Employee;
+use App\Domain\Survey\Enum\StatusEnum;
 use App\Domain\Survey\Survey;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -47,5 +49,33 @@ class SurveyRepository extends ServiceEntityRepository
         }
 
         return $survey;
+    }
+
+    /**
+     * @psalm-return Paginator<Survey>
+     */
+    public function listSurveys(int $count, int $offset, StatusEnum $status): Paginator
+    {
+        $surveys = $this->createQueryBuilder('srv')
+            ->select('srv', 'e')
+            ->join('srv.employee', 'e')
+            ->orderBy('srv.createdAt', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($count);
+
+        if (StatusEnum::COMPLETED === $status) {
+            $surveys->andWhere('srv.isCompleted = TRUE');
+        }
+
+        if (StatusEnum::INCOMPLETE === $status) {
+            $surveys->andWhere('srv.isCompleted = FALSE');
+        }
+
+        /**
+         * @psalm-var Paginator<Survey> $paginator
+         */
+        $paginator = new Paginator($surveys->getQuery());
+
+        return $paginator;
     }
 }

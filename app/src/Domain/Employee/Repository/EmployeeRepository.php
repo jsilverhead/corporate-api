@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Employee\Repository;
 
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
+use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Common\ValueObject\Email;
 use App\Domain\Department\Department;
 use App\Domain\Employee\Employee;
 use App\Domain\Employee\Enum\RolesEnum;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -71,7 +72,7 @@ class EmployeeRepository extends ServiceEntityRepository
         $employee = $this->getByEmail($email);
 
         if (null === $employee) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::EMPLOYEE);
         }
 
         return $employee;
@@ -95,9 +96,8 @@ class EmployeeRepository extends ServiceEntityRepository
     {
         $employee = $this->getById($id);
 
-        // TODO: посмотреть что с хэндлером
         if (null === $employee) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::EMPLOYEE);
         }
 
         return $employee;
@@ -117,7 +117,7 @@ class EmployeeRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
 
         if (null === $employee) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(EntityNotFoundEnum::EMPLOYEE);
         }
 
         return $employee;

@@ -209,7 +209,7 @@ export const ListSurveyResponseSchema = collectionWithItemsAmount('ListSurveyRes
 
 export const GetSurveyIdParameter = ref.parameter('GetSurveyIdParameter', {
   in: 'query',
-  name: 'ID анкеты',
+  name: 'id',
   schema: SurveyId,
   required: true,
 });

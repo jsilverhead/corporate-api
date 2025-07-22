@@ -7,7 +7,7 @@ namespace App\Infrastructure\Http\Common\Dto\Survey;
 use App\Domain\Common\ValueObject\Pagination;
 use App\Domain\Survey\Enum\StatusEnum;
 
-class ListSurveysDto
+readonly class ListSurveysDto
 {
     public function __construct(public Pagination $pagination, public StatusEnum $status)
     {

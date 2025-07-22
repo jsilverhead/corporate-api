@@ -7,7 +7,7 @@ namespace App\Infrastructure\Http\Common\Dto\Survey;
 use App\Domain\Survey\Dto\AnswerDataDto;
 use Symfony\Component\Uid\Uuid;
 
-class ApplySurveyDto
+readonly class ApplySurveyDto
 {
     /**
      * @psalm-param list<AnswerDataDto> $answerData

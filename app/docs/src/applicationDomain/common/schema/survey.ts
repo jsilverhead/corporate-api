@@ -5,10 +5,12 @@ import { EmployeeId, EmployeeName } from './employee';
 import { collectionWithItemsAmount } from '../../../schema/collection';
 import { enumeration } from '../../../utils/enum';
 import { PaginationParameters } from '../../../schema/pagination';
+import { nullable } from '../../../utils/nullable';
 
 export const SurveyTemplateId = { ...Uuid, description: 'ID шаблона анкеты' };
 
 export const SurveyId = { ...Uuid, description: 'ID анкеты' };
+export const SurveyAnswerId = { ...Uuid, description: 'ID ответа на анкету' };
 
 export const SurveyTemplateName = ref.schema(
   'SurveyTemplateName',
@@ -204,3 +206,55 @@ const ListSurveysStatusParameter = ref.parameter('ListSurveysStatusParameter', {
 export const ListSurveysParameters = [...PaginationParameters, ListSurveysStatusParameter];
 
 export const ListSurveyResponseSchema = collectionWithItemsAmount('ListSurveyResponseSchema', ListSurveyResponseItem);
+
+export const GetSurveyIdParameter = ref.parameter('GetSurveyIdParameter', {
+  in: 'query',
+  name: 'id',
+  schema: SurveyId,
+  required: true,
+});
+
+const Question = ref.schema(
+  'Question',
+  stringSchema({
+    description: 'Вопрос в виде строки',
+    examples: ['Есть ли у вас какие-то достижения на предыдущем местер работы?'],
+    minLength: 1,
+    maxLength: 255,
+  }),
+);
+
+const GetSurveyAnswerItem = ref.schema(
+  'GetSurveyAnswerItem',
+  objectSchema({
+    description: 'Данные о вопросе и ответе',
+    properties: {
+      answerId: SurveyAnswerId,
+      question: Question,
+      answer: QuestionAnswer,
+    },
+  }),
+);
+
+const GetSurveyAnswers = ref.schema(
+  'GetSurveyAnswers',
+  arraySchema({
+    description: 'Вопросы и ответы на вопросы анкеты',
+    items: GetSurveyAnswerItem,
+    uniqueItems: true,
+    minItems: 1,
+    maxItems: 30,
+  }),
+);
+
+export const GetSurveyResponseSchema = ref.schema(
+  'GetSurveyResponseSchema',
+  objectSchema({
+    description: 'Данные анкеты',
+    properties: {
+      id: SurveyId,
+      isCompleted: SurveyIsCompleted,
+      answers: nullable(GetSurveyAnswers),
+    },
+  }),
+);

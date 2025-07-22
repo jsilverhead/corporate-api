@@ -6,7 +6,7 @@ namespace App\Infrastructure\Http\Common\Dto\Department;
 
 use Symfony\Component\Uid\Uuid;
 
-class RemoveSupervisorDto
+readonly class RemoveSupervisorDto
 {
     public function __construct(public Uuid $employee, public Uuid $departmentId)
     {

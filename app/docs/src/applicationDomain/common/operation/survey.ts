@@ -7,6 +7,8 @@ import {
   CreateSurveyTemplateRequestSchema,
   CreateSurveyTemplateResponseSchema,
   DeleteSurveyTemplateRequestSchema,
+  GetSurveyIdParameter,
+  GetSurveyResponseSchema,
   ListSurveyResponseSchema,
   ListSurveysParameters,
   ListSurveyTemplatesResponseSchema,
@@ -73,4 +75,14 @@ commonOperation.get({
   operationId: 'listSurveys',
   parameters: ListSurveysParameters,
   responseSchema: ListSurveyResponseSchema,
+});
+
+commonOperation.get({
+  title: 'Получить анкету',
+  tag: SurveyTag,
+  isImplemented: true,
+  operationId: 'getSurvey',
+  parameters: [GetSurveyIdParameter],
+  responseSchema: GetSurveyResponseSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

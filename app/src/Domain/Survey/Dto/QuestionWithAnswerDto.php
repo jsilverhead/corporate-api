@@ -6,7 +6,7 @@ namespace App\Domain\Survey\Dto;
 
 use App\Domain\Survey\Question;
 
-class QuestionWithAnswerDto
+readonly class QuestionWithAnswerDto
 {
     /**
      * @psalm-param non-empty-string $answer

@@ -51,6 +51,27 @@ class SurveyRepository extends ServiceEntityRepository
         return $survey;
     }
 
+    public function getByIdWithQuestionsAndAnswersOrFail(Uuid $id): Survey
+    {
+        /**
+         * @psalm-var Survey|null $survey
+         */
+        $survey = $this->createQueryBuilder('srv')
+            ->select('srv', 'a', 'q')
+            ->leftJoin('srv.answers', 'a')
+            ->join('a.question', 'q')
+            ->where('srv.id = :id')
+            ->setParameter('id', $id, UuidType::NAME)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $survey) {
+            throw new EntityNotFoundException(EntityNotFoundEnum::SURVEY);
+        }
+
+        return $survey;
+    }
+
     /**
      * @psalm-return Paginator<Survey>
      */

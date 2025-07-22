@@ -6,7 +6,7 @@ namespace App\Infrastructure\Http\Common\Dto\Department;
 
 use Symfony\Component\Uid\Uuid;
 
-class AddEmployeeDto
+readonly class AddEmployeeDto
 {
     public function __construct(public Uuid $departmentId, public Uuid $employeeId)
     {

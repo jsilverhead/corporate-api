@@ -6,7 +6,7 @@ namespace App\Infrastructure\Http\Common\Dto\Department;
 
 use App\Domain\Common\ValueObject\Pagination;
 
-class ListDepartmentsDto
+readonly class ListDepartmentsDto
 {
     /**
      * @psalm-param list<string>|null $searchWords

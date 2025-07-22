@@ -6,7 +6,7 @@ namespace App\Domain\Survey\Dto;
 
 use Symfony\Component\Uid\Uuid;
 
-class AnswerDataDto
+readonly class AnswerDataDto
 {
     /**
      * @psalm-param non-empty-string $answer

@@ -7,6 +7,8 @@ import {
   CreateSurveyTemplateRequestSchema,
   CreateSurveyTemplateResponseSchema,
   DeleteSurveyTemplateRequestSchema,
+  ListSurveyResponseSchema,
+  ListSurveysParameters,
   ListSurveyTemplatesResponseSchema,
 } from '../schema/survey';
 import { EntitiesNotFoundByIdsApiProblem, EntityNotFoundApiProblem } from '../apiProblem/common';
@@ -62,4 +64,13 @@ commonOperation.post({
   operationId: 'applySurvey',
   requestSchema: ApplySurveyRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem, EntitiesNotFoundByIdsApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получить список анкет',
+  tag: SurveyTag,
+  isImplemented: true,
+  operationId: 'listSurveys',
+  parameters: ListSurveysParameters,
+  responseSchema: ListSurveyResponseSchema,
 });

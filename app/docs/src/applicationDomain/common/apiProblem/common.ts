@@ -16,3 +16,11 @@ export const EntitiesNotFoundByIdsApiProblem = ref.schema(
     type: 'entities_not_found_by_ids',
   }),
 );
+
+export const ToDateCannotBeLessThanFromDateApiProblem = ref.schema(
+  'ToDateCannotBeLessThanFromDateApiProblem',
+  apiProblem({
+    description: 'Дата окончания не может быть меньше даты старта',
+    type: 'from_date_cannot_be_less_than_to_date',
+  }),
+);

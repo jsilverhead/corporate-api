@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Domain\Vacation\Service\CreateVacationService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -28,6 +27,4 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         'App\\Domain\\Vacation\\Repository\\',
         param('kernel.project_dir')->__toString() . '/src/Domain/Vacation/Repository',
     );
-
-    $services->set(CreateVacationService::class)->public();
 };

@@ -14,40 +14,28 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity]
 class Vacation
 {
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $createdAt;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\ManyToOne(targetEntity: Employee::class, inversedBy: 'vacations')]
     public Employee $employee;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $fromDate;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
     public Uuid $id;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::BOOLEAN)]
     public bool $isApproved;
 
-    /**
-     * @psalm-suppress PossiblyUnusedProperty
-     */
+    /** @psalm-suppress PossiblyUnusedProperty */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     public DateTimeImmutable $toDate;
 

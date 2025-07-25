@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace App\Domain\Vacation\Service;
 
 use App\Domain\Common\ValueObject\Period;
-use App\Domain\Employee\Employee;
 use App\Domain\Vacation\Exception\AnotherVacationExistsInsideTheChosenPeriodException;
+use App\Domain\Vacation\Exception\CanNotUpdateApprovedVacationException;
 use App\Domain\Vacation\Exception\FromDateCanNotBeInThePastException;
 use App\Domain\Vacation\Repository\VacationRepository;
 use App\Domain\Vacation\Vacation;
 use DateTimeImmutable;
 
-readonly class CreateVacationService
+class UpdateVacationService
 {
     public function __construct(private VacationRepository $vacationRepository)
     {
     }
 
-    public function create(Employee $employee, Period $period): Vacation
+    public function update(Vacation $vacation, Period $period): void
     {
+        if ($vacation->isApproved) {
+            throw new CanNotUpdateApprovedVacationException();
+        }
+
         $now = new DateTimeImmutable();
 
         if ($period->fromDate < $now) {
@@ -27,18 +31,15 @@ readonly class CreateVacationService
         }
 
         $vacationWithCrossedPeriod = $this->vacationRepository->getVacationWithPeriodCrossingCurrentPeriod(
-            employee: $employee,
+            employee: $vacation->employee,
             period: $period,
         );
 
-        if (null !== $vacationWithCrossedPeriod) {
+        if (null !== $vacationWithCrossedPeriod && !$vacationWithCrossedPeriod->id->equals($vacation->id)) {
             throw new AnotherVacationExistsInsideTheChosenPeriodException();
         }
 
-        $vacation = new Vacation(employee: $employee, fromDate: $period->fromDate, toDate: $period->toDate);
-
-        $this->vacationRepository->add($vacation);
-
-        return $vacation;
+        $vacation->fromDate = $period->fromDate;
+        $vacation->toDate = $period->toDate;
     }
 }

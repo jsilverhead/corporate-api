@@ -34,3 +34,14 @@ export const CreateVacationResponseSchema = ref.schema(
     },
   }),
 );
+
+export const UpdateVacationRequestSchema = ref.schema(
+  'UpdateVacationRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления отпуска',
+    properties: {
+      vacationId: VacationId,
+      period: Period,
+    },
+  }),
+);

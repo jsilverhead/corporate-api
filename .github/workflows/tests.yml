@@ -50,7 +50,7 @@ jobs:
           restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@2.35.2
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}

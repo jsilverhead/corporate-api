@@ -9,7 +9,10 @@ use App\Domain\Common\ValueObject\Email;
 use App\Domain\Department\Department;
 use App\Domain\Employee\Enum\RolesEnum;
 use App\Domain\Survey\Survey;
+use App\Domain\Vacation\Vacation;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -65,6 +68,9 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     public ?Survey $survey;
 
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Vacation::class)]
+    public Collection $vacations;
+
     /**
      * @psalm-param non-empty-string $name
      */
@@ -89,6 +95,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->survey = null;
         $this->password = null;
         $this->deletedAt = null;
+        $this->vacations = new ArrayCollection();
     }
 
     public function eraseCredentials(): void

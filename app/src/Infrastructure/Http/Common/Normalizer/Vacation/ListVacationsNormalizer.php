@@ -8,7 +8,7 @@ use App\Domain\Department\Department;
 use App\Domain\Employee\Employee;
 use App\Domain\Vacation\Vacation;
 use App\Infrastructure\Normalizer\DateTimeNormalizer;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ListVacationsNormalizer
@@ -22,7 +22,7 @@ class ListVacationsNormalizer
      */
     public function normalize(Paginator $paginator): array
     {
-        $checkAndNormalizeEmployees = function (PersistentCollection $employees): ?array {
+        $checkAndNormalizeEmployees = function (Collection $employees): ?array {
             if (0 !== $employees->count()) {
                 return $this->normalizeEmployees($employees->toArray());
             }
@@ -45,7 +45,7 @@ class ListVacationsNormalizer
 
     private function normalizeEmployees(array $employees): array
     {
-        $checkAndNormalizeVacations = function (PersistentCollection $vacations): ?array {
+        $checkAndNormalizeVacations = function (Collection $vacations): ?array {
             if (0 !== $vacations->count()) {
                 return $this->normalizeVacations($vacations->toArray());
             }

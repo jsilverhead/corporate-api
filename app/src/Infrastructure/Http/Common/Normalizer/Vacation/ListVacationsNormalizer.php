@@ -8,6 +8,7 @@ use App\Domain\Department\Department;
 use App\Domain\Employee\Employee;
 use App\Domain\Vacation\Vacation;
 use App\Infrastructure\Normalizer\DateTimeNormalizer;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ListVacationsNormalizer
@@ -21,14 +22,20 @@ class ListVacationsNormalizer
      */
     public function normalize(Paginator $paginator): array
     {
+        $checkAndNormalizeEmployees = function (PersistentCollection $employees): ?array {
+            if (0 !== $employees->count()) {
+                return $this->normalizeEmployees($employees->toArray());
+            }
+
+            return null;
+        };
+
         return [
             'items' => array_map(
-                fn(Department $department) => [
+                static fn(Department $department) => [
                     'departmentId' => $department->id->toRfc4122(),
                     'departmentName' => $department->name,
-                    'employees' => 0 !== $department->employees->count()
-                            ? $this->normalizeEmployees($department->employees->toArray())
-                            : null,
+                    'employees' => $checkAndNormalizeEmployees($department->employees),
                 ],
                 (array) $paginator->getIterator(),
             ),
@@ -38,13 +45,19 @@ class ListVacationsNormalizer
 
     private function normalizeEmployees(array $employees): array
     {
+        $checkAndNormalizeVacations = function (PersistentCollection $vacations): ?array {
+            if (0 !== $vacations->count()) {
+                return $this->normalizeVacations($vacations->toArray());
+            }
+
+            return null;
+        };
+
         return array_map(
-            fn(Employee $employee) => [
+            static fn(Employee $employee) => [
                 'employeeId' => $employee->id->toRfc4122(),
                 'employeeName' => $employee->name,
-                'vacations' => 0 !== $employee->vacations->count()
-                        ? $this->normalizeVacations($employee->vacations->toArray())
-                        : null,
+                'vacations' => $checkAndNormalizeVacations($employee->vacations),
             ],
             $employees,
         );

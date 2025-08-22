@@ -7,7 +7,10 @@ namespace App\Domain\Department\Repository;
 use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
 use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
+use App\Domain\Common\ValueObject\Period;
 use App\Domain\Department\Department;
+use App\Domain\Employee\Employee;
+use App\Infrastructure\Http\Common\Denormalizer\Vacation\Enum\VacationsStatusEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -92,6 +95,49 @@ class DepartmentRepository extends ServiceEntityRepository
          * @psalm-var Paginator<Department> $paginator
          */
         $paginator = new Paginator($departments->getQuery());
+
+        return $paginator;
+    }
+
+    /**
+     * @psalm-return Paginator<Department>
+     */
+    public function listVacations(
+        Period $period,
+        VacationsStatusEnum $status,
+        ?Employee $employee,
+        ?Department $department,
+        int $count,
+        int $offset,
+    ): Paginator {
+        $vacations = $this->createQueryBuilder('d')
+            ->select('d', 'e', 'vc')
+            ->leftJoin('d.employees', 'e')
+            ->leftJoin('e.vacations', 'vc', 'WITH', 'vc.fromDate BETWEEN :periodStart AND :periodEnd')
+            ->setParameter('periodStart', $period->fromDate, Types::DATETIME_IMMUTABLE)
+            ->setParameter('periodEnd', $period->toDate, Types::DATETIME_IMMUTABLE)
+            ->setFirstResult($offset)
+            ->setMaxResults($count)
+            ->orderBy('vc.createdAt', 'DESC');
+
+        if (VacationsStatusEnum::APPROVED === $status) {
+            $vacations->andWhere('vc.isApproved = TRUE');
+        }
+
+        if (VacationsStatusEnum::UNAPPROVED === $status) {
+            $vacations->andWhere('vc.isApproved = FALSE');
+        }
+
+        if (null !== $employee) {
+            $vacations->andWhere('e.id = :employeeId')->setParameter('employeeId', $employee->id, UuidType::NAME);
+        }
+
+        if (null !== $department) {
+            $vacations->andWhere('d.id = :departmentId')->setParameter('departmentId', $department->id, UuidType::NAME);
+        }
+
+        /** @psalm-var Paginator<Department> $paginator */
+        $paginator = new Paginator($vacations->getQuery());
 
         return $paginator;
     }

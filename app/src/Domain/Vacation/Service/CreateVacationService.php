@@ -18,6 +18,7 @@ readonly class CreateVacationService
     public function create(Employee $employee, Period $period): Vacation
     {
         $vacation = new Vacation(employee: $employee, fromDate: $period->fromDate, toDate: $period->toDate);
+        $employee->vacations->add($vacation);
 
         $this->vacationRepository->add($vacation);
 

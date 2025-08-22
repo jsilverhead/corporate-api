@@ -157,3 +157,17 @@ export const Money = ref.schema(
     },
   }),
 );
+
+export const PeriodFromDateParameter = ref.parameter('PeriodFromDateParameter', {
+  in: 'query',
+  name: 'period[fromDate]',
+  schema: DateTime,
+  required: true,
+});
+
+export const PeriodToDateParameter = ref.parameter('PeriodToDateParameter', {
+  in: 'query',
+  name: 'period[toDate]',
+  schema: DateTime,
+  required: true,
+});

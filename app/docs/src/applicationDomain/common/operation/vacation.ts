@@ -1,7 +1,12 @@
 import { commonOperation } from '../path';
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { ToDateCannotBeLessThanFromDateApiProblem } from '../apiProblem/common';
-import { CreateVacationRequestSchema, CreateVacationResponseSchema } from '../schema/vacation';
+import {
+  CreateVacationRequestSchema,
+  CreateVacationResponseSchema,
+  ListVacationsQueryParameters,
+  ListVacationsResponseSchema,
+} from '../schema/vacation';
 
 export const VacationTag: Tag = {
   description: 'Отпуска',
@@ -16,4 +21,13 @@ commonOperation.post({
   requestSchema: CreateVacationRequestSchema,
   responseSchema: CreateVacationResponseSchema,
   errorSchemas: [ToDateCannotBeLessThanFromDateApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получение списка отпусков',
+  tag: VacationTag,
+  isImplemented: true,
+  operationId: 'listVacations',
+  parameters: ListVacationsQueryParameters,
+  responseSchema: ListVacationsResponseSchema,
 });

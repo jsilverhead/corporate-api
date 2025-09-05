@@ -10,11 +10,11 @@ class FromDateCanNotBeLessThatFourteenDaysFromNowException extends ServiceExcept
 {
     public function getDescription(): string
     {
-        return 'Vacation cannot be in the past';
+        return 'From date cannot be less than fourteen days from now';
     }
 
     public function getType(): string
     {
-        return 'vacation_can_not_be_in_the_past';
+        return 'from_date_cannot_be_less_that_fourteen_days_from_now';
     }
 }

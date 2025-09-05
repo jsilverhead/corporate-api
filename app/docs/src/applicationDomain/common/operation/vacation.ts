@@ -9,6 +9,10 @@ import {
   ListVacationsResponseSchema,
   UpdateVacationRequestSchema,
 } from '../schema/vacation';
+import {
+  FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
+  VacationCanNotBeInThePastApiProblem,
+} from '../apiProblem/vacation';
 
 export const VacationTag: Tag = {
   description: 'Отпуска',
@@ -49,5 +53,9 @@ commonOperation.post({
   isImplemented: true,
   operationId: 'updateVacation',
   requestSchema: UpdateVacationRequestSchema,
-  errorSchemas: [EntityNotFoundApiProblem],
+  errorSchemas: [
+    EntityNotFoundApiProblem,
+    VacationCanNotBeInThePastApiProblem,
+    FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
+  ],
 });

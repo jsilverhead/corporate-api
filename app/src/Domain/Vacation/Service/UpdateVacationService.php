@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Vacation\Service;
 
 use App\Domain\Common\ValueObject\Period;
+use App\Domain\Vacation\Exception\CanNotUpdateApprovedVacationException;
 use App\Domain\Vacation\Exception\FromDateCanNotBeLessThatFourteenDaysFromNowException;
 use App\Domain\Vacation\Exception\VacationCanNotBeInThePastException;
 use App\Domain\Vacation\Vacation;
@@ -13,12 +14,12 @@ use DateTimeImmutable;
 
 class UpdateVacationService
 {
-    public function __construct()
-    {
-    }
-
     public function update(Vacation $vacation, Period $period): void
     {
+        if ($vacation->isApproved) {
+            throw new CanNotUpdateApprovedVacationException();
+        }
+
         $now = new DateTimeImmutable();
         /** @psalm-var DateInterval $allowedInterval */
         $allowedInterval = DateInterval::createFromDateString('14 days');

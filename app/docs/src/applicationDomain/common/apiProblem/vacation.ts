@@ -16,3 +16,11 @@ export const FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem = ref.schema(
     type: 'from_date_cannot_be_less_that_fourteen_days_from_now',
   }),
 );
+
+export const CanNotUpdateApprovedVacationApiProblem = ref.schema(
+  'CanNotUpdateApprovedVacationApiProblem',
+  apiProblem({
+    description: 'Невозможно обновить одобренный отпуск',
+    type: 'can_not_update_approved_vacation',
+  }),
+);

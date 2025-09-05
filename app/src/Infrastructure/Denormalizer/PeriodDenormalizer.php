@@ -11,7 +11,7 @@ use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;
 use Spiks\UserInputProcessor\ObjectField;
 use Spiks\UserInputProcessor\Pointer;
 
-class PeriodDenormalizer
+readonly class PeriodDenormalizer
 {
     public function __construct(
         private ObjectDenormalizer $objectDenormalizer,
@@ -46,6 +46,11 @@ class PeriodDenormalizer
             ],
         );
 
-        return new Period(fromDate: $denormalizedPeriod['fromDate'], toDate: $denormalizedPeriod['toDate']);
+        $startDate = $denormalizedPeriod['fromDate']->format('Y-m-d');
+        $endDate = $denormalizedPeriod['toDate']->format('Y-m-d');
+        $fromDate = new DateTimeImmutable(sprintf('%sT00:00:00', $startDate));
+        $toDate = new DateTimeImmutable(sprintf('%sT23:59:59', $endDate));
+
+        return new Period(fromDate: $fromDate, toDate: $toDate);
     }
 }

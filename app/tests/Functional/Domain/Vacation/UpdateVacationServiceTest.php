@@ -44,19 +44,6 @@ final class UpdateVacationServiceTest extends BaseWebTestCase
         $this->getService(UpdateVacationService::class)->update(vacation: $vacation, period: $newPeriod);
     }
 
-    public function testUpdateApprovedVacationFail(): void
-    {
-        $vacation = $this->getService(VacationBuilder::class)
-            ->asApproved()
-            ->build();
-        $fromDate = new DateTimeImmutable('+30 days');
-        $toDate = new DateTimeImmutable('+37 days');
-        $newPeriod = new Period(fromDate: $fromDate, toDate: $toDate);
-
-        $this->expectException(CanNotUpdateApprovedVacationException::class);
-        $this->getService(UpdateVacationService::class)->update(vacation: $vacation, period: $newPeriod);
-    }
-
     public function testSuccess(): void
     {
         $vacation = $this->getService(VacationBuilder::class)->build();
@@ -68,5 +55,18 @@ final class UpdateVacationServiceTest extends BaseWebTestCase
 
         self::assertSame(expected: $vacation->fromDate->getTimestamp(), actual: $fromDate->getTimestamp());
         self::assertSame(expected: $vacation->toDate->getTimestamp(), actual: $toDate->getTimestamp());
+    }
+
+    public function testUpdateApprovedVacationFail(): void
+    {
+        $vacation = $this->getService(VacationBuilder::class)
+            ->asApproved()
+            ->build();
+        $fromDate = new DateTimeImmutable('+30 days');
+        $toDate = new DateTimeImmutable('+37 days');
+        $newPeriod = new Period(fromDate: $fromDate, toDate: $toDate);
+
+        $this->expectException(CanNotUpdateApprovedVacationException::class);
+        $this->getService(UpdateVacationService::class)->update(vacation: $vacation, period: $newPeriod);
     }
 }

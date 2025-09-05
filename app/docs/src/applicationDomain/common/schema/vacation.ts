@@ -149,3 +149,14 @@ export const ApproveVacationRequestSchema = ref.schema(
     },
   }),
 );
+
+export const UpdateVacationRequestSchema = ref.schema(
+  'UpdateVacationRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления отпуска',
+    properties: {
+      id: VacationId,
+      period: Period,
+    },
+  }),
+);

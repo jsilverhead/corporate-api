@@ -29,6 +29,24 @@ class VacationRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($vacation);
     }
 
+    public function getByIdOwnedByEmployeeOrFail(Uuid $id, Employee $employee): Vacation
+    {
+        /** @psalm-var Vacation|null $vacation */
+        $vacation = $this->createQueryBuilder('vc')
+            ->where('vc.id = :id')
+            ->setParameter('id', $id, UuidType::NAME)
+            ->andWhere('vc.employee = :employeeId')
+            ->setParameter('employeeId', $employee->id, UuidType::NAME)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $vacation) {
+            throw new EntityNotFoundException(EntityNotFoundEnum::VACATION);
+        }
+
+        return $vacation;
+    }
+
     public function getVacationByIdSupervisedByEmployeeOrFail(Uuid $id, Employee $employee): Vacation
     {
         if (null === $employee->supervising) {

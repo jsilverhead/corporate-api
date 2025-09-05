@@ -7,7 +7,12 @@ import {
   CreateVacationResponseSchema,
   ListVacationsQueryParameters,
   ListVacationsResponseSchema,
+  UpdateVacationRequestSchema,
 } from '../schema/vacation';
+import {
+  FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
+  VacationCanNotBeInThePastApiProblem,
+} from '../apiProblem/vacation';
 
 export const VacationTag: Tag = {
   description: 'Отпуска',
@@ -40,4 +45,17 @@ commonOperation.post({
   operationId: 'approveVacation',
   requestSchema: ApproveVacationRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.post({
+  title: 'Обновление отпуска',
+  tag: VacationTag,
+  isImplemented: true,
+  operationId: 'updateVacation',
+  requestSchema: UpdateVacationRequestSchema,
+  errorSchemas: [
+    EntityNotFoundApiProblem,
+    VacationCanNotBeInThePastApiProblem,
+    FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
+  ],
 });

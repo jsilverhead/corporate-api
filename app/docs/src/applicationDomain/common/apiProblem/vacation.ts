@@ -24,3 +24,11 @@ export const CanNotUpdateApprovedVacationApiProblem = ref.schema(
     type: 'can_not_update_approved_vacation',
   }),
 );
+
+export const CannotDeleteSpentVacationApiProblem = ref.schema(
+  'CannotDeleteSpentVacationApiProblem',
+  apiProblem({
+    description: 'Невозможно удалить прошедший отпуск',
+    type: 'can_not_delete_spent_vacation',
+  }),
+);

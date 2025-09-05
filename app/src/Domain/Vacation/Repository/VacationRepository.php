@@ -29,6 +29,18 @@ class VacationRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($vacation);
     }
 
+    public function getById(Uuid $id): ?Vacation
+    {
+        /** @psalm-var Vacation|null $vacation */
+        $vacation = $this->createQueryBuilder('vc')
+            ->where('vc.id = :id')
+            ->setParameter('id', $id, UuidType::NAME)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $vacation;
+    }
+
     public function getByIdOwnedByEmployeeOrFail(Uuid $id, Employee $employee): Vacation
     {
         /** @psalm-var Vacation|null $vacation */
@@ -78,5 +90,10 @@ class VacationRepository extends ServiceEntityRepository
         }
 
         return $vacation;
+    }
+
+    public function remove(Vacation $vacation): void
+    {
+        $this->getEntityManager()->remove($vacation);
     }
 }

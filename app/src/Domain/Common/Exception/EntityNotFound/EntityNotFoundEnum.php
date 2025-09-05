@@ -11,4 +11,5 @@ enum EntityNotFoundEnum: string
     case QUESTION = 'question';
     case SURVEY = 'survey';
     case SURVEY_TEMPLATE = 'survey_template';
+    case VACATION = 'vacation';
 }

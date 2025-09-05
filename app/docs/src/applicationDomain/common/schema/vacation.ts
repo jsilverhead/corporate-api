@@ -139,3 +139,13 @@ export const ListVacationsQueryParameters = [
   PeriodToDateParameter,
   ListVacationsStatusParam,
 ];
+
+export const ApproveVacationRequestSchema = ref.schema(
+  'ApproveVacationRequestSchema',
+  objectSchema({
+    description: 'Данные для одобрения отпуска',
+    properties: {
+      id: VacationId,
+    },
+  }),
+);

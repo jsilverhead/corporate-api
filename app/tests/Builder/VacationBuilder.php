@@ -33,9 +33,6 @@ class VacationBuilder
         return $this;
     }
 
-    /**
-     * @psalm-suppress PossiblyUnusedReturnValue
-     */
     public function build(): Vacation
     {
         $vacation = $this->createVacationService->create(

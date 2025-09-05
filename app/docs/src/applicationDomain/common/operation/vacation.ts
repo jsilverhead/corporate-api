@@ -5,11 +5,13 @@ import {
   ApproveVacationRequestSchema,
   CreateVacationRequestSchema,
   CreateVacationResponseSchema,
+  DeleteVacationRequestSchema,
   ListVacationsQueryParameters,
   ListVacationsResponseSchema,
   UpdateVacationRequestSchema,
 } from '../schema/vacation';
 import {
+  CannotDeleteSpentVacationApiProblem,
   CanNotUpdateApprovedVacationApiProblem,
   FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
   VacationCanNotBeInThePastApiProblem,
@@ -60,4 +62,13 @@ commonOperation.post({
     FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
     CanNotUpdateApprovedVacationApiProblem,
   ],
+});
+
+commonOperation.post({
+  title: 'Удаление отпуска',
+  tag: VacationTag,
+  isImplemented: true,
+  operationId: 'deleteVacation',
+  requestSchema: DeleteVacationRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem, CannotDeleteSpentVacationApiProblem],
 });

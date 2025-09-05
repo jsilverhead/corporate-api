@@ -7,9 +7,9 @@ namespace App\Infrastructure\Http\Common\Action\Vacation;
 use App\Domain\Employee\Employee;
 use App\Domain\Employee\Enum\RolesEnum;
 use App\Domain\Vacation\Repository\VacationRepository;
-use App\Domain\Vacation\Service\UpdateVacationService;
+use App\Domain\Vacation\Service\DeleteVacationService;
 use App\Infrastructure\Attribute\AllowedUserRole;
-use App\Infrastructure\Http\Common\Denormalizer\Vacation\UpdateVacationDenormalizer;
+use App\Infrastructure\Http\Common\Denormalizer\Vacation\DeleteVacationDenormalizer;
 use App\Infrastructure\Payload\Payload;
 use App\Infrastructure\Responder\Responder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,14 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/updateVacation', methods: [Request::METHOD_POST])]
-readonly class UpdateVacation
+#[Route(path: '/deleteVacation', methods: [Request::METHOD_POST])]
+readonly class DeleteVacation
 {
     public function __construct(
         private Responder $responder,
-        private UpdateVacationDenormalizer $updateVacationDenormalizer,
+        private DeleteVacationDenormalizer $deleteVacationDenormalizer,
         private VacationRepository $vacationRepository,
-        private UpdateVacationService $updateVacationService,
+        private DeleteVacationService $deleteVacationService,
         private EntityManagerInterface $entityManager,
     ) {
     }
@@ -33,10 +33,10 @@ readonly class UpdateVacation
         #[AllowedUserRole([RolesEnum::USER, RolesEnum::SUPERUSER])] Employee $employee,
         Payload $payload,
     ): Response {
-        $dto = $this->updateVacationDenormalizer->denormalize($payload);
-        $vacation = $this->vacationRepository->getByIdOwnedByEmployeeOrFail(id: $dto->vacationId, employee: $employee);
+        $id = $this->deleteVacationDenormalizer->denormalize($payload);
+        $vacation = $this->vacationRepository->getByIdOwnedByEmployeeOrFail(id: $id, employee: $employee);
 
-        $this->updateVacationService->update(vacation: $vacation, period: $dto->period);
+        $this->deleteVacationService->delete($vacation);
 
         $this->entityManager->flush();
 

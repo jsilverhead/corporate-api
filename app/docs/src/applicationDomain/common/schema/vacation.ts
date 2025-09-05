@@ -160,3 +160,13 @@ export const UpdateVacationRequestSchema = ref.schema(
     },
   }),
 );
+
+export const DeleteVacationRequestSchema = ref.schema(
+  'DeleteVacationRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления отпуска',
+    properties: {
+      id: VacationId,
+    },
+  }),
+);

@@ -10,6 +10,7 @@ import {
   UpdateVacationRequestSchema,
 } from '../schema/vacation';
 import {
+  CanNotUpdateApprovedVacationApiProblem,
   FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
   VacationCanNotBeInThePastApiProblem,
 } from '../apiProblem/vacation';
@@ -57,5 +58,6 @@ commonOperation.post({
     EntityNotFoundApiProblem,
     VacationCanNotBeInThePastApiProblem,
     FromDateCanNotBeLessThatFourteenDaysFromNowApiProblem,
+    CanNotUpdateApprovedVacationApiProblem,
   ],
 });

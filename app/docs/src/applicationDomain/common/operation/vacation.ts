@@ -1,7 +1,8 @@
 import { commonOperation } from '../path';
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
-import { ToDateCannotBeLessThanFromDateApiProblem } from '../apiProblem/common';
+import { EntityNotFoundApiProblem, ToDateCannotBeLessThanFromDateApiProblem } from '../apiProblem/common';
 import {
+  ApproveVacationRequestSchema,
   CreateVacationRequestSchema,
   CreateVacationResponseSchema,
   ListVacationsQueryParameters,
@@ -30,4 +31,13 @@ commonOperation.get({
   operationId: 'listVacations',
   parameters: ListVacationsQueryParameters,
   responseSchema: ListVacationsResponseSchema,
+});
+
+commonOperation.post({
+  title: 'Одобрение отпуска',
+  tag: VacationTag,
+  isImplemented: true,
+  operationId: 'approveVacation',
+  requestSchema: ApproveVacationRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

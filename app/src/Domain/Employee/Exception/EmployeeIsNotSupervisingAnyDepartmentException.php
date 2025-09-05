@@ -10,7 +10,7 @@ class EmployeeIsNotSupervisingAnyDepartmentException extends ServiceException
 {
     public function getDescription(): string
     {
-        return 'Employee is supervising any department';
+        return 'Employee is not supervising any department';
     }
 
     public function getType(): string

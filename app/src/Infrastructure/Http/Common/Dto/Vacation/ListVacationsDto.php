@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http\Common\Dto\Dto;
+namespace App\Infrastructure\Http\Common\Dto\Vacation;
 
 use App\Domain\Common\ValueObject\Pagination;
 use App\Domain\Common\ValueObject\Period;

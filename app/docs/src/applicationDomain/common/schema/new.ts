@@ -44,3 +44,13 @@ export const AddNewsResponseSchema = ref.schema(
     },
   }),
 );
+
+export const PublishNewsRequestSchema = ref.schema(
+  'PublishNewsRequestSchema',
+  objectSchema({
+    description: 'Данные для публикации новости',
+    properties: {
+      id: NewsId,
+    },
+  }),
+);

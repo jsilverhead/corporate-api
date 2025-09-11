@@ -8,6 +8,7 @@ enum EntityNotFoundEnum: string
 {
     case DEPARTMENT = 'department';
     case EMPLOYEE = 'employee';
+    case NEWS = 'news';
     case QUESTION = 'question';
     case SURVEY = 'survey';
     case SURVEY_TEMPLATE = 'survey_template';

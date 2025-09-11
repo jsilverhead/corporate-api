@@ -27,6 +27,4 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         ->type('attribute')
         ->prefix('App\Domain\News')
         ->dir(param('kernel.project_dir')->__toString() . '/src/Domain/News');
-
-    $services->set(App\Domain\News\Service\CreateNewsService::class)->public();
 };

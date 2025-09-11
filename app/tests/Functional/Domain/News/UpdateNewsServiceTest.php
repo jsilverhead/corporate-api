@@ -56,7 +56,7 @@ final class UpdateNewsServiceTest extends BaseWebTestCase
 
     public function testUpdateNewsNotAuthorFail(): void
     {
-        $author = $this->getService(EmployeeBuilder::class)->build();
+        $editor = $this->getService(EmployeeBuilder::class)->build();
         $news = $this->getService(NewsBuilder::class)->build();
 
         $this->expectException(AccessIsDeniedException::class);
@@ -64,7 +64,7 @@ final class UpdateNewsServiceTest extends BaseWebTestCase
             news: $news,
             title: 'Выход нового сотрудника',
             content: 'Добро пожаловать в нашу команду',
-            editor: $author,
+            editor: $editor,
         );
     }
 

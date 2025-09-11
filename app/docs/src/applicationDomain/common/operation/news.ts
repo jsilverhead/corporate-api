@@ -3,6 +3,8 @@ import { commonOperation } from '../path';
 import {
   AddNewsRequestSchema,
   AddNewsResponseSchema,
+  GetNewsIdParameter,
+  GetNewsResponseSchema,
   PublishNewsRequestSchema,
   UpdateNewsRequestSchema,
 } from '../schema/new';
@@ -37,5 +39,15 @@ commonOperation.post({
   operationId: 'updateNews',
   isImplemented: true,
   requestSchema: UpdateNewsRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получить новость',
+  tag: NewsTag,
+  operationId: 'getNews',
+  isImplemented: true,
+  parameters: [GetNewsIdParameter],
+  responseSchema: GetNewsResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem],
 });

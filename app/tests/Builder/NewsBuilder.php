@@ -56,4 +56,14 @@ class NewsBuilder
 
         return $this;
     }
+
+    /**
+     * @psalm-param non-empty-string $content
+     */
+    public function withContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
 }

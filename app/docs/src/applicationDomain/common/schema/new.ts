@@ -1,9 +1,13 @@
-import { Uuid } from '../../../schema/common';
+import { DateTime, Uuid } from '../../../schema/common';
 import { ref } from '../../../utils/ref';
 import { booleanSchema, objectSchema, stringSchema } from '../../../utils/schemaFactory';
 import { EmployeeId, EmployeeName } from './employee';
+import { enumeration } from '../../../utils/enum';
+import { collectionWithItemsAmount } from '../../../schema/collection';
 
 export const NewsId = { ...Uuid, description: 'ID новости' };
+
+export const NewsCreatedAt = { ...DateTime, description: 'Дата создания новости' };
 
 export const NewsTitle = ref.schema(
   'NewsTitle',
@@ -21,6 +25,16 @@ export const NewsContent = ref.schema(
     description: 'Текст новости',
     minLength: 5,
     maxLength: 10000,
+    examples: ['Сердечно поздравляем от всего коллектива'],
+  }),
+);
+
+export const NewsPreview = ref.schema(
+  'NewsPreview',
+  stringSchema({
+    description: 'Короткий текст предпросмотра',
+    minLength: 5,
+    maxLength: 100,
     examples: ['Сердечно поздравляем от всего коллектива'],
   }),
 );
@@ -83,7 +97,7 @@ export const GetNewsIdParameter = ref.parameter('GetNewsIdParameter', {
   schema: NewsId,
 });
 
-const GetNewsAuthorInfo = ref.schema(
+const NewsAuthorInfo = ref.schema(
   'GetNewsAuthorInfo',
   objectSchema({
     description: 'Данные автора новости',
@@ -102,8 +116,44 @@ export const GetNewsResponseSchema = ref.schema(
       id: NewsId,
       title: NewsTitle,
       content: NewsContent,
-      author: GetNewsAuthorInfo,
+      author: NewsAuthorInfo,
       isPublished: NewsIsPublished,
     },
   }),
 );
+
+const NewsOrderDirectionEnum = ref.schema(
+  'NewsOrderDirectionEnum',
+  enumeration({
+    description: 'Направление сортировки',
+    enumsWithDescriptions: {
+      asc: 'В порядке возрастания',
+      desc: 'в порядке убывания',
+    },
+  }),
+);
+
+export const ListNewsDateOrderDirectionEnum = ref.parameter('ListNewsDateOrderDirectionEnum', {
+  description: 'Сортировка новостей по дате',
+  schema: NewsOrderDirectionEnum,
+  in: 'query',
+  name: 'orderByDate',
+  required: true,
+});
+
+const ListNewsItemsSchema = ref.schema(
+  'ListNewsItemsSchema',
+  objectSchema({
+    description: 'Данные новости',
+    properties: {
+      id: NewsId,
+      title: NewsTitle,
+      preview: NewsPreview,
+      createdAt: NewsCreatedAt,
+      isPublished: NewsIsPublished,
+      author: NewsAuthorInfo,
+    },
+  }),
+);
+
+export const ListNewsResponseSchema = collectionWithItemsAmount('ListNewsResponseSchema', ListNewsItemsSchema);

@@ -1,6 +1,11 @@
 import { Tag } from '@fosfad/openapi-typescript-definitions/3.1.0';
 import { commonOperation } from '../path';
-import { AddNewsRequestSchema, AddNewsResponseSchema, PublishNewsRequestSchema } from '../schema/new';
+import {
+  AddNewsRequestSchema,
+  AddNewsResponseSchema,
+  PublishNewsRequestSchema,
+  UpdateNewsRequestSchema,
+} from '../schema/new';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 import { NewsIsAlreadyPublishedApiProblem } from '../apiProblem/news';
 
@@ -24,4 +29,13 @@ commonOperation.post({
   isImplemented: true,
   requestSchema: PublishNewsRequestSchema,
   errorSchemas: [EntityNotFoundApiProblem, NewsIsAlreadyPublishedApiProblem],
+});
+
+commonOperation.post({
+  title: 'Обновить новость',
+  tag: NewsTag,
+  operationId: 'updateNews',
+  isImplemented: true,
+  requestSchema: UpdateNewsRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

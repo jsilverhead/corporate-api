@@ -6,8 +6,9 @@ import { AuthTag } from './operation/auth';
 import { DepartmentTag } from './operation/department';
 import { SurveyTag } from './operation/survey';
 import { VacationTag } from './operation/vacation';
+import { NewsTag } from './operation/news';
 
-export const CommonTags: Array<Tag> = [FileTag, EmployeeTag, AuthTag, DepartmentTag, SurveyTag, VacationTag];
+export const CommonTags: Array<Tag> = [FileTag, EmployeeTag, AuthTag, DepartmentTag, SurveyTag, VacationTag, NewsTag];
 export const CommonTagGroups: Array<TagGroup> = [
-  tagGroup('Общее', [FileTag, EmployeeTag, AuthTag, DepartmentTag, SurveyTag, VacationTag]),
+  tagGroup('Общее', [FileTag, EmployeeTag, AuthTag, DepartmentTag, SurveyTag, VacationTag, NewsTag]),
 ];

@@ -10,7 +10,7 @@ use App\Infrastructure\Denormalizer\PaginationDenormalizer;
 use App\Infrastructure\Denormalizer\PeriodDenormalizer;
 use App\Infrastructure\Denormalizer\UuidDenormalizer;
 use App\Infrastructure\Http\Common\Denormalizer\Vacation\Enum\VacationsStatusEnum;
-use App\Infrastructure\Http\Common\Dto\Dto\ListVacationsDto;
+use App\Infrastructure\Http\Common\Dto\Vacation\ListVacationsDto;
 use App\Infrastructure\Payload\Payload;
 use Spiks\UserInputProcessor\Denormalizer\EnumerationDenormalizer;
 use Spiks\UserInputProcessor\Denormalizer\ObjectDenormalizer;

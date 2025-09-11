@@ -19,7 +19,7 @@ export const NewsContent = ref.schema(
   stringSchema({
     description: 'Текст новости',
     minLength: 5,
-    maxLength: 255,
+    maxLength: 10000,
     examples: ['Сердечно поздравляем от всего коллектива'],
   }),
 );

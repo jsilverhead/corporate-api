@@ -54,3 +54,15 @@ export const PublishNewsRequestSchema = ref.schema(
     },
   }),
 );
+
+export const UpdateNewsRequestSchema = ref.schema(
+  'UpdateNewsRequestSchema',
+  objectSchema({
+    description: 'Данные для обновления новости',
+    properties: {
+      id: NewsId,
+      title: NewsTitle,
+      content: NewsContent,
+    },
+  }),
+);

@@ -95,4 +95,9 @@ class NewsRepository extends ServiceEntityRepository
 
         return $paginator;
     }
+
+    public function remove(News $news): void
+    {
+        $this->getEntityManager()->remove($news);
+    }
 }

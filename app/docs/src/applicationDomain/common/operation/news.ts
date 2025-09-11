@@ -3,6 +3,7 @@ import { commonOperation } from '../path';
 import {
   AddNewsRequestSchema,
   AddNewsResponseSchema,
+  DeleteNewsRequestSchema,
   GetNewsIdParameter,
   GetNewsResponseSchema,
   ListNewsDateOrderDirectionEnum,
@@ -62,4 +63,13 @@ commonOperation.get({
   isImplemented: true,
   parameters: [...PaginationParameters, ListNewsDateOrderDirectionEnum],
   responseSchema: ListNewsResponseSchema,
+});
+
+commonOperation.post({
+  title: 'Удалить новость',
+  tag: NewsTag,
+  operationId: 'deleteNews',
+  isImplemented: true,
+  requestSchema: DeleteNewsRequestSchema,
+  errorSchemas: [EntityNotFoundApiProblem],
 });

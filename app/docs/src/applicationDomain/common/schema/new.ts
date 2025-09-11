@@ -77,6 +77,16 @@ export const PublishNewsRequestSchema = ref.schema(
   }),
 );
 
+export const DeleteNewsRequestSchema = ref.schema(
+  'DeleteNewsRequestSchema',
+  objectSchema({
+    description: 'Данные для удаления новости',
+    properties: {
+      id: NewsId,
+    },
+  }),
+);
+
 export const UpdateNewsRequestSchema = ref.schema(
   'UpdateNewsRequestSchema',
   objectSchema({

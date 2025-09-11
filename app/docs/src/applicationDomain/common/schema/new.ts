@@ -118,6 +118,7 @@ export const GetNewsResponseSchema = ref.schema(
       content: NewsContent,
       author: NewsAuthorInfo,
       isPublished: NewsIsPublished,
+      createdAt: NewsCreatedAt,
     },
   }),
 );
@@ -127,8 +128,8 @@ const NewsOrderDirectionEnum = ref.schema(
   enumeration({
     description: 'Направление сортировки',
     enumsWithDescriptions: {
-      asc: 'В порядке возрастания',
-      desc: 'в порядке убывания',
+      asc: 'От старых к новым',
+      desc: 'От новых к старым',
     },
   }),
 );

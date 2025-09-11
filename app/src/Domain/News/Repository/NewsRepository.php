@@ -8,7 +8,10 @@ use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundEnum;
 use App\Domain\Common\Exception\EntityNotFound\EntityNotFoundException;
 use App\Domain\Common\Repository\ServiceEntityRepository;
 use App\Domain\Employee\Employee;
+use App\Domain\Employee\Enum\RolesEnum;
+use App\Domain\News\Enum\NewsOrderDirectionEnum;
 use App\Domain\News\News;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -67,5 +70,29 @@ class NewsRepository extends ServiceEntityRepository
         }
 
         return $news;
+    }
+
+    /**
+     * @psalm-return Paginator<News>
+     */
+    public function list(int $count, int $offset, NewsOrderDirectionEnum $directionEnum, Employee $requester): Paginator
+    {
+        $news = $this->createQueryBuilder('n')
+            ->select('n', 'a')
+            ->join('n.author', 'a')
+            ->setMaxResults($count)
+            ->setFirstResult($offset)
+            ->orderBy('n.createdAt', $directionEnum->value);
+
+        if (RolesEnum::USER === $requester->role) {
+            $news
+                ->andWhere('n.author = :authorId OR n.published = true')
+                ->setParameter('authorId', $requester->id, UuidType::NAME);
+        }
+
+        /** @psalm-var Paginator<News> $paginator */
+        $paginator = new Paginator($news->getQuery());
+
+        return $paginator;
     }
 }

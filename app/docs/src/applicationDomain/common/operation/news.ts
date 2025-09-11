@@ -5,11 +5,14 @@ import {
   AddNewsResponseSchema,
   GetNewsIdParameter,
   GetNewsResponseSchema,
+  ListNewsDateOrderDirectionEnum,
+  ListNewsResponseSchema,
   PublishNewsRequestSchema,
   UpdateNewsRequestSchema,
 } from '../schema/new';
 import { EntityNotFoundApiProblem } from '../apiProblem/common';
 import { NewsIsAlreadyPublishedApiProblem } from '../apiProblem/news';
+import { PaginationParameters } from '../../../schema/pagination';
 
 export const NewsTag: Tag = {
   name: 'Новости',
@@ -50,4 +53,13 @@ commonOperation.get({
   parameters: [GetNewsIdParameter],
   responseSchema: GetNewsResponseSchema,
   errorSchemas: [EntityNotFoundApiProblem],
+});
+
+commonOperation.get({
+  title: 'Получить список новостей',
+  tag: NewsTag,
+  operationId: 'listNews',
+  isImplemented: true,
+  parameters: [...PaginationParameters, ListNewsDateOrderDirectionEnum],
+  responseSchema: ListNewsResponseSchema,
 });

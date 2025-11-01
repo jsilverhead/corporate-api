@@ -123,7 +123,7 @@ jobs:
         run: npm ci --prefer-offline --production
 
       - name: Download CHANGELOG.md file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: changelog
           path: ./app/
@@ -149,7 +149,7 @@ jobs:
 
     steps:
       - name: Download OpenAPI file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: openapi-${{ matrix.applicationDomain }}
           path: app/build/${{ matrix.applicationDomain }}
@@ -216,7 +216,7 @@ jobs:
         run: npm ci --prefer-offline --production
 
       - name: Download OpenAPI file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: openapi-${{ matrix.applicationDomain }}
           path: app/build/${{ matrix.applicationDomain }}
@@ -254,7 +254,7 @@ jobs:
 
     steps:
       - name: Download Redoc file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: redoc-${{ matrix.applicationDomain }}
           path: app/build/${{ matrix.applicationDomain }}
